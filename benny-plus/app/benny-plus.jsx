@@ -97,7 +97,11 @@ async function imageToDataUrl(file, max = 1600) {
   const cv = document.createElement('canvas'); cv.width = Math.round(bmp.width * s); cv.height = Math.round(bmp.height * s);
   cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height); return cv.toDataURL('image/jpeg', 0.85);
 }
-const acctLabel = (a, cards) => { const c = a && cards[a.product_id]; return (c ? (c.short || c.name) : (a && (a.nickname || a.official_name)) || 'Unconfirmed card') + (a && a.mask ? ' ••' + a.mask : ''); };
+/* Bank account names often end in the card digits already (“Robinhood Credit Card **0478”); strip them so ••0478 shows once. */
+const stripMask = (s, mask) => { let t = String(s || '').trim(); t = t.replace(/[\s\-–(\[]*(\*+|•+|x{2,}|\.{2,}|…|ending( in)?|acct|account)\s*\d{3,4}[)\]]?$/i, '').trim();
+  if (mask) t = t.replace(new RegExp('[\\s\\-–(]*' + mask + '\\)?$'), '').trim(); return t; };
+const bankName = a => (a && stripMask(a.official_name || a.nickname, a.mask)) || 'Bank account';
+const acctLabel = (a, cards) => { const c = a && cards[a.product_id]; return (c ? (c.short || c.name) : (a && (a.nickname || a.official_name) ? bankName(a) : 'Unconfirmed card')) + (a && a.mask ? ' ••' + a.mask : ''); };
 const SRC = { plaid: 'bank', csv: 'statement', sample: 'sample', manual: 'manual', email: 'email', receipt: 'receipt', user: 'you', agent: 'AI reading', rules: 'card terms' };
 
 /* ---------- derived reward comparison (engine decides; nothing stored) ---------- */
@@ -110,15 +114,35 @@ function categoryMap(st) {
   }
   return m;
 }
+/* Cards you HAVE vs cards you're TRYING (Oct 25, user direction): totals, credits to use and missed rewards use only cards you have;
+   cards you're trying get a separate "what if" and never add to a total. A saved role (card page switch) wins; sample/demo cards count
+   as yours; otherwise a card is yours once it's connected through Plaid or has a purchase or a receipt tied to it. A hand-picked card
+   with nothing yet counts as trying, which nudges people to connect it for real transactions. */
+function cardRole(a, st) {
+  if (!a) return 'trying';
+  if (a.role === 'held' || a.role === 'trying') return a.role;
+  if (a.sample || a.virtual || a.source === 'plaid') return 'held';
+  if ((st.purchases || []).some(p => p.account_id === a.id)) return 'held';
+  if ((st.evidence || []).some(e => e.subject_type === 'doc_card' && jparse(e.data).account_id === a.id)) return 'held';
+  return 'trying';
+}
+const NOT_CARD_SPEND = /order (has been )?(executed|filled)|\bshares? of\b|limit order|market order|\bstock(s)?\b|\bcrypto|\bETF\b|\bdividend|\bwire transfer|deposit (received|completed)/i;
+const BROKERS = /robinhood|fidelity|schwab|vanguard|coinbase|webull|e\*?trade|interactive brokers|public\.com/i;
+const BASE_MERCHANT = { id: 'unknown', name: '', categories: ['other'], confidence: 'low' };   // unknown store: the card's everyday rate applies
 function computeFeed(E, rules, st, today) {
   const accounts = st.accounts || []; const byId = Object.fromEntries(accounts.map(a => [a.id, a]));
   const ready = accounts.filter(a => a.product_id && a.product_confirmed && rules.cards[a.product_id]);
+  const roleOf = Object.fromEntries(ready.map(a => [a.id, cardRole(a, st)]));
+  const held = ready.filter(a => roleOf[a.id] === 'held'); const trying = ready.filter(a => roleOf[a.id] === 'trying');
+  const heldIds = held.map(a => a.id);
+  const valueOn = (cardId, m, amount) => { const r = E.recommend(rules, [cardId], m, amount, 'cash'); return r.top ? r.top.valueUsd : 0; };
   const catm = categoryMap(st);
   const purchases = []; let unconfirmed = 0, undetermined = 0, undeterminedCents = 0, inferred = 0;
   for (const t of st.purchases || []) {
     const acct = byId[t.account_id]; if (!acct || t.kind !== 'purchase' || t.pending || t.amount_cents <= 0) continue;
     if ((t.currency || 'USD') !== 'USD') continue;
     if (!(acct.product_id && acct.product_confirmed && rules.cards[acct.product_id])) { unconfirmed++; continue; }
+    if (roleOf[acct.id] !== 'held') continue;   // purchases on a card you marked as trying stay out of every total
     const user = catm[t.merchant_normalized]; let m = null, level = null;
     if (user && user.level === 'confirmed') { m = { id: 'cat:' + user.category, name: t.merchant_raw, categories: [user.category], confidence: 'high' }; level = 'you'; }
     else { const fm = E.findMerchant(rules.mcc, t.merchant_raw).match; if (fm) { m = fm; level = fm.confidence === 'high' ? 'table' : 'table-low'; }
@@ -126,37 +150,72 @@ function computeFeed(E, rules, st, today) {
     if (!m) { undetermined++; undeterminedCents += t.amount_cents; }
     purchases.push({ id: t.id, accountId: acct.id, cardId: acct.product_id, merchant: m && level === 'table' ? m.name : t.merchant_raw, matched: !!m, level, categoryConfirmed: !!(m && m.confidence === 'high'), total: t.amount_cents / 100, date: t.posted_on, m, norm: t.merchant_normalized });
   }
-  const ids = [...new Set(ready.map(a => a.product_id))]; const missed = []; let best = 0;
+  const ids = [...new Set(held.map(a => a.product_id))]; const missed = []; let best = 0;
   if (ids.length > 1) {
     for (const p of purchases) {
       if (!p.m || today - E.parse(p.date) > 120 * DAYMS) continue;
       const rec = E.recommend(rules, ids, p.m, p.total, 'cash'); const used = rec.ranking.find(r => r.cardId === p.cardId);
       if (rec.top && used && rec.top.cardId !== p.cardId && rec.top.valueUsd - used.valueUsd >= 0.25) {
         const high = Math.round((rec.top.valueUsd - used.valueUsd) * 100) / 100;
-        const topAcct = ready.find(a => a.product_id === rec.top.cardId);
+        const topAcct = held.find(a => a.product_id === rec.top.cardId);
         missed.push({ p, top: rec.top, used, topAcct, high, low: p.categoryConfirmed ? high : 0 });
       } else best++;
     }
     missed.sort((a, b) => b.high - a.high);
   }
-  // dashboard estimates (last 120 days): what each category earned on the card used vs the best card you hold
-  const cats = {}, byAcct = {}; let spent = 0, earned = 0;
+  // Estimates (last 120 days): what each purchase earned on the card used. An unknown store earns the card's everyday rate.
+  const cats = {}, byAcct = {}; let spent = 0, earned = 0, baseRated = 0;
   const missedById = Object.fromEntries(missed.map(x => [x.p.id, x]));
+  const basis = [];   // every purchase in the window with the merchant used for its estimate (bank + receipts); feeds the "what if"
   for (const p of purchases) {
     if (today - E.parse(p.date) > 120 * DAYMS) continue;
     const key = p.m ? (p.m.categories || ['other'])[0] : '_unrecognized';
     const c = cats[key] || (cats[key] = { key, spent: 0, earned: 0, best: 0, missedLow: 0, missedHigh: 0, n: 0, estimate: false });
     const a = byAcct[p.accountId] || (byAcct[p.accountId] = { id: p.accountId, spent: 0, earned: 0, n: 0 });
     c.spent += p.total; c.n++; a.spent += p.total; a.n++; spent += p.total;
-    if (!p.m || !ids.length) { c.estimate = true; continue; }
-    if (p.level !== 'table' && p.level !== 'you') c.estimate = true;
-    const rec = E.recommend(rules, ids, p.m, p.total, 'cash'); const used = rec.ranking.find(r => r.cardId === p.cardId);
-    const u = used ? used.valueUsd : 0; c.earned += u; a.earned += u; earned += u;
+    if (!p.m) { c.estimate = true; baseRated++; }
+    else if (p.level !== 'table' && p.level !== 'you') c.estimate = true;
+    const mEff = p.m || BASE_MERCHANT; const u = valueOn(p.cardId, mEff, p.total);
+    c.earned += u; a.earned += u; earned += u; basis.push({ m: mEff, total: p.total, value: u, key });
     const mx = missedById[p.id]; c.best += u + (mx ? mx.high : 0);
     if (mx) { c.missedLow += mx.low; c.missedHigh += mx.high; }
   }
+  // Receipts and Gmail orders that no bank transaction covers: counted once, on the card the receipt names (last four, or the one card you have).
+  let receiptsCounted = 0, receiptsEarned = 0, receiptsSpent = 0, receiptsUnassigned = 0;
+  const bankPurch = (st.purchases || []).filter(t => t.kind === 'purchase' && !t.pending && t.amount_cents > 0 && t.posted_on);
+  for (const d of st.documents || []) {
+    let rv = null; try { rv = receiptView(d, st, rules, E, 'cash'); } catch (e) { rv = null; }
+    if (!rv || !rv.ok || rv.foreign || rv.amount == null || rv.amount <= 0 || rv.facts.linkPurchaseId) continue;
+    if (/^(shipping|cancellation|refund|return)/i.test(rv.ex.document_type || '')) continue;
+    if (NOT_CARD_SPEND.test([d.subject, rv.ex.merchant, ...(rv.items || []).map(x => x.name)].join(' ')) || (BROKERS.test(rv.ex.merchant || '') && /order|executed|filled/i.test(d.subject || ''))) continue;   // trades and transfers aren't card purchases
+    const day = rv.ex.purchase_date || d.doc_date; if (!day || today - E.parse(day) > 120 * DAYMS || E.parse(day) > today + DAYMS) continue;
+    const dayT = E.parse(day); const mtok = mnorm(rv.ex.merchant).split(' ')[0] || '';
+    if (bankPurch.some(t => Math.abs(E.parse(t.posted_on) - dayT) <= 4 * DAYMS && (Math.abs(t.amount_cents / 100 - rv.amount) < 0.011 || (mtok.length >= 3 && mnorm(t.merchant_raw).includes(mtok) && t.amount_cents / 100 >= rv.amount * 0.95 && t.amount_cents / 100 <= rv.amount * 1.3)))) continue;   // already on a bank statement, just not linked
+    let acct = rv.paid.account && roleOf[rv.paid.account.id] === 'held' ? rv.paid.account : null;
+    if (!acct && held.length === 1 && !(rv.paid.account && rv.paid.firm)) acct = held[0];
+    if (!acct) { receiptsUnassigned++; continue; }
+    const key = (rv.merchant.categories || ['other'])[0]; const u = valueOn(acct.product_id, rv.merchant, rv.amount);
+    const c = cats[key] || (cats[key] = { key, spent: 0, earned: 0, best: 0, missedLow: 0, missedHigh: 0, n: 0, estimate: false });
+    const a = byAcct[acct.id] || (byAcct[acct.id] = { id: acct.id, spent: 0, earned: 0, n: 0 });
+    c.spent += rv.amount; c.n++; c.earned += u; c.best += u; c.estimate = true; a.spent += rv.amount; a.earned += u; a.n++;
+    spent += rv.amount; earned += u; receiptsCounted++; receiptsEarned += u; receiptsSpent += rv.amount; basis.push({ m: rv.merchant, total: rv.amount, value: u, key });
+  }
+  // What if: each card you're trying, on the same purchases. Never added to a total.
+  const heldProducts = new Set(ids); const seenTry = new Set(); const whatIf = [];
+  for (const a of trying) {
+    if (heldProducts.has(a.product_id) || seenTry.has(a.product_id)) continue; seenTry.add(a.product_id);
+    let v = 0, pts = 0; const wins = {}; const cd = rules.cards[a.product_id]; const cur = cd.currency || {};
+    for (const b of basis) { const r = E.recommend(rules, [a.product_id], b.m, b.total, 'cash'); const t = r.top ? r.top.valueUsd : 0; v += t; pts += r.top ? r.top.earned : 0; if (t - b.value > 0.005) wins[b.key] = (wins[b.key] || 0) + (t - b.value); }
+    const r2 = n => Math.round(n * 100) / 100;
+    const noCash = cur.unit !== 'cashback' && (cur.valueCents || {}).cash == null;   // points/miles with no guaranteed cash value: show the points, not $0
+    whatIf.push({ acct: a, cardId: a.product_id, value: r2(v), delta: r2(v - earned), noCash, points: Math.round(pts), unitLabel: cur.unitLabel || 'points', wins: Object.entries(wins).sort((x, y) => y[1] - x[1]).slice(0, 3).map(([k, d]) => ({ key: k, more: r2(d) })) });
+  }
+  whatIf.sort((x, y) => (x.noCash - y.noCash) || y.delta - x.delta);
+  const fees = held.map(a => { const cd = rules.cards[a.product_id]; const fee = (cd.annualFee || 0) + ((cd.membershipFee && cd.membershipFee.usd) || 0); return fee ? { acct: a, usd: fee, label: cd.membershipFee && cd.membershipFee.usd ? cd.membershipFee.label : 'annual fee' } : null; }).filter(Boolean);
   const categories = Object.values(cats).sort((a, b) => (a.key === '_unrecognized') - (b.key === '_unrecognized') || b.missedHigh - a.missedHigh || b.spent - a.spent);
-  return { ready, purchases, missed, best, categories, accountsSummary: Object.values(byAcct), windowSpent: spent, windowEarned: earned, coverage: { checked: purchases.length + unconfirmed, recognized: purchases.length - undetermined, undetermined, undeterminedCents, unconfirmed, inferred, comparable: ids.length > 1 },
+  return { ready, held, trying, heldIds, roleOf, purchases, missed, best, categories, accountsSummary: Object.values(byAcct), windowSpent: spent, windowEarned: earned, whatIf, fees,
+           receipts: { counted: receiptsCounted, earned: receiptsEarned, spent: receiptsSpent, unassigned: receiptsUnassigned }, baseRated, windowCount: basis.length,
+           coverage: { checked: purchases.length + unconfirmed, recognized: purchases.length - undetermined, undetermined, undeterminedCents, unconfirmed, inferred, comparable: ids.length > 1 },
            missedLow: missed.reduce((s, x) => s + x.low, 0), missedHigh: missed.reduce((s, x) => s + x.high, 0) };
 }
 /* UI-side invariant: the coverage line may never call everything optimal while anything is undetermined. */
@@ -309,9 +368,9 @@ function Pasture() {
   });
   return (
     <div className="relative w-full select-none" aria-hidden="true" style={{ marginTop: 8 }}>
-      <svg viewBox={`0 0 ${PW} ${PH}`} preserveAspectRatio="xMidYMax slice" className="block w-full" style={{ height: 'clamp(250px, 34vw, 460px)' }}>
+      <svg viewBox={`0 40 ${PW} ${PH - 40}`} preserveAspectRatio="xMidYMax slice" className="block w-full" style={{ height: 'clamp(240px, 30vw, 420px)' }}>
         <defs>
-          <linearGradient id={uid + 'fade'} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#fff" stopOpacity="0" /><stop offset="0.22" stopColor="#fff" stopOpacity="1" /></linearGradient>
+          <linearGradient id={uid + 'fade'} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#fff" stopOpacity="0" /><stop offset="0.12" stopColor="#fff" stopOpacity="0" /><stop offset="0.4" stopColor="#fff" stopOpacity="1" /></linearGradient>
           <mask id={uid + 'skym'} maskUnits="userSpaceOnUse" x="0" y="0" width={PW} height={PH}><rect x="0" y="0" width={PW} height={PH} fill={`url(#${uid}fade)`} /></mask>
           {art.layers.map(a => <clipPath key={a.li} id={uid + 'hill' + a.li}><path d={a.shape} /></clipPath>)}
           {art.layers.map(a => <clipPath key={'s' + a.li} id={uid + 'shade' + a.li}><path d={a.shade || 'M0 0Z'} /></clipPath>)}
@@ -627,7 +686,7 @@ function ReceiptEstimate({ d, st, rules, E, call, refresh, startOpen }) {
         {v.facts.linkAuto && v.facts.linkReason && <span title={v.facts.linkReason}> · {v.facts.linkReason.replace(/^Matched automatically: /, '')}</span>}
         {lp && <button className="ml-2 underline" disabled={busy} onClick={async () => { setBusy(true); setErr(null); try { await call('POST', `/v1/documents/${d.id}/unlink`, { purchase_id: lp.id }); await refresh(); } catch (e) { setErr(e.message); } setBusy(false); }}>Not this one</button>}</span>; }
     if (paid.how === 'you') return <span>Paid with <b>{name(a)}</b> · you picked</span>;
-    if (paid.how === 'last4') return <span>Paid with <b>{name(a)}</b> · the receipt shows a card ending ••{paid.last4}</span>;
+    if (paid.how === 'last4') return <span>Paid with <b>{name(a)}</b> · the receipt shows the same last four digits</span>;
     if (paid.how === 'network') return <span>Probably <b>{name(a)}</b> · the receipt says {ex.payment_network} and it’s your only {paid.network} card</span>;
     if (paid.how === 'only') return <span>Assuming <b>{name(a)}</b> · it’s the only card in your wallet</span>;
     if (paid.how === 'unsure') return <span>Card not known · you said you’re not sure</span>;
@@ -721,7 +780,7 @@ function Intake({ call, refresh, compact, st, rules, E }) {
     <Panel>
       <div className="flex items-center justify-between gap-3"><div className="flex items-center gap-1.5 text-[15px] font-semibold"><Ico name="receipt" size={16} />Add a receipt<InfoTip align="left">Drop a saved email (.eml), a receipt photo or PDF, or a PDF card statement, or paste the email text. A statement goes to a preview of its transactions before anything is saved. For receipts, Benny+ reads the store, total and items, then estimates the rewards on each card you carry. If the receipt prints the card’s last 4 digits, it picks that card; otherwise you tell it which one you used. Card numbers, emails and phone numbers are masked before reading.</InfoTip></div><Muted className="text-[12px]">email, photo or PDF</Muted></div>
       <div className="mt-4 flex flex-wrap items-center gap-2">
-        <label className="inline-flex cursor-pointer items-center rounded-full px-4 py-2 text-[13px] font-medium" style={{ background: P.accent, color: P.accentInk, opacity: busy ? 0.5 : 1 }}>{busy ? 'Reading…' : 'Choose email, photo or PDF'}<input type="file" disabled={busy} accept=".eml,message/rfc822,image/*,.txt,.html,.pdf,application/pdf" className="hidden" onChange={e => { onFile(e.target.files && e.target.files[0]); e.target.value = ''; }} /></label>
+        <label className="inline-flex cursor-pointer items-center rounded-full px-4 py-2 text-[13px] font-medium" style={{ background: P.accent, color: P.accentInk, opacity: busy ? 0.5 : 1 }}>{busy ? 'Reading…' : 'Choose email, photo or PDF'}<input type="file" disabled={busy} multiple accept=".eml,message/rfc822,image/*,.txt,.html,.pdf,application/pdf" className="hidden" onChange={async e => { const fs = [...(e.target.files || [])]; e.target.value = ''; for (const f of fs) await onFile(f); }} /></label>
         <Btn onClick={() => setShowPaste(v => !v)} disabled={busy}>Paste email text</Btn>
       </div>
       {showPaste && <div className="mt-3"><textarea value={paste} onChange={e => setPaste(e.target.value)} rows={6} placeholder="Paste the full order confirmation here" className="w-full rounded-xl p-3 text-[13px] outline-none" style={{ background: P.surface, color: P.ink, border: `1px solid ${P.lineStrong}` }} />
@@ -735,17 +794,116 @@ function Intake({ call, refresh, compact, st, rules, E }) {
     </Panel>
   );
 }
-function AccountConfirm({ account, cards, call, onDone }) {
-  const P = usePal(); const [pid, setPid] = React.useState(''); const [busy, setBusy] = React.useState(false); const [err, setErr] = React.useState(null);
+function AccountConfirm({ account, cards, call, onDone, accounts }) {
+  const P = usePal(); const [pid, setPid] = React.useState(''); const [busy, setBusy] = React.useState(false); const [err, setErr] = React.useState(null); const [other, setOther] = React.useState(false);
   const list = Object.values(cards).sort((a, b) => a.name.localeCompare(b.name));
-  const save = async () => { setBusy(true); setErr(null); try { await call('POST', '/v1/accounts/' + account.id, { product_id: pid }); onDone && onDone(); } catch (e) { setErr(e.message); } setBusy(false); };
+  const picked = (accounts || []).filter(x => x.id !== account.id && x.source === 'manual' && !!x.sample === !!account.sample && x.product_confirmed && cards[x.product_id]);
+  const save = async p => { setBusy(true); setErr(null); try { await call('POST', '/v1/accounts/' + account.id, { product_id: p }); onDone && onDone(); } catch (e) { setErr(e.message); } setBusy(false); };
+  const bank = bankName(account);
   return (
     <div className="rounded-xl p-4" style={{ border: `1px solid ${P.line}`, background: P.surface }}>
-      <div className="text-[14px] font-medium">Which card is {account.nickname || 'this account'}{account.mask ? ' ••' + account.mask : ''}?</div>
-      <Muted className="mt-0.5 text-[12px]">Your bank calls it “{account.official_name || account.nickname || 'credit card'}”. Benny+ won’t guess; pick the card so the right benefits apply.</Muted>
-      <div className="mt-3 flex flex-wrap items-center gap-2"><Select value={pid} onChange={setPid}><option value="">Choose a card…</option>{list.map(c => <option key={c.cardId} value={c.cardId}>{c.name}</option>)}</Select><Btn small kind="primary" disabled={!pid || busy} onClick={save}>Confirm</Btn></div>
+      <div className="text-[14px] font-medium">Which card is “{bank}”{account.mask ? ' ••' + account.mask : ''}?</div>
+      {picked.length > 0 && !other ? <>
+        <Muted className="mt-0.5 text-[12px]">Is it one of the cards you added? It becomes that card, now with your bank’s transactions, so it isn’t listed twice.</Muted>
+        <div className="mt-3 flex flex-wrap items-center gap-2">{picked.map(x => <Btn key={x.id} small kind="primary" disabled={busy} onClick={() => save(x.product_id)}>It’s my {cards[x.product_id].short || cards[x.product_id].name}</Btn>)}
+          <Btn small kind="quiet" onClick={() => setOther(true)}>A different card</Btn></div>
+      </> : <>
+        <Muted className="mt-0.5 text-[12px]">Pick the card so the right benefits apply.{picked.length ? ' ' : ''}{picked.length > 0 && <button className="underline" onClick={() => setOther(false)}>Back to the cards you added</button>}</Muted>
+        <div className="mt-3 flex flex-wrap items-center gap-2"><Select value={pid} onChange={setPid}><option value="">Choose a card…</option>{list.map(x => <option key={x.cardId} value={x.cardId}>{x.name}</option>)}</Select><Btn small kind="primary" disabled={!pid || busy} onClick={() => save(pid)}>Confirm</Btn></div>
+      </>}
       {err && <div className="mt-2 text-[12px]" style={{ color: P.danger }}>{err}</div>}
     </div>
+  );
+}
+/* ---------- Gmail ----------
+   Two ways to reach the viewer's own Gmail, both read-only:
+   - workspace owner: the Gmail API through a symbolic proxy holding the owner's own Google token (owner-only; no Mana sandbox needed);
+     messages are read and slimmed in this browser and sent to the Benny+ API like an uploaded email.
+   - everyone else: the importer runs in the viewer's own Mana sandbox with the viewer's own Google connection (needs an approved Mana account).
+   Either way each email goes through the same intake, auto-match and estimates; non-purchase emails are deleted after reading. */
+const GM_NODE = 'benny-gmail';
+const GM_QUERY = d => `newer_than:${d}d -category:promotions -category:social -in:spam -in:trash (subject:(receipt OR order OR invoice OR "order confirmation" OR "your purchase" OR "payment received" OR "thanks for your order" OR "thank you for your order" OR "you paid" OR "purchase confirmation" OR "e-receipt" OR "your trip" OR "booking confirmation") OR from:(auto-confirm@amazon.com OR receipts OR receipt OR orders OR order-update))`;
+const GM_MAX = 25;   // newest receipt-looking emails per run; reruns only read new ones (duplicates and known non-receipts return instantly)
+const b64uText = s => { const bin = atob(String(s || '').replace(/-/g, '+').replace(/_/g, '/')); return new TextDecoder().decode(Uint8Array.from(bin, ch => ch.charCodeAt(0))); };
+function gmBody(p) {
+  if (!p) return null; let plain = null;
+  if (p.mimeType === 'text/html' && p.body && p.body.data) return { t: 'text/html', d: p.body.data };
+  if (p.mimeType === 'text/plain' && p.body && p.body.data) plain = { t: 'text/plain', d: p.body.data };
+  for (const q of p.parts || []) { const r = gmBody(q); if (r && r.t === 'text/html') return r; if (r && !plain) plain = r; }
+  return plain;
+}
+function gmEml(msg) {
+  const h = Object.fromEntries(((msg.payload && msg.payload.headers) || []).map(x => [String(x.name).toLowerCase(), x.value]));
+  const b = gmBody(msg.payload); const text = b ? b64uText(b.d) : (msg.snippet || '');
+  return `Subject: ${String(h.subject || '').replace(/\n/g, ' ')}\nFrom: ${h.from || ''}\nDate: ${h.date || ''}\nMIME-Version: 1.0\nContent-Type: ${b ? b.t : 'text/plain'}; charset=utf-8\n\n${text.slice(0, 350000)}`;
+}
+function GmailImport({ refresh, demo, call }) {
+  const P = usePal(); const [days, setDays] = React.useState(90); const [busy, setBusy] = React.useState(false); const [err, setErr] = React.useState(null);
+  const [remote, setRemote] = React.useState(null); const [local, setLocal] = React.useState(null); const [linked, setLinked] = React.useState(null); const [noSandbox, setNoSandbox] = React.useState(false);
+  const lastN = React.useRef(-1); const isOwner = userId === ownerId;
+  const gm = useSymbolicProxyUrl({ name: 'gmail', url: 'https://gmail.googleapis.com/gmail/v1/users/me/messages', method: 'GET', allowSubpaths: true, headers: { authorization: 'Bearer ${secrets.GOOGLE_OAUTH_TOKEN}' } });
+  React.useEffect(() => { let on = true; Promise.resolve(checkOAuthStatus(userId)).then(v => on && setLinked(!!v)).catch(() => on && setLinked(false)); return () => { on = false; }; }, []);
+  const st = isOwner ? local : remote;
+  React.useEffect(() => { if (!st) return; const n = (st.imported || 0) + (st.state === 'done' ? 1000 : 0); if (lastN.current >= 0 && n !== lastN.current) refresh(); lastN.current = n; }, [st && st.imported, st && st.state]);
+  const runHere = async () => {   // owner: Gmail through the owner-only proxy, processed in this browser
+    if (!gm.url) throw new Error(gm.error ? 'Google isn’t ready: ' + gm.error.message : 'Google connection is still loading; try again in a moment.');
+    let s = { state: 'running', found: 0, processed: 0, imported: 0, matched: 0, duplicates: 0, skipped: 0, failed: 0, days }; const push = x => { s = { ...s, ...x, updatedAt: Date.now() }; setLocal(s); };
+    push({});
+    const ids = []; let page = null;
+    while (ids.length < GM_MAX) {
+      const q = new URLSearchParams({ q: GM_QUERY(days), maxResults: String(GM_MAX - ids.length) }); if (page) q.set('pageToken', page);
+      const r = await fetch(gm.url + '?' + q);
+      if (r.status === 401 || r.status === 403) { push({ state: 'error', error: 'no_gmail_access', message: 'Your Google connection doesn’t allow reading Gmail (' + r.status + '). Reconnect Google and allow Gmail access.' }); return; }
+      if (!r.ok) throw new Error('Gmail search failed (' + r.status + ')');
+      const d = await r.json(); for (const m of d.messages || []) ids.push(m.id); page = d.nextPageToken; if (!page) break;
+    }
+    push({ found: ids.length });
+    let k = 0;
+    const worker = async () => { while (k < ids.length) { const id = ids[k++]; let res = 'failed';
+      try {
+        const r = await fetch(gm.url + '/' + id + '?format=full');
+        if (r.ok) { const x = await call('POST', '/v1/documents', { kind: 'eml', content: gmEml(await r.json()), file_name: 'Gmail', discard_non_purchase: true });
+          if (x.duplicate) res = 'duplicate';
+          else if (x.skipped || !(x.extracted || {}).is_purchase_document) res = 'skipped';
+          else res = (x.link || {}).confirmed ? 'matched' : 'imported'; }
+      } catch (e) {}
+      push({ processed: s.processed + 1, imported: s.imported + (res === 'imported' || res === 'matched' ? 1 : 0), matched: s.matched + (res === 'matched' ? 1 : 0),
+        duplicates: s.duplicates + (res === 'duplicate' ? 1 : 0), skipped: s.skipped + (res === 'skipped' ? 1 : 0), failed: s.failed + (res === 'failed' ? 1 : 0) }); } };
+    await Promise.all(Array.from({ length: 8 }, worker));
+    push({ state: 'done' });
+  };
+  const runHelper = async () => {   // everyone else: a small Gmail page in their OWN workspace (they own it, so their Google connection works there; no sandbox)
+    const [kit, api] = await Promise.all([FS.get(FS.ref(FS.db, relPathAddress('gmail-kit', 'helper'))), FS.get(FS.ref(FS.db, relPathAddress('service', 'url')))]);
+    if (!kit.val() || !api.val()) throw new Error('Gmail import isn’t set up in this Benny+.');
+    const now = Date.now(); const ret = window.location.href;
+    await FS.update(FS.ref(FS.db, `${userId}/file-system/benny-gmail-helper`), { metadata: { type: 'link', hidden: true, displayName: 'Benny+ Gmail import', createdAt: now, updatedAt: now },
+      'app/code': kit.val(), 'app/metadata': { type: 'user_div', displayName: 'Benny+ Gmail import', createdAt: now, updatedAt: now },
+      'app/config': { api: api.val(), days, returnUrl: ret, requestedAt: now, metadata: { type: 'entry', createdAt: now, updatedAt: now } } });
+    window.location.href = `/home/${userId}/benny-gmail-helper`;
+  };
+  const run = async () => { setBusy(true); setErr(null); setNoSandbox(false); try { await (isOwner ? runHere() : runHelper()); } catch (e) { setErr(String(e.message || e).slice(0, 220)); if (isOwner) setLocal(null); } setBusy(false); };
+  const connect = () => { setErr(null); connectGoogleOAuth(userId, { onSuccess: () => { setLinked(true); setTimeout(run, isOwner ? 1500 : 0); }, onError: e => setErr('Google didn’t connect' + (e && e.message ? ': ' + e.message : '.')) }); };
+  const running = busy || (st && st.state === 'running' && Date.now() - (st.updatedAt || 0) < 10 * 60 * 1000);
+  const pct = st && st.state === 'running' && st.found ? Math.round(100 * (st.processed || 0) / st.found) : 0;
+  return (
+    <Panel>
+      <div className="flex items-baseline justify-between gap-3"><div className="text-[15px] font-semibold">Import receipts from Gmail</div><Muted className="text-[12px]">read-only</Muted></div>
+      <Muted className="mt-1 text-[13px] leading-5">Benny+ searches your Gmail for receipts and order confirmations, reads each one like an uploaded email, and matches it to the card transaction. Only the purchase facts are saved; other emails are skipped and nothing is sent or changed. It uses your own Google connection.</Muted>
+      {demo ? <Muted className="mt-3 text-[12.5px]">Exit the demo to import your own email.</Muted> : <>
+        <div className="mt-3 flex flex-wrap items-center gap-2"><span className="text-[12px]" style={{ color: P.muted }}>Look back</span>
+          {[30, 90, 180].map(d => <button key={d} onClick={() => setDays(d)} disabled={running} className="rounded-full px-3 py-1 text-[12px]" style={days === d ? { background: P.accent, color: P.accentInk, border: `1px solid ${P.accent}` } : { color: P.ink, border: `1px solid ${P.lineStrong}` }}>{d} days</button>)}</div>
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          {linked === false && isOwner ? <Btn kind="primary" onClick={connect} disabled={busy}>Connect Gmail</Btn> : <Btn kind="primary" onClick={run} disabled={running || (isOwner && linked === null) || !call}>{busy && !(st && st.found) ? 'Starting…' : running ? 'Importing…' : st && st.state === 'done' ? 'Import again' : 'Import from Gmail'}</Btn>}
+          {linked && <Muted className="text-[12px]">Google connected</Muted>}{!isOwner && <Muted className="text-[12px]">Opens a small import page in your own Mana space, then brings you back.</Muted>}
+        </div>
+        {st && st.state === 'running' && <div className="mt-4"><div className="h-1.5 overflow-hidden rounded-full" style={{ background: P.line }}><div className="h-full rounded-full transition-all" style={{ width: Math.max(4, pct) + '%', background: P.accent }} /></div>
+          <Muted className="mt-1.5 text-[12.5px]">{st.found ? `Reading ${st.processed || 0} of ${st.found} emails · ${st.imported || 0} receipt${st.imported === 1 ? '' : 's'} so far${st.matched ? `, ${st.matched} matched to a transaction` : ''}` : 'Searching your Gmail…'}</Muted></div>}
+        {st && st.state === 'done' && <div className="mt-3 text-[13px]" style={{ color: P.accent }}>{st.found ? `Checked ${st.found} email${st.found === 1 ? '' : 's'} from the last ${st.days} days: ${st.imported} receipt${st.imported === 1 ? '' : 's'} added${st.matched ? ` (${st.matched} matched to a card transaction)` : ''}${st.duplicates ? `, ${st.duplicates} already here` : ''}${st.skipped ? `, ${st.skipped} weren’t purchases` : ''}${st.failed ? `, ${st.failed} couldn’t be read` : ''}.` : `No receipt emails found in the last ${st.days} days.`}</div>}
+        {st && st.state === 'error' && st.error !== 'not_connected' && <div className="mt-3 text-[13px]" style={{ color: P.danger }}>{st.message || 'Gmail import stopped.'}{st.error === 'no_gmail_access' && <> <button className="underline" onClick={connect}>Reconnect Google</button></>}</div>}
+        {noSandbox && <div className="mt-3 rounded-xl p-3 text-[13px] leading-5" style={{ background: P.infoSoft, color: P.ink }}>Your Mana account can’t run the Gmail import yet: it runs in your own Mana space, which needs an approved Mana account. For now, save receipt emails as .eml files (in Gmail: ⋮ → Download message) and add them below. You can select several at once, and they go through the same reading and matching.</div>}
+      </>}
+      {err && <div className="mt-3 text-[13px]" style={{ color: P.danger }}>{err}</div>}
+    </Panel>
   );
 }
 /* ---------- Wallet shared helpers ---------- */
@@ -859,6 +1017,19 @@ function PlaidPanel({ call, refresh, demo }) {
   );
 }
 
+function ConnectCardRow({ card, done, call, refresh, demo }) {
+  const P = usePal(); const { connect, busy, msg } = usePlaidConnect(call, refresh, demo); const art = card.art || {};
+  return (
+    <div className="flex flex-wrap items-center gap-3 rounded-2xl p-4" style={{ background: P.surface, border: `1px solid ${P.line}` }}>
+      <span className="h-[30px] w-[46px] shrink-0 rounded-[5px]" style={{ background: `linear-gradient(135deg, ${art.from || P.sunk}, ${art.to || P.sunk})`, boxShadow: `inset 0 0 0 1px ${P.line}` }} />
+      <div className="min-w-0 flex-1"><div className="text-[14.5px] font-semibold" style={{ color: P.ink }}>{card.short || card.name}</div>
+        <Muted className="text-[12.5px]">{done ? 'Connected: transactions come from your bank' : `Choose ${card.issuer} in Plaid${demo ? ' (demo: any test bank, user_good / pass_good)' : ''}`}</Muted>
+        {msg && <div className="mt-1 text-[12px]" style={{ color: msg.ok ? P.accent : P.danger }}>{msg.text}</div>}</div>
+      {done ? <span className="inline-flex items-center gap-1 text-[13px] font-medium" style={{ color: P.accent }}><Ico name="check" size={14} />Connected</span>
+        : <Btn small kind="primary" disabled={busy || !call} onClick={connect}>{busy ? 'Connecting…' : `Connect ${card.issuer}`}</Btn>}
+    </div>
+  );
+}
 function GmailNote() {
   return <Panel><div className="flex items-baseline justify-between gap-3"><div className="text-[15px] font-semibold">Connect Gmail</div><Muted className="text-[12px]">read-only, later</Muted></div>
     <Muted className="mt-1 text-[13px] leading-5">Automatic inbox import comes after the demo. For now, forward or save an order email as .eml, or paste it into “Add a receipt or order email”. It goes through the same reading and matching.</Muted></Panel>;
@@ -869,6 +1040,8 @@ function Setup({ step, go, cards, st, call, refresh, loadSample, finish, inSampl
   const P = usePal(); const accounts = st.accounts;
   const [sel, setSel] = React.useState(() => new Set());   // nothing pre-selected (Eden, Oct 25)
   const [importing, setImporting] = React.useState(false); const [note, setNote] = React.useState(null); const [err, setErr] = React.useState(null);
+  const [modes, setModes] = React.useState({});   // per picked card: 'compare' (benefits only) or 'plaid' (connect its bank)
+  const [connectFor, setConnectFor] = React.useState(null);   // after Continue: the picked cards to connect through Plaid
   const cardList = Object.values(cards).sort((a, b) => a.name.localeCompare(b.name));
   const steps = ['welcome', 'cards', 'data']; const idx = Math.max(0, steps.indexOf(step));
   const saveCards = async () => {
@@ -881,17 +1054,19 @@ function Setup({ step, go, cards, st, call, refresh, loadSample, finish, inSampl
       const kept = [];
       if (sel.size) for (const a of accounts) if (a.source === 'manual' && !a.sample && !sel.has(a.product_id)) { if (st.purchases.some(p => p.account_id === a.id)) kept.push(a); else await call('DELETE', '/v1/accounts/' + a.id); }
       setNote(kept.length ? `Kept ${kept.map(a => acctLabel(a, cards)).join(', ')}: ${kept.length === 1 ? 'it has' : 'they have'} purchases. Remove ${kept.length === 1 ? 'it' : 'them'} in Wallet.` : null);
-      await refresh(); go('setup', 'data');
+      await refresh();
+      const viaBank = [...sel].filter(pid => modes[pid] === 'plaid');
+      if (viaBank.length) setConnectFor(viaBank); else go('setup', 'data');
     } catch (e) { setErr(e.message); }
   };
   return (
-    <div className="mx-auto w-full max-w-3xl px-5 pt-8 pb-3">
+    <div className="relative z-10 mx-auto w-full max-w-3xl px-5 pt-8 pb-3">
       <div className="mb-8 flex items-center gap-2">{idx > 0 && <button onClick={() => go('setup', 'welcome')} className="mr-2 shrink-0 text-[12px] font-medium" style={{ color: P.muted }}>← Back</button>}{steps.map((s, i) => <div key={s} className="h-1 flex-1 rounded-full" style={{ background: i <= idx ? P.accent : P.line }} />)}</div>
       {idx === 0 && (
         <div className="relative">
           <div className="pointer-events-none absolute -right-10 -top-10 hidden sm:block"><Guilloche size={300} color={P.seal} opacity={0.35} glimmer /></div>
           <Label><span className="inline-flex items-center gap-1">Benny<span style={{ color: P.accent }}><BennyRosette size={17} /></span></span></Label>
-          <h1 className="relative mt-3 max-w-xl text-[38px] font-semibold leading-tight tracking-tight" style={{ fontFamily: SERIF }}>Your cards already owe you something.</h1>
+          <h1 className="relative mt-3 max-w-xl text-[38px] font-semibold italic leading-tight tracking-tight" style={{ fontFamily: SERIF }}>Your cards already owe you something.</h1>
                     <div className="relative mt-8 grid gap-5 sm:grid-cols-3">
             {[['I', 'Pick your cards', `${Object.keys((rules && rules.cards) || {}).length || 21} cards, every rule quoted from its source. No card numbers.`], ['II', 'Add a receipt or connect your bank', 'See what each purchase earns on every card you carry.'], ['III', 'Act on evidence', 'Recovered counts only what is confirmed. Everything else says why.']].map(([n, t, d]) => (
               <div key={n} style={{ borderTop: `1px solid ${P.lineStrong}`, paddingTop: 12 }}><div className="text-[13px] font-semibold" style={{ color: P.accent, fontFamily: SERIF }}>{n}</div><div className="mt-1 text-[14px] font-semibold">{t}</div><Muted className="mt-1 text-[13px] leading-5">{d}</Muted></div>))}
@@ -903,25 +1078,50 @@ function Setup({ step, go, cards, st, call, refresh, loadSample, finish, inSampl
           {inSample && <Muted className="mt-3 text-[12px] leading-5">Getting started removes the sample cards and purchases first, so your own wallet starts clean.</Muted>}
         </div>
       )}
-      {idx === 1 && (
+      {idx === 1 && !connectFor && (
         <div>
           <h2 className="text-[26px] font-semibold tracking-tight" style={{ fontFamily: SERIF }}>Which cards do you carry?</h2>
-          <Muted className="mt-1 text-[14px]">This chooses the benefit rules. Accounts you connect through your bank are matched to a card separately.</Muted>
+          <Muted className="mt-1 text-[14px]">For each card, choose whether to just compare its benefits or connect it through your bank for real transactions. You can mix both.</Muted>
           <div className="mt-5"><CardPicker cards={cardList} selected={sel} onToggle={id => setSel(s => { const n = new Set(s); n.has(id) ? n.delete(id) : n.add(id); return n; })} /></div>
           {err && <div className="mt-3 text-[13px]" style={{ color: P.danger }}>{err}</div>}
-          <div className="sticky bottom-0 z-10 -mx-5 mt-6 flex items-center justify-between gap-3 px-5 py-3" style={{ background: P.bg, borderTop: `1px solid ${P.line}`, boxShadow: `0 -18px 18px -6px ${P.bg}` }}>
-            <Muted className="text-[13px]">{sel.size} selected</Muted>
-            <div className="flex gap-2"><Btn onClick={() => go('setup', 'welcome')}>Back</Btn><Btn kind="primary" onClick={saveCards}>{sel.size ? 'Continue' : 'Skip, I’ll connect my bank'}</Btn></div>
+          <div className="sticky bottom-0 z-10 -mx-5 mt-6 px-5 py-3" style={{ background: P.bg, borderTop: `1px solid ${P.line}`, boxShadow: `0 -18px 18px -6px ${P.bg}` }}>
+            {sel.size > 0 && <div className="mb-3 max-h-[40vh] space-y-2 overflow-y-auto">
+              {[...sel].map(pid => { const cd = cards[pid]; if (!cd) return null; const m = modes[pid] || 'compare'; const art = cd.art || {}; return (
+                <div key={pid} className="flex flex-wrap items-center gap-3">
+                  <span className="h-[22px] w-[34px] shrink-0 rounded-[4px]" style={{ background: `linear-gradient(135deg, ${art.from || P.sunk}, ${art.to || P.sunk})`, boxShadow: `inset 0 0 0 1px ${P.line}` }} />
+                  <span className="min-w-0 flex-1 truncate text-[13.5px] font-medium" style={{ color: P.ink }}>{cd.short || cd.name}</span>
+                  <span className="inline-flex rounded-full p-0.5" role="radiogroup" aria-label={`How to add ${cd.short || cd.name}`} style={{ border: `1px solid ${P.lineStrong}` }}>
+                    {[['compare', 'Just compare'], ['plaid', 'Connect with Plaid']].map(([k, l]) => <button key={k} role="radio" aria-checked={m === k} onClick={() => setModes(x => ({ ...x, [pid]: k }))} className="rounded-full px-3 py-1 text-[12px]" style={m === k ? { background: P.accent, color: P.accentInk } : { color: P.muted }}>{l}</button>)}
+                  </span>
+                </div>); })}
+            </div>}
+            <div className="flex items-center justify-between gap-3">
+              <Muted className="text-[13px]">{sel.size ? `${sel.size} selected${[...sel].some(p => modes[p] === 'plaid') ? ` · ${[...sel].filter(p => modes[p] === 'plaid').length} to connect` : ''}` : 'Pick the cards you carry'}</Muted>
+              <div className="flex gap-2"><Btn onClick={() => go('setup', 'welcome')}>Back</Btn><Btn kind="primary" onClick={saveCards}>{sel.size ? 'Continue' : 'Skip, I’ll connect my bank'}</Btn></div>
+            </div>
           </div>
+        </div>
+      )}
+      {idx === 1 && connectFor && (
+        <div>
+          <h2 className="text-[26px] font-semibold tracking-tight" style={{ fontFamily: SERIF }}>Connect your bank for these cards</h2>
+          <Muted className="mt-1 text-[14px]">In Plaid’s window, choose the bank that issued the card and sign in. Benny+ joins the bank account to the card you picked, so it stays one card.</Muted>
+          <div className="mt-5 space-y-3">
+            {connectFor.map(pid => { const cd = cards[pid]; const done = accounts.some(a => a.source === 'plaid' && a.product_id === pid && a.product_confirmed); return cd && <ConnectCardRow key={pid} card={cd} done={done} call={call} refresh={refresh} demo={(st.accounts || []).some(a => a.sample)} />; })}
+            {accounts.filter(a => !a.product_confirmed).map(a => <AccountConfirm key={a.id} account={a} cards={cards} call={call} onDone={refresh} accounts={accounts} />)}
+          </div>
+          <div className="mt-6 flex justify-between gap-2"><Btn onClick={() => setConnectFor(null)}>Back</Btn>
+            <div className="flex gap-2"><Btn kind="quiet" onClick={() => { setConnectFor(null); go('setup', 'data'); }}>Skip for now</Btn><Btn kind="primary" onClick={() => { setConnectFor(null); go('setup', 'data'); }}>Continue</Btn></div></div>
         </div>
       )}
       {idx === 2 && (
         <div>
           <h2 className="text-[26px] font-semibold tracking-tight" style={{ fontFamily: SERIF }}>Bring in your purchases</h2>
-          <Muted className="mt-1 text-[14px]">Your bank tells Benny+ which card paid. Receipts and emails add what you bought.</Muted>
+          <Muted className="mt-1 text-[14px]">Your bank tells Benny+ which card paid. Receipts and order emails add what you bought, and Benny+ matches them to the card transaction.</Muted>
           <div className="mt-5 space-y-4">
-            <PlaidPanel call={call} refresh={refresh} demo={(st.accounts || []).some(a => a.sample)} />
-            {accounts.filter(a => !a.product_confirmed).map(a => <AccountConfirm key={a.id} account={a} cards={cards} call={call} onDone={refresh} />)}
+            {!accounts.some(a => a.source === 'plaid') && <PlaidPanel call={call} refresh={refresh} demo={(st.accounts || []).some(a => a.sample)} />}
+            {accounts.filter(a => !a.product_confirmed).map(a => <AccountConfirm key={a.id} account={a} cards={cards} call={call} onDone={refresh} accounts={accounts} />)}
+            <GmailImport refresh={refresh} call={call} demo={(st.accounts || []).some(a => a.sample)} />
             <Intake call={call} refresh={refresh} st={st} rules={rules} E={E} />
             {importing ? <Importer accounts={accounts.filter(a => a.product_confirmed)} cards={cards} defaultAccountId={accounts.length === 1 ? accounts[0].id : ''} call={call} onCancel={() => setImporting(false)} onDone={async r => { setImporting(false); setNote(`Added ${r.added} transactions${r.duplicates ? `, ${r.duplicates} were already here` : ''}.`); await refresh(); }} />
               : <Panel><div className="text-[15px] font-semibold">Or upload a statement</div><Muted className="mt-1 text-[13px]">Backup for cards your bank connection doesn’t cover: a CSV download or the PDF statement from your issuer’s website.</Muted><div className="mt-4"><Btn onClick={() => setImporting(true)} disabled={!accounts.some(a => a.product_confirmed)}>Choose a CSV or PDF</Btn></div></Panel>}
@@ -1123,17 +1323,17 @@ function Savings({ feed, st, cards, go, reviewCount, call, refresh }) {
         <div className="mt-4"><SpendPie rows={feed.categories} go={go} /></div>
       </section>}
 
-      <div className="relative mt-10">   {/* no box; sits below the donut, introducing Biggest misses (Eden, Oct 25) */}
-        <div className="relative flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5 text-[14px] font-medium" style={{ color: P.muted }}>Missed rewards
-            <InfoTip align="left">{feed.coverage.comparable ? <>What a better card in your wallet would have earned on each purchase, last 120 days.{est > sure ? ` ${fmt(sure)} of it is certain; the rest depends on how merchants code purchases.` : ''} {line}</> : 'Add a second card to compare.'}</InfoTip></div>
-        </div>
-        {/* Estimate chip sits on the number's row, a step lower than the label (Eden, Oct 25) */}
+      <div className="relative mt-10">   {/* sits below the donut. Top number = rewards earned on cards you have (Oct 25); missed rewards and trying cards follow */}
+        <div className="flex flex-wrap items-center gap-2"><div className="text-[14px] font-medium" style={{ color: P.muted }}>Rewards earned</div>{feed.held.length > 0 && <EstimateFlag feed={feed} cards={cards} />}</div>
         <div className="relative mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <div className="text-[56px] font-semibold leading-[1.05] tabular-nums tracking-tight" style={{ fontFamily: SERIF, color: P.ink }}>{feed.coverage.comparable ? fmt(est) : '—'}</div>
-          <span className="whitespace-nowrap text-[13px]" style={{ color: P.muted }}>last 120 days · {fmt(feed.windowEarned)} earned</span>
+          <div className="text-[56px] font-semibold leading-[1.05] tabular-nums tracking-tight" style={{ fontFamily: SERIF, color: P.ink }}>{feed.held.length ? fmt(feed.windowEarned) : '—'}</div>
+          <span className="whitespace-nowrap text-[13px]" style={{ color: P.muted }}>last 120 days · {fmt(feed.windowSpent)} spent</span>
         </div>
+        {!feed.held.length && <Muted className="mt-1 text-[13px]">Connect a card with Plaid to see what your purchases earned. <button className="font-medium underline" onClick={() => go('wallet')}>Go to Wallet</button></Muted>}
+        {feed.coverage.comparable && <div className="mt-3 flex flex-wrap items-center gap-1.5 text-[14px]" style={{ color: P.muted }}>Missed with your other card: <b className="tabular-nums" style={{ color: P.ink }}>{fmt(est)}</b>
+          <InfoTip align="left">What a better card you have would have earned on each purchase, last 120 days.{est > sure ? ` ${fmt(sure)} of it is certain; the rest depends on how merchants code purchases.` : ''} {line}</InfoTip></div>}
       </div>
+      <WhatIfList feed={feed} cards={cards} call={call} refresh={refresh} go={go} className="mt-8" />
 
       {feed.missed.length > 0 && <section className="mt-10"><Label>Biggest misses</Label><div className="mt-2">
         {feed.missed.slice(0, 5).map(x => (
@@ -1157,6 +1357,46 @@ function Savings({ feed, st, cards, go, reviewCount, call, refresh }) {
 
 const dark = P => P.bg === PAL.dark.bg;
 
+
+/* Estimate flag + "what if" for cards you're trying (Oct 25). Totals use only cards you have; trying cards are never added. */
+function EstimateFlag({ feed, cards, align = 'left' }) {
+  const P = usePal(); const r = feed.receipts || {}; const n = feed.windowCount || 0; const one = feed.held.length === 1 ? feed.held[0] : null;
+  const rates = feed.held.slice(0, 2).map(a => { const cd = cards[a.product_id]; if (!cd) return null; const base = (cd.earn || []).filter(e => !e.conditional && (e.categories || []).includes('*')).sort((x, y) => y.rate - x.rate)[0];
+    const cash = (cd.currency || {}).unit === 'cashback'; return base ? `${cd.short || cd.name} ${base.rate}${cash ? '%' : 'x'} on everyday purchases` : null; }).filter(Boolean);
+  return (
+    <span className="inline-flex items-center gap-1">
+      <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[12px] font-semibold" style={{ color: P.danger, background: P.danger + '1A' }}><Ico name="alert" size={12} color={P.danger} />Estimate</span>
+      <InfoTip align={align}>Based on your imported data: {n} purchase{n === 1 ? '' : 's'} from the last 120 days{r.counted ? ` (${r.counted} of them from receipts or Gmail with no bank transaction)` : ''}, using each card’s published rates{rates.length ? ` (${rates.join('; ')})` : ''}. Points count at their guaranteed cash value. {feed.coverage.inferred ? `${feed.coverage.inferred} store categor${feed.coverage.inferred === 1 ? 'y was' : 'ies were'} guessed. ` : ''}{feed.baseRated ? `${feed.baseRated} unknown store${feed.baseRated === 1 ? '' : 's'} earn the everyday rate. ` : ''}{r.counted && one ? `Receipts that don’t name a card are assumed on ${acctLabel(one, cards)}. ` : ''}Cards you’re only trying aren’t counted. Your card statement is the final word.</InfoTip>
+    </span>
+  );
+}
+function WhatIfList({ feed, cards, call, refresh, go, className }) {
+  const P = usePal(); const [busy, setBusy] = React.useState(null);
+  if (!feed.whatIf || !feed.whatIf.length) return null;
+  const has = feed.windowCount > 0;
+  const keep = async id => { if (!call || busy) return; setBusy(id); try { await call('POST', '/v1/accounts/' + id, { role: 'held' }); await refresh(); } catch (e) { console.warn(e); } setBusy(null); };
+  return (
+    <section className={className || ''}>
+      <div className="flex items-center gap-1.5"><Label>Cards you’re trying</Label><InfoTip align="left">Not counted in your totals. Each one is scored on the same purchases with its own published rates. If you already have one, connect it with Plaid for its real transactions, or tap I have it.</InfoTip></div>
+      <div className="mt-2">
+        {feed.whatIf.map((w, i) => { const cd = cards[w.cardId]; const up = w.delta > 0.005; return (
+          <div key={w.acct.id} className="flex flex-wrap items-center gap-3 py-3" style={{ borderTop: i ? `1px solid ${P.line}` : 'none' }}>
+            <CardArt card={cd} width={44} />
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-2"><span className="text-[14px] font-semibold" style={{ color: P.ink }}>{cd ? (cd.short || cd.name) : w.cardId}</span><span className="rounded-full px-2 py-0.5 text-[10.5px] font-semibold uppercase" style={{ letterSpacing: '0.08em', color: P.info, border: `1px dashed ${P.info}` }}>Trying</span></div>
+              <div className="mt-0.5 text-[12.5px]" style={{ color: P.muted }}>{!has ? 'Connect a card you have to compare it on your real purchases.'
+                : w.noCash ? `≈ ${w.points.toLocaleString()} ${w.unitLabel} on the same purchases · no fixed cash value`
+                : <>If you’d used it: ≈ <b style={{ color: P.ink }}>{fmt(w.value)}</b> · <span style={{ color: up ? P.accent : P.muted }}>{up ? `+${fmt(w.delta)} vs your cards` : `${fmt(-w.delta)} less than your cards`}</span>{w.wins.length ? ` · wins on ${w.wins.map(x => catName(x.key)).join(', ')}` : ''}</>}</div>
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              <Btn small onClick={() => keep(w.acct.id)} disabled={busy === w.acct.id}>{busy === w.acct.id ? 'Saving…' : 'I have it'}</Btn>
+              {go && <Btn small kind="primary" onClick={() => go('wallet')}>Connect with Plaid</Btn>}
+            </div>
+          </div>); })}
+      </div>
+    </section>
+  );
+}
 
 /* ---------- Home: what your cards owe you (benefits not used yet) ---------- */
 function OwedRow({ left, title, sub, right, actions, why }) {
@@ -1412,13 +1652,13 @@ function Home({ feed, st, cards, go, call, refresh, reviewCount }) {
           await refresh(); } catch (e) { console.warn(e); }
     finally { setPend(p => { const n = { ...p }; delete n[sid]; return n; }); setBusy(null); }
   };
-  const credits = (st.credit_status || []).map(c => ({ ...c, d: jparse(c.data) }));
+  const credits = (st.credit_status || []).map(c => ({ ...c, d: jparse(c.data) })).filter(c => !feed.roleOf || feed.roleOf[c.account_id] !== 'trying');   // credits on cards you're only trying aren't yours to use
   const open = credits.filter(c => c.state === 'unknown' && c.d.days_left >= 0).sort((a, b) => a.d.days_left - b.d.days_left);
   const used = credits.filter(c => ['issuer_credit_observed', 'qualifying_purchase_seen', 'user_confirmed'].includes(c.state));
   const owed = open.reduce((s, c) => s + c.d.amount_cents, 0) / 100;
   const recovered = credits.filter(c => c.state === 'issuer_credit_observed').reduce((s, c) => s + c.d.observed_cents, 0) / 100;
   const perks = [];
-  for (const a of feed.ready) {
+  for (const a of feed.held) {
     // Perks to turn on = everything on the card whose terms require enrollment (credits AND perks, deduped by id); the switch lives only here.
     const card = cards[a.product_id]; const seen = new Set();
     for (const p of (card.credits || []).filter(x => x.requiresActivation).map(x => ({ ...x, isCredit: true })).concat((card.perks || []).filter(x => x.requiresActivation))) {
@@ -1430,6 +1670,8 @@ function Home({ feed, st, cards, go, call, refresh, reviewCount }) {
   const label = { issuer_credit_observed: 'Credit posted ✓', user_confirmed: 'You confirmed', qualifying_purchase_seen: 'Looks like you used it' };
   const count = open.length + perks.filter(x => !x.on).length + claimReady.length;
   const conditional = open.filter(c => needsPurchase(creditRule(cards, c))).reduce((s, c) => s + c.d.amount_cents, 0) / 100;
+  const usedValue = used.reduce((s, c) => s + (c.state === 'issuer_credit_observed' && c.d.observed_cents ? c.d.observed_cents : (c.d.amount_cents || 0)), 0) / 100;
+  const totalBenefits = feed.windowEarned + usedValue;
   return (
     <div className="mx-auto w-full max-w-3xl px-5 py-8">
       <div role="tablist" aria-label="Benefits views" className="mb-6 flex w-fit max-w-full gap-1 rounded-full p-1" style={{ background: P.sunk }}>
@@ -1440,13 +1682,22 @@ function Home({ feed, st, cards, go, call, refresh, reviewCount }) {
       <div hidden={benefitsPane === 'all'} className="relative overflow-hidden rounded-3xl p-6" style={{ background: P.surface, border: `1px solid ${P.line}` }}>
         <div className="pointer-events-none absolute -right-16 -top-16"><Guilloche size={320} color={P.seal} opacity={0.26} glimmer /></div>
         <div className="relative flex flex-wrap items-end justify-between gap-6">
-          <div>
-            <div className="text-[14px] font-medium" style={{ color: P.muted }}>Credits to use</div>
-            <div className="text-[60px] font-semibold leading-[1.02] tabular-nums tracking-tight" style={{ fontFamily: SERIF, color: P.ink }}>{fmt(owed)}</div>
-            <div className="mt-1 text-[13px]" style={{ color: P.muted }}>{count} to use · {feed.ready.length} card{feed.ready.length === 1 ? '' : 's'}</div>
-            {conditional > 0 && <div className="mt-1 flex items-center gap-1 text-[12.5px]" style={{ color: P.muted }}>{fmt(conditional)} needs a membership<InfoTip align="left">Only if you use them. {fmt(conditional)} of this pays back only if you already buy things like a membership or subscription.</InfoTip></div>}
+          <div className="min-w-0">
+            {/* Total benefits (Oct 25): rewards your purchases earned on cards you have + credits already used. Credits still to use sit below. */}
+            <div className="flex flex-wrap items-center gap-2"><div className="text-[14px] font-medium" style={{ color: P.muted }}>{feed.held.length ? 'Your cards earned you' : 'What your cards earn you'}</div>{feed.held.length > 0 && <EstimateFlag feed={feed} cards={cards} />}</div>
+            {feed.held.length ? <>
+              <div className="text-[60px] font-semibold leading-[1.02] tabular-nums tracking-tight" style={{ fontFamily: SERIF, color: P.ink }}>{fmt(totalBenefits)}</div>
+              <div className="mt-1 text-[13px]" style={{ color: P.muted }}>last 120 days · {fmt(feed.windowEarned)} in rewards{usedValue > 0 ? ` + ${fmt(usedValue)} in credits used` : ''} · {feed.held.length} card{feed.held.length === 1 ? '' : 's'} you have</div>
+              {owed > 0 && <div className="mt-1 text-[13px]" style={{ color: P.ink }}>+ {fmt(owed)} in credits still to use <span style={{ color: P.muted }}>· {count} to use</span></div>}
+              {conditional > 0 && <div className="mt-1 flex items-center gap-1 text-[12.5px]" style={{ color: P.muted }}>{fmt(conditional)} of that needs a membership<InfoTip align="left">Only if you use them. {fmt(conditional)} of this pays back only if you already buy things like a membership or subscription.</InfoTip></div>}
+              {feed.fees.length > 0 && <div className="mt-1 text-[12.5px]" style={{ color: P.muted }}>{feed.fees.map(f => `${fmt0(f.usd)}/yr ${f.label}`).join(' · ')} · not subtracted</div>}
+            </> : <>
+              <div className="mt-1 text-[24px] font-semibold leading-tight" style={{ fontFamily: SERIF, color: P.ink }}>Connect a card to see what it earns you</div>
+              <div className="mt-1 max-w-md text-[13px] leading-5" style={{ color: P.muted }}>Cards you only picked count as trying. Connect your bank with Plaid and Benny+ adds up the rewards and credits on your real purchases.</div>
+              <div className="mt-3"><Btn kind="primary" onClick={() => go('wallet')}>Connect with Plaid</Btn></div>
+            </>}
           </div>
-          <div className="flex items-end">{feed.ready.slice(0, 5).map((a, i) => <div key={a.id} style={{ marginLeft: i ? -22 : 0, transform: `rotate(${(i - 1) * 4}deg)` }}><CardArt card={cards[a.product_id]} width={84} /></div>)}</div>
+          <div className="flex items-end">{feed.held.concat(feed.trying).slice(0, 5).map((a, i) => <div key={a.id} style={{ marginLeft: i ? -22 : 0, transform: `rotate(${(i - 1) * 4}deg)`, opacity: feed.roleOf[a.id] === 'trying' ? 0.45 : 1 }} title={feed.roleOf[a.id] === 'trying' ? 'Trying: not counted' : undefined}><CardArt card={cards[a.product_id]} width={84} /></div>)}</div>
         </div>
         <div className="relative mt-5 flex flex-wrap gap-x-6 gap-y-1 text-[13px]" style={{ color: P.muted }}>
           {recovered > 0 && <Chip icon="check">{fmt(recovered)} recovered</Chip>}
@@ -1454,10 +1705,11 @@ function Home({ feed, st, cards, go, call, refresh, reviewCount }) {
           {reviewCount > 0 && <Chip icon="alert" tone="danger" onClick={() => go('review')}>{reviewCount} to confirm</Chip>}
         </div>
       </div>
+      <WhatIfList feed={feed} cards={cards} call={call} refresh={refresh} go={go} className="mt-6" />
 
       <div id={benefitsId + '-panel-yours'} role="tabpanel" aria-labelledby={benefitsId + '-tab-yours'} hidden={benefitsPane !== 'yours'}>
       <section className="mt-9"><div className="flex items-baseline justify-between gap-3"><span className="flex items-center gap-1.5"><Ico name="gift" size={15} color={P.muted} /><Label>Unused benefits</Label><InfoTip align="left">Benny+ reads each card’s transactions. A credit leaves this list once a qualifying purchase or the issuer’s statement credit shows up.</InfoTip></span>{open.length > 0 && <span className="text-[13px] font-semibold tabular-nums" style={{ color: P.accent }}>{fmt(owed)}</span>}</div><div className="mt-2">
-        {open.length === 0 && <Muted className="py-3 text-[13px]">{feed.ready.length ? 'Every credit on your cards has been used this period.' : 'Add your cards in Wallet to see their credits.'}</Muted>}
+        {open.length === 0 && <Muted className="py-3 text-[13px]">{feed.held.length ? 'Every credit on your cards has been used this period.' : 'Connect a card with Plaid to track its credits. Cards you only picked count as trying.'}</Muted>}
         {open.map(c => { const a = byAcct[c.account_id]; const key = `${c.account_id}:${c.credit_id}:${c.period_start}`; const on = turnedOn.has(c.account_id + ':' + c.credit_id); return (
           <OwedRow key={key} left={<CardArt card={cards[c.d.product_id]} width={44} />} title={`${fmt(c.d.amount_cents / 100)} ${c.d.title}`}
             sub={`${acctLabel(a, cards)} · ${(creditRule(cards, c) || {}).period === 'quadrennial' ? 'once every 4 years' : 'resets ' + fmtDate(c.period_end)}${a && !a.sample && !st.purchases.some(p => p.account_id === a.id) ? ' · connect transactions to track' : ''}${c.d.requires_activation ? (on ? ' · turned on' : ' · enroll first (Perks to turn on)') : ''}`} right={<DaysBadge days={c.d.days_left} />}
@@ -1579,7 +1831,7 @@ function Review({ st, feed, cards, rules, E, call, refresh }) {
             <div key={i.key} className="flex flex-wrap items-center gap-3 py-3" style={{ borderTop: `1px solid ${P.line}` }}>
               <div className="min-w-0 flex-1 text-[13px] leading-5">
                 {k === 'paidwith' && <div className="-mt-3"><ReceiptEstimate d={i.d} st={st} rules={rules} E={E} call={call} refresh={refresh} startOpen /></div>}
-                {k === 'account' && <AccountConfirm account={i.a} cards={cards} call={call} onDone={refresh} />}
+                {k === 'account' && <AccountConfirm account={i.a} cards={cards} call={call} onDone={refresh} accounts={typeof st !== 'undefined' && st ? st.accounts : null} />}
                 {k === 'link' && <><div className="font-medium">{docName(i.doc)} → {i.p ? `${i.p.merchant_raw} · ${fmt(i.p.amount_cents / 100)} · ${fmtDate(i.p.posted_on)}` : 'purchase'}</div><Muted className="text-[12px]">Proposed by the linker: {i.e.reason}. The fixed check didn’t confirm it (amount, merchant, date or card digits differ).</Muted></>}
                 {k === 'unlinked' && <><div className="font-medium">{docName(i.d)} · {i.ex.merchant || 'merchant?'} · {i.ex.total_cents != null ? fmt(i.ex.total_cents / 100) : 'total?'} · {fmtDate(i.ex.purchase_date)}</div>
                   {i.cands.length ? <div className="mt-1 flex flex-wrap gap-2">{i.cands.slice(0, 4).map(p => <Btn key={p.id} small onClick={() => act(i.key, () => call('POST', `/v1/documents/${i.d.id}/link`, { purchase_id: p.id }), () => 'Matched.')}>{p.merchant_raw} · {fmt(p.amount_cents / 100)} · {fmtDate(p.posted_on)}</Btn>)}</div> : <Muted className="text-[12px]">No purchase within 5 days and $1 yet. It will match when the transaction arrives.</Muted>}</>}
@@ -1598,7 +1850,7 @@ function Review({ st, feed, cards, rules, E, call, refresh }) {
         </div></section>); })}
       <CreditsDetail st={st} cards={cards} call={call} refresh={refresh} />
       <ProtectionDetail st={st} cards={cards} call={call} skip={new Set(items.filter(i => i.kind === 'missing' && i.p).map(i => i.p.id))} />
-      <div id="bp-intake" className="mt-10" style={{ scrollMarginTop: 16 }}><Intake call={call} refresh={refresh} st={st} rules={rules} E={E} /></div>
+      <div id="bp-intake" className="mt-10 space-y-4" style={{ scrollMarginTop: 16 }}><GmailImport refresh={refresh} call={call} demo={(st.accounts || []).some(a => a.sample)} /><Intake call={call} refresh={refresh} st={st} rules={rules} E={E} /></div>
     </div>
   );
 }
@@ -1607,7 +1859,7 @@ function Review({ st, feed, cards, rules, E, call, refresh }) {
 function SavingsBrief({ feed, st, cards, filter }) {
   const P = usePal(); const [open, setOpen] = React.useState(false);
   const missed = feed.missed.filter(x => filter === 'all' || x.p.accountId === filter);
-  const comparable = feed.ready && new Set(feed.ready.map(a => a.product_id)).size > 1;
+  const comparable = feed.held && new Set(feed.held.map(a => a.product_id)).size > 1;
   if (!comparable) return <div className="mt-5 rounded-2xl px-5 py-4 text-[13px]" style={{ background: P.surface, border: `1px solid ${P.line}`, color: P.muted }}>Add a second card in Wallet to see how much a different card would have earned on these purchases.</div>;
   const total = missed.reduce((s, x) => s + x.high, 0); const certain = missed.reduce((s, x) => s + x.low, 0);
   const groups = {}; for (const x of missed) { const k = x.topAcct ? x.topAcct.id : x.top.cardId; const cat = x.p.m ? (x.p.m.categories || ['other'])[0] : 'other';
@@ -1689,7 +1941,7 @@ function BigCard({ card, acct, w, roles, front }) {
   const P = usePal(); const h = Math.round(w / 1.586); const a = (card && card.art) || {}; const pad = Math.round(w * 0.055);
   if (!card) return (
     <div className="flex flex-col items-center justify-center px-6 text-center" style={{ width: w, height: h, borderRadius: Math.round(w * 0.05), border: `1.5px dashed ${P.lineStrong}`, background: P.surface, color: P.muted }}>
-      <div className="text-[15px] font-semibold" style={{ color: P.ink }}>{acct.official_name || acct.nickname || 'Bank account'}{acct.mask ? ' ••' + acct.mask : ''}</div>
+      <div className="text-[15px] font-semibold" style={{ color: P.ink }}>{bankName(acct)}{acct.mask ? ' ••' + acct.mask : ''}</div>
       <div className="mt-1 text-[12px]">Which card is this? Tap to confirm.</div>
     </div>
   );
@@ -1762,16 +2014,17 @@ function cardSummary(card) {
   const top = earn.filter(e => e !== base).sort((a, b) => b.rate - a.rate).slice(0, 3).map(e => `${r(e.rate)} ${e.label.toLowerCase()}`);
   return top.concat(base ? [`${r(base.rate)} everything else`] : []).join(' · ') || 'No earn rates found';
 }
-function PolicyRow({ a, card, roles, onOpen, first }) {
+function PolicyRow({ a, card, roles, onOpen, first, trying }) {
   const P = usePal(); const art = (card && card.art) || {};
   const nCred = card ? (card.credits || []).filter(c => c.amountUsd != null).length : 0; const nProt = card ? (card.protections || []).length : 0;
   return (
     <button onClick={onOpen} className="flex w-full items-center gap-4 py-4 text-left" style={{ borderTop: first ? 'none' : `1px solid ${P.line}` }}>
       <div className="shrink-0" style={{ width: 52, height: 33, borderRadius: 6, background: card ? `linear-gradient(135deg, ${art.from}, ${art.to})` : P.sunk, boxShadow: `inset 0 0 0 1px ${P.line}` }} />
       <div className="min-w-0 flex-1">
-        <div className="flex flex-wrap items-center gap-2"><span className="text-[15px] font-semibold" style={{ color: P.ink }}>{card ? (card.short || card.name) : (a.official_name || a.nickname || 'Bank account')}{a.mask ? ' ••' + a.mask : ''}</span>
+        <div className="flex flex-wrap items-center gap-2"><span className="text-[15px] font-semibold" style={{ color: P.ink }}>{card ? (card.short || card.name) : bankName(a)}{a.mask ? ' ••' + a.mask : ''}</span>
           {card ? <span style={{ color: P.accent }} title={card.verified ? 'Checked by our team against the issuer’s benefit guide' : 'Every rule quotes the issuer’s own page word for word'}><Ico name="check" size={15} /></span>
-            : <span className="rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase" style={{ letterSpacing: '0.1em', color: P.info, border: `1px dashed ${P.info}` }}>Confirm card</span>}</div>
+            : <span className="rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase" style={{ letterSpacing: '0.1em', color: P.info, border: `1px dashed ${P.info}` }}>Confirm card</span>}
+          {card && trying && <span className="rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase" style={{ letterSpacing: '0.08em', color: P.info, border: `1px dashed ${P.info}` }} title="Not counted in your totals. Connect it with Plaid or open it and tap I have it.">Trying</span>}</div>
         {card && <div className="mt-0.5 truncate text-[13px]" style={{ color: P.ink, opacity: 0.85 }}>{cardSummary(card)}</div>}
         {card ? <div className="mt-1 flex min-w-0 items-center gap-3 text-[12px]" style={{ color: P.muted }}>
           <span className="flex min-w-0 items-center gap-1 truncate"><Ico name="star" size={13} />{roles && roles.length ? roles.map(r => catName(r.cat)).slice(0, 2).join(', ') + (roles.length > 2 ? ` +${roles.length - 2}` : '') : nCred ? 'Credits & perks' : 'Backup'}</span>
@@ -1805,7 +2058,7 @@ function CardBenefits({ a, card, st, cards, call, refresh, onImport, onRemoveAsk
   const cs = (st.credit_status || []).filter(x => x.account_id === a.id).map(x => ({ ...x, d: jparse(x.data) }));
   const rec = cs.filter(x => x.state === 'issuer_credit_observed').reduce((s, x) => s + x.d.observed_cents, 0) / 100;
   const owed = cs.filter(x => x.state === 'unknown' && x.d.days_left >= 0).reduce((s, x) => s + x.d.amount_cents, 0) / 100;
-  if (!card) return <div className="mt-5"><AccountConfirm account={a} cards={cards} call={call} onDone={refresh} /></div>;
+  if (!card) return <div className="mt-5"><AccountConfirm account={a} cards={cards} call={call} onDone={refresh} accounts={typeof st !== 'undefined' && st ? st.accounts : null} /></div>;
   const cash = card.currency && card.currency.unit === 'cashback'; const unit = (card.currency && card.currency.unitLabel) || 'points';
   const stateLabel = { issuer_credit_observed: ['Credit posted ✓', P.accent], user_confirmed: ['You confirmed', P.likely], qualifying_purchase_seen: ['Looks used', P.likely], unknown: ['Not used yet', P.info], expired: ['Period ended', P.faint] };
   const creditIds = new Set((card.credits || []).map(c => c.id));
@@ -1891,8 +2144,22 @@ function TxRow({ t, fp, findings, linked, missed, first, cards, st, call, refres
     </div>
   );
 }
+function RemoveCard({ a, cards, n, call, refresh, onBack }) {
+  const P = usePal(); const [ask, setAsk] = React.useState(false); const [busy, setBusy] = React.useState(false); const [err, setErr] = React.useState(null);
+  const bank = a.source === 'plaid';
+  const go = async () => { setBusy(true); setErr(null); try { await call('DELETE', '/v1/accounts/' + a.id); await refresh(); onBack && onBack(); } catch (e) { setErr(e.message); setBusy(false); } };
+  if (!ask) return <div className="mt-3 flex justify-end"><button className="text-[12.5px] font-medium" style={{ color: P.muted }} onClick={() => setAsk(true)}>Remove from wallet</button></div>;
+  return (
+    <div className="mt-3 rounded-2xl p-4 text-[13px]" style={{ background: P.sunk }}>
+      <div className="font-medium" style={{ color: P.ink }}>Remove {acctLabel(a, cards)}?</div>
+      <Muted className="mt-1 text-[12.5px] leading-5">{n ? `Its ${n} transaction${n === 1 ? '' : 's'} and their findings are removed too. ` : ''}{bank ? 'Benny+ also stops importing it from your bank (if it’s the last card on that connection, the connection is closed). ' : ''}Receipts you added stay.</Muted>
+      <div className="mt-3 flex gap-2"><Btn small kind="primary" disabled={busy} onClick={go}>{busy ? 'Removing…' : 'Remove'}</Btn><Btn small onClick={() => setAsk(false)}>Keep</Btn></div>
+      {err && <div className="mt-2" style={{ color: P.danger }}>{err}</div>}
+    </div>
+  );
+}
 function CardDetail({ a, st, cards, rules, E, feed, roles, onBack, onOpenPolicy, call, refresh }) {
-  const P = usePal(); const ref = React.useRef(null); const [w, setW] = React.useState(420); const [importing, setImporting] = React.useState(false);
+  const P = usePal(); const ref = React.useRef(null); const [w, setW] = React.useState(420); const [importing, setImporting] = React.useState(false); const [roleBusy, setRoleBusy] = React.useState(false);
   React.useEffect(() => { const el = ref.current; if (!el) return; const ro = new ResizeObserver(es => setW(es[0].contentRect.width)); ro.observe(el); return () => ro.disconnect(); }, []);
   const card = a.product_confirmed ? cards[a.product_id] : null;
   const tx = st.purchases.filter(t => t.account_id === a.id).sort((x, y) => (y.posted_on || '').localeCompare(x.posted_on || ''));
@@ -1904,8 +2171,18 @@ function CardDetail({ a, st, cards, rules, E, feed, roles, onBack, onOpenPolicy,
   const inner = Math.max(0, w - 40); const wide = inner >= 860; const gap = 40; const col = wide ? (inner - gap) / 2 : inner;
   const cardW = Math.min(col, 460); const art = (card && card.art) || {};
   const cardBlock = <div className="flex justify-center" style={{ filter: card ? `drop-shadow(0 18px 34px ${art.from || '#000'}66)` : 'none' }}><BigCard card={card} acct={a} w={cardW} roles={card ? (roles || {})[a.product_id] : []} front /></div>;
+  const removeBox = !a.sample && <RemoveCard a={a} cards={cards} n={tx.length} call={call} refresh={refresh} onBack={onBack} />;
+  const role = feed && feed.roleOf ? feed.roleOf[a.id] : null;
+  const setRole = async r => { if (!call || roleBusy) return; setRoleBusy(true); try { await call('POST', '/v1/accounts/' + a.id, { role: r }); await refresh(); } catch (e) { console.warn(e); } setRoleBusy(false); };
+  const roleBox = card && !a.sample && !a.virtual && role && <div className="mt-5 flex flex-wrap items-center gap-2 text-[13px]" style={{ color: P.muted }}>
+    <span>This card:</span>
+    {[['held', 'I have it'], ['trying', 'Just trying it']].map(([k, t]) => <button key={k} type="button" disabled={roleBusy || (a.source === 'plaid' && k === 'trying')} onClick={() => role !== k && setRole(k)}
+      className="rounded-full px-3 py-1 text-[12.5px] font-medium" style={role === k ? { background: P.accent, color: P.accentInk, border: `1px solid ${P.accent}` } : { color: P.ink, border: `1px solid ${P.lineStrong}`, opacity: a.source === 'plaid' && k === 'trying' ? 0.4 : 1 }}>{t}</button>)}
+    {role === 'trying' && <span className="basis-full text-[12.5px] leading-5">Not counted in your totals or credits. If you have it, connect it with Plaid in Wallet for its real transactions.</span>}
+  </div>;
   const policy = <>
-    {!card && <div className="mt-5"><AccountConfirm account={a} cards={cards} call={call} onDone={refresh} /></div>}
+    {roleBox}
+    {!card && <div className="mt-5"><AccountConfirm account={a} cards={cards} call={call} onDone={refresh} accounts={typeof st !== 'undefined' && st ? st.accounts : null} /></div>}
     {card && <div className="mt-6 overflow-hidden rounded-[28px]" style={{ background: P.surface, border: `1px solid ${P.line}` }}>
       <button onClick={() => onOpenPolicy(a.id)} className="flex w-full items-center gap-4 px-5 py-4 text-left">
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full" style={{ background: P.accent, color: P.accentInk }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M7 3h7l5 5v13H7z" /><path d="M14 3v5h5M10 13h6M10 17h6" /></svg></span>
@@ -1919,6 +2196,7 @@ function CardDetail({ a, st, cards, rules, E, feed, roles, onBack, onOpenPolicy,
       </div>
     </div>}
     {importing && <div className="mt-4"><Importer accounts={[a]} cards={cards} defaultAccountId={a.id} call={call} onCancel={() => setImporting(false)} onDone={async () => { setImporting(false); await refresh(); }} /></div>}
+    {removeBox}
   </>;
   const earns = card ? <EarnList card={card} /> : null;
   const txs = <>
@@ -1956,7 +2234,7 @@ function PolicySheet({ a, st, cards, rules, E, call, refresh, onClose, roles }) 
           <button onClick={onClose} aria-label="Close" className="flex h-8 w-8 items-center justify-center rounded-full" style={{ border: `1px solid ${P.lineStrong}`, color: P.muted }}><svg width="12" height="12" viewBox="0 0 12 12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><path d="M2 2l8 8M10 2l-8 8" /></svg></button></div>
         <div className="mt-4 flex justify-center"><BigCard card={card} acct={a} w={340} roles={card ? roles[a.product_id] : []} front /></div>
         {card ? <CardBenefits a={a} card={card} st={st} cards={cards} call={call} refresh={refresh} roles={roles[a.product_id]} onImport={() => setImporting(v => !v)} onRemoveAsk={() => setConfirmRm(true)} />
-          : <div className="mt-5"><AccountConfirm account={a} cards={cards} call={call} onDone={refresh} /></div>}
+          : <div className="mt-5"><AccountConfirm account={a} cards={cards} call={call} onDone={refresh} accounts={typeof st !== 'undefined' && st ? st.accounts : null} /></div>}
         {confirmRm && <div className="mt-3 flex flex-wrap items-center gap-2 rounded-xl p-3 text-[13px]" style={{ background: P.sunk }}><span className="flex-1">Remove {acctLabel(a, cards)}{n ? ` and its ${n} transactions` : ''}?</span>
           <Btn small disabled={busy} onClick={async () => { setBusy(true); try { await call('DELETE', '/v1/accounts/' + a.id); await refresh(); onClose(); } finally { setBusy(false); } }}>Remove</Btn><Btn small onClick={() => setConfirmRm(false)}>Keep</Btn></div>}
         {importing && <div className="mt-4"><Importer accounts={[a]} cards={cards} defaultAccountId={a.id} call={call} onCancel={() => setImporting(false)} onDone={async () => { setImporting(false); await refresh(); }} /></div>}
@@ -1967,7 +2245,7 @@ function PolicySheet({ a, st, cards, rules, E, call, refresh, onClose, roles }) 
 function Wallet({ st, cards, rules, E, feed, call, refresh, onOpenPolicy, cardId, onOpenCard, onCloseCard, roles }) {
   const P = usePal();
   const [adding, setAdding] = React.useState(false); const [note, setNote] = React.useState(null); const [busy, setBusy] = React.useState(null);
-  const [front, setFront] = React.useState(null); const [sheet, setSheet] = React.useState(false);
+  const [front, setFront] = React.useState(null); const [sheet, setSheet] = React.useState(false); const [choose, setChoose] = React.useState(null);
   const demo = (st.accounts || []).some(a => a.sample);
   const plaid = usePlaidConnect(call, refresh, demo);
   const testMode = demo || st.plaid_env === 'sandbox';
@@ -1977,7 +2255,7 @@ function Wallet({ st, cards, rules, E, feed, call, refresh, onOpenPolicy, cardId
   const detail = cardId && st.accounts.find(a => a.id === cardId);
   if (detail) return <CardDetail a={detail} st={st} cards={cards} rules={rules} E={E} feed={feed} roles={roles} onBack={onCloseCard} onOpenPolicy={onOpenPolicy} call={call} refresh={refresh} />;
   const toggleCard = pid => { const name = (cards[pid] && cards[pid].name) || 'Card';
-    if (!held.has(pid)) return act('add', () => call('POST', '/v1/accounts', { product_id: pid }), () => `Added ${name}. Tap it again to remove it.`);
+    if (!held.has(pid)) { setNote(null); setChoose(pid); return; }   // ask: just compare, or connect it through the bank
     const mine = st.accounts.filter(x => x.product_id === pid && x.product_confirmed && !x.sample);
     if (mine.some(x => x.source === 'plaid')) { setNote(`You already have ${name} through your bank connection, so it can’t be added again.`); return; }
     const a = mine.find(x => x.source === 'manual'); if (!a) return;
@@ -1996,7 +2274,17 @@ function Wallet({ st, cards, rules, E, feed, call, refresh, onOpenPolicy, cardId
         </div>
       </div>
       {plaid.msg && <div className="mt-3 text-[13px]" role="status" style={{ color: plaid.msg.ok ? P.accent : P.danger }}>{plaid.msg.text}</div>}
-      {adding && <div className="mt-6"><Panel><CardPicker cards={Object.values(cards)} selected={held} onToggle={toggleCard} /></Panel></div>}
+      {adding && choose && cards[choose] && (() => { const cd = cards[choose]; const nm = cd.short || cd.name; return (
+        <div className="mt-6 rounded-2xl p-4" role="dialog" aria-label={`Add ${nm}`} style={{ background: P.accentSoft, border: `1px solid ${P.accent}` }}>
+          <div className="text-[15px] font-semibold" style={{ color: P.ink }}>Add {nm}</div>
+          <Muted className="mt-0.5 text-[12.5px] leading-5">Just compare shows its benefits and what each purchase would earn. Connect with Plaid also brings in its real transactions from {cd.issuer}; the bank account joins this card, so it isn’t listed twice.</Muted>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Btn small disabled={!!busy} onClick={() => { setChoose(null); act('add', () => call('POST', '/v1/accounts', { product_id: choose }), () => `Added ${nm} to compare. Tap it again to remove it.`); }}>Just compare</Btn>
+            <Btn small kind="primary" disabled={!!busy || plaid.busy} onClick={async () => { const pid = choose; setChoose(null); await act('add', () => call('POST', '/v1/accounts', { product_id: pid }), () => `Added ${nm}. In Plaid’s window choose ${cd.issuer}.`); plaid.connect(); }}>Connect with Plaid</Btn>
+            <Btn small kind="quiet" onClick={() => setChoose(null)}>Cancel</Btn>
+          </div>
+        </div>); })()}
+      {adding && <div className="mt-6"><Panel><CardPicker cards={Object.values(cards)} selected={choose ? new Set([...held, choose]) : held} onToggle={toggleCard} /></Panel></div>}
       {note && <div className="mt-4 text-[13px]" role="status" style={{ color: note.startsWith('Error') ? P.danger : P.accent }}>{note}</div>}
       <div className="mt-8 flex flex-wrap items-start gap-10">
         <div className="min-w-[260px] flex-[1_1_340px]">
@@ -2008,7 +2296,7 @@ function Wallet({ st, cards, rules, E, feed, call, refresh, onOpenPolicy, cardId
           <div className="rounded-3xl px-6 pb-2 pt-5" style={{ background: P.surface, border: `1px solid ${P.line}` }}>
             <div className="flex items-center gap-1.5 text-[20px] font-semibold tracking-tight" style={{ fontFamily: SERIF }}>Card policies<InfoTip align="left">Pulled from each issuer’s own pages and checked word for word. The rules every result uses.</InfoTip></div>
             <div className="mt-2">{st.accounts.length === 0 && <Muted className="py-5 text-[13px]">Add a card to see its policy.</Muted>}
-              {st.accounts.map((a, i) => <PolicyRow key={a.id} a={a} card={a.product_confirmed ? cards[a.product_id] : null} roles={roles[a.product_id]} first={i === 0} onOpen={() => onOpenPolicy(a.id)} />)}</div>
+              {st.accounts.map((a, i) => <PolicyRow key={a.id} a={a} card={a.product_confirmed ? cards[a.product_id] : null} roles={roles[a.product_id]} first={i === 0} trying={!!(feed && feed.roleOf && feed.roleOf[a.id] === 'trying')} onOpen={() => onOpenPolicy(a.id)} />)}</div>
           </div>
           <button type="button" onClick={() => setSheet(true)} className="flex w-full items-center gap-3 rounded-2xl px-5 py-3.5 text-left" style={{ background: P.surface, border: `1px solid ${P.line}` }} aria-label="Where your purchases come from. Open other connections.">
             <div className="min-w-0 flex-1"><div className="text-[13px] font-semibold" style={{ color: P.ink }}>Where your purchases come from</div>
@@ -2801,7 +3089,7 @@ function UserDiv() {
         {(svc === null || bundle === undefined) && <div className="px-5 py-16 text-center text-[13px]" style={{ color: P.muted }}>Connecting…</div>}
         {svc && check && check.ok && !st && !apiErr && view !== 'blueprint' && <div className="px-5 py-16 text-center text-[13px]" style={{ color: P.muted }}>Loading your wallet…</div>}
         {view === 'blueprint' && <Blueprint st={st} check={check} />}
-        {ready && view === 'setup' && <div className="flex min-h-full flex-col"><Setup key={inSample ? "demo" : "own"} step={route.step} go={go} cards={rules.cards} st={st} call={call} refresh={refresh} loadSample={loadSample} finish={finish} inSample={inSample} useOwn={useOwn} leaving={leaving} rules={rules} E={E} />{!['cards', 'data'].includes(route.step) && <div className="mt-auto"><Pasture /></div>}</div>}
+        {ready && view === 'setup' && <div className="flex min-h-full flex-col"><Setup key={inSample ? "demo" : "own"} step={route.step} go={go} cards={rules.cards} st={st} call={call} refresh={refresh} loadSample={loadSample} finish={finish} inSample={inSample} useOwn={useOwn} leaving={leaving} rules={rules} E={E} />{!['cards', 'data'].includes(route.step) && <div className="relative z-0" style={{ marginTop: 'clamp(-96px, -6vw, -44px)' }}><Pasture /></div>}</div>}
         {ready && feed && feed.error && view !== 'blueprint' && view !== 'setup' && <div className="mx-auto max-w-3xl px-5 py-6 text-[13px]" style={{ color: P.danger }}>The engine couldn’t evaluate your records: {feed.error}</div>}
         {ready && feed && !feed.error && view === 'home' && <Home feed={feed} st={st} cards={rules.cards} go={go} call={call} refresh={refresh} reviewCount={reviewItems.length} />}
         {ready && feed && !feed.error && (view === 'savings' || view === 'activity') && <Savings feed={feed} st={st} cards={rules.cards} go={go} reviewCount={reviewItems.length} call={call} refresh={refresh} />}

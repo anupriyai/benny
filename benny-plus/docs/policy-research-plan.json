@@ -1,16 +1,16 @@
 {
- "limits": "A bank descriptor does not identify purchased items or original warranty. A successful scrape or exact quote is not a coverage decision. Benefits administrator retains final claim authority.",
- "privacy": "Public-source retrieval should use card/product identifiers, not bank credentials, full transactions, card numbers or personal receipts. Personal evidence and evaluations remain private.",
- "qa": "Hand-checked examples are regression/quality checks, not a prerequisite to supporting a card. Human escalation for ambiguous or conflicting clauses only.",
- "sources": "Issuer benefit guide for exact card variant and region, effective at purchase date; manufacturer warranty for exact item/model and region; merchant return policy when relevant. Bright Data is retrieval transport, not the authority.",
- "status": "agreed product direction; live research pipeline not yet implemented in Benny+",
- "trigger": "Each new or materially changed purchase, corrected card/item identity, evidence update, or relevant policy-version change queues an evaluation.",
- "workflow": [
-  "Resolve confirmed paying account and card product; identify item from evidence or ask user.",
-  "Reuse a valid applicable policy snapshot; refresh official sources when absent, stale, changed, or explicitly requested. Deduplicate requests across purchases without sharing private purchase details.",
-  "AI reads and structures source text with exact citations; deterministic checks validate quote presence, numeric/date consistency, applicability, completeness and conflicts. Quote matching alone does not prove interpretation.",
-  "Version policy snapshots with URL, retrieval time, content hash, effective dates and source excerpts; do not silently replace historical terms with current ones.",
-  "Deterministic engine evaluates supported eligibility conditions; missing facts or unresolved source conflicts produce needs-information, not guaranteed coverage.",
-  "Save private, derived/rebuildable evaluation records with transaction/evidence versions, policy snapshot references, engine version, findings and reasons. UI updates as research completes."
- ]
+  "limits": "A bank descriptor does not identify purchased items or original warranty. A successful scrape or exact quote is not a coverage decision. Benefits administrator retains final claim authority.",
+  "privacy": "Public-source retrieval should use card/product identifiers, not bank credentials, full transactions, card numbers or personal receipts. Personal evidence and evaluations remain private.",
+  "qa": "Hand-checked examples are regression/quality checks, not a prerequisite to supporting a card. Human escalation for ambiguous or conflicting clauses only.",
+  "sources": "Issuer benefit guide for exact card variant and region, effective at purchase date; manufacturer warranty for exact item/model and region; merchant return policy when relevant. Bright Data is retrieval transport, not the authority.",
+  "status": "agreed product direction; live research pipeline not yet implemented in Benny+",
+  "trigger": "Each new or materially changed purchase, corrected card/item identity, evidence update, or relevant policy-version change queues an evaluation.",
+  "workflow": [
+    "Resolve confirmed paying account and card product; identify item from evidence or ask user.",
+    "Reuse a valid applicable policy snapshot; refresh official sources when absent, stale, changed, or explicitly requested. Deduplicate requests across purchases without sharing private purchase details.",
+    "AI reads and structures source text with exact citations; deterministic checks validate quote presence, numeric/date consistency, applicability, completeness and conflicts. Quote matching alone does not prove interpretation.",
+    "Version policy snapshots with URL, retrieval time, content hash, effective dates and source excerpts; do not silently replace historical terms with current ones.",
+    "Deterministic engine evaluates supported eligibility conditions; missing facts or unresolved source conflicts produce needs-information, not guaranteed coverage.",
+    "Save private, derived/rebuildable evaluation records with transaction/evidence versions, policy snapshot references, engine version, findings and reasons. UI updates as research completes."
+  ]
 }

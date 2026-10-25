@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS import_batches (id TEXT PRIMARY KEY, owner TEXT NOT N
 CREATE TABLE IF NOT EXISTS plaid_items (id TEXT PRIMARY KEY, owner TEXT NOT NULL, item_id TEXT NOT NULL, access_token_enc BLOB NOT NULL,
   cursor TEXT, institution TEXT, env TEXT NOT NULL, status TEXT, last_sync_at INTEGER, created_at INTEGER);
 CREATE TABLE IF NOT EXISTS documents (id TEXT PRIMARY KEY, owner TEXT NOT NULL, kind TEXT, file_name TEXT, subject TEXT, sender TEXT, doc_date TEXT, content_hash TEXT, extracted TEXT, created_at INTEGER);
+CREATE TABLE IF NOT EXISTS doc_skips (owner TEXT NOT NULL, content_hash TEXT NOT NULL, at INTEGER, PRIMARY KEY(owner, content_hash));
 CREATE TABLE IF NOT EXISTS invariant_runs (owner TEXT NOT NULL, at INTEGER, ok INTEGER, failures TEXT);
 CREATE INDEX IF NOT EXISTS ix_p_owner ON purchases(owner, account_id);
 CREATE INDEX IF NOT EXISTS ix_e_owner ON evidence(owner, subject_type, subject_id);
@@ -54,6 +55,8 @@ def db():
 with db() as c:
     c.executescript(SCHEMA)
     if 'data' not in [r[1] for r in c.execute('PRAGMA table_info(credit_status)')]: c.execute('ALTER TABLE credit_status ADD COLUMN data TEXT')
+    # role: 'held' (you have the card) | 'trying' (comparing it) | NULL (the app decides: connected or has purchases = held)
+    if 'role' not in [r[1] for r in c.execute('PRAGMA table_info(card_accounts)')]: c.execute('ALTER TABLE card_accounts ADD COLUMN role TEXT')
     c.execute("UPDATE card_accounts SET sample=1 WHERE plaid_item_id IN (SELECT id FROM plaid_items WHERE env='sandbox')")
     c.execute("UPDATE purchases SET sample=1 WHERE account_id IN (SELECT a.id FROM card_accounts a JOIN plaid_items i ON i.id=a.plaid_item_id WHERE i.env='sandbox')")
 os.chmod(DB, 0o600)
@@ -198,15 +201,33 @@ async def patch_account(req):
         sets, vals = [], []
         for k in ('product_id', 'mask', 'nickname', 'holder', 'opened_on', 'anniversary_month'):
             if k in b: sets.append(f'{k}=?'); vals.append(b[k])
+        if 'role' in b:
+            if b['role'] not in ('held', 'trying', None): raise web.HTTPBadRequest(text=json.dumps({'error': 'role must be held, trying or null'}), content_type='application/json')
+            sets.append('role=?'); vals.append(b['role'])
         if 'product_id' in b: sets.append('product_confirmed=1')
         if sets: c.execute(f'UPDATE card_accounts SET {", ".join(sets)} WHERE id=? AND owner=?', vals + [req.match_info['id'], o])
-        return J(dict(owned(c, 'card_accounts', o, req.match_info['id'])))
+        a = owned(c, 'card_accounts', o, req.match_info['id']); merged = None
+        if 'product_id' in b and a['source'] == 'plaid':   # the bank account is now this card: fold in the copy the user picked by hand
+            same = [m for m in c.execute("SELECT * FROM card_accounts WHERE owner=? AND source='manual' AND sample=? AND product_id=? AND id<>?", (o, a['sample'], a['product_id'], a['id']))]
+            if same:
+                merge_manual(c, o, a['id'], same[0]['id'], 'You said this bank account is the card you added'); merged = same[0]['id']; finish(c, o)
+        out = dict(owned(c, 'card_accounts', o, req.match_info['id'])); out['merged'] = merged
+        return J(out)
 routes.post('/v1/accounts/{id}')(patch_account)   # browsers can't send PATCH through the ingress gateway (its CORS preflight omits PATCH)
 @routes.delete('/v1/accounts/{id}')
 async def del_account(req):
     o = owner_of(req); aid = req.match_info['id']
     with db() as c:
+        a = owned(c, 'card_accounts', o, aid); item = None
+        if a['plaid_item_id'] and not c.execute('SELECT 1 FROM card_accounts WHERE owner=? AND plaid_item_id=? AND id<>?', (o, a['plaid_item_id'], aid)).fetchone():
+            item = c.execute('SELECT * FROM plaid_items WHERE owner=? AND id=?', (o, a['plaid_item_id'])).fetchone()
+    if item:   # last card on this bank connection: disconnect it so Plaid stops sending its transactions
+        try: await plaid('/item/remove', {'access_token': FERNET.decrypt(bytes(item['access_token_enc'])).decode()}, item['env'])
+        except Exception: pass
+    with db() as c:
         a = owned(c, 'card_accounts', o, aid)
+        if item: c.execute('DELETE FROM plaid_items WHERE owner=? AND id=?', (o, item['id']))
+        c.execute("DELETE FROM evidence WHERE owner=? AND subject_type IN ('perk','account_merge') AND (subject_id LIKE ? OR subject_id=?)", (o, aid + ':%', aid))
         pids = [r['id'] for r in c.execute('SELECT id FROM purchases WHERE owner=? AND account_id=?', (o, aid))]
         for p in pids: c.execute('DELETE FROM evidence WHERE owner=? AND subject_id=?', (o, p))
         c.execute('DELETE FROM purchases WHERE owner=? AND account_id=?', (o, aid))
@@ -215,6 +236,62 @@ async def del_account(req):
         c.execute('DELETE FROM import_batches WHERE owner=? AND id NOT IN (SELECT DISTINCT import_batch_id FROM purchases WHERE owner=? AND import_batch_id IS NOT NULL)', (o, o))
         fails = finish(c, o)
     return J({'ok': True, 'removed_purchases': len(pids), 'invariant_failures': fails})
+
+# ---------- one card, one account: a card the user picked by hand merges into the bank account for the same card ----------
+GENERIC = {'card', 'credit', 'visa', 'mastercard', 'signature', 'infinite', 'world', 'elite', 'the', 'from', 'american', 'express', 'rewards', 'account', 'bank', 'and', 'of'}
+def merge_manual(c, o, keep_id, drop_id, reason):
+    """Move everything from a hand-added account (drop) onto the bank account for the same card (keep), then delete drop.
+    Statement rows that duplicate a bank transaction become evidence on the bank row, exactly as in a statement import."""
+    keep = owned(c, 'card_accounts', o, keep_id); drop = owned(c, 'card_accounts', o, drop_id)
+    sets = {'product_id': keep['product_id'] or drop['product_id'], 'product_confirmed': 1}
+    for k in ('holder', 'opened_on', 'anniversary_month'):
+        if (keep[k] in (None, 'unknown')) and drop[k] not in (None, 'unknown'): sets[k] = drop[k]
+    c.execute(f"UPDATE card_accounts SET {', '.join(k + '=?' for k in sets)} WHERE id=? AND owner=?", list(sets.values()) + [keep_id, o])
+    used = set()
+    for p in c.execute('SELECT * FROM purchases WHERE owner=? AND account_id=?', (o, drop_id)).fetchall():
+        d = find_dupe(c, o, keep_id, p['amount_cents'], p['merchant_normalized'], p['posted_on'], used=used)
+        if d:
+            used.add(d['id'])
+            c.execute('UPDATE evidence SET subject_id=? WHERE owner=? AND subject_id=?', (d['id'], o, p['id']))
+            add_evidence(c, o, 'purchase', d['id'], 'confirmed', p['source'], 'dedupe', 'Same card, amount and merchant within 3 days as a row you uploaded before connecting the bank', source_ref=p['import_batch_id'])
+            c.execute('DELETE FROM purchases WHERE id=? AND owner=?', (p['id'], o))
+        else: c.execute('UPDATE purchases SET account_id=? WHERE id=? AND owner=?', (keep_id, p['id'], o))
+    for e in c.execute("SELECT id, subject_id FROM evidence WHERE owner=? AND subject_type IN ('credit','perk') AND subject_id LIKE ?", (o, drop_id + ':%')).fetchall():
+        c.execute('UPDATE evidence SET subject_id=? WHERE id=?', (keep_id + e['subject_id'][len(drop_id):], e['id']))
+    for e in c.execute("SELECT id, data FROM evidence WHERE owner=? AND data LIKE ?", (o, '%' + drop_id + '%')).fetchall():
+        c.execute('UPDATE evidence SET data=? WHERE id=?', (e['data'].replace(drop_id, keep_id), e['id']))
+    c.execute('UPDATE import_batches SET account_id=? WHERE owner=? AND account_id=?', (keep_id, o, drop_id))
+    c.execute("DELETE FROM credit_status WHERE owner=? AND account_id=?", (o, drop_id))
+    c.execute('DELETE FROM card_accounts WHERE id=? AND owner=?', (drop_id, o))
+    add_evidence(c, o, 'account_merge', keep_id, 'confirmed', 'rules', 'account-merge', reason[:160], source_ref=drop_id, data={'product_id': sets['product_id']})
+
+def toks(s): return {t for t in re.sub(r'[^a-z0-9]+', ' ', (s or '').lower()).split() if len(t) >= 3 and t not in GENERIC and not t.isdigit()}
+def auto_merge_new(c, o, new_ids, institution):
+    """After a bank connection: pair each new bank account with a card the user already picked by hand.
+    Same last four digits; else the bank's account name shares a distinctive word with exactly one picked card's name;
+    else the bank is that card's issuer and it is the only picked card from that issuer and the only new account from this bank."""
+    R = rules(); merged = []
+    news = [dict(r) for r in c.execute(f"SELECT * FROM card_accounts WHERE owner=? AND id IN ({','.join('?' * len(new_ids))})", [o] + list(new_ids))] if new_ids else []
+    for a in news:
+        manual = [dict(m) for m in c.execute("SELECT * FROM card_accounts WHERE owner=? AND source='manual' AND sample=? AND product_confirmed=1", (o, a['sample']))]
+        if not manual: break
+        pick, why = None, None
+        hits = [m for m in manual if a['mask'] and m['mask'] == a['mask']]
+        if len(hits) == 1: pick, why = hits[0], f"same last four digits ({a['mask']})"
+        if not pick:
+            bank = toks((a['official_name'] or '') + ' ' + (a['nickname'] or ''))
+            hits = [m for m in manual if bank & toks(((R['cards'].get(m['product_id']) or {}).get('name') or '') + ' ' + ((R['cards'].get(m['product_id']) or {}).get('short') or ''))]
+            if len(hits) == 1: pick, why = hits[0], f"your bank calls it “{a['official_name'] or a['nickname']}”"
+        if not pick and institution and len(news) == 1:
+            inst = toks(institution)
+            hits = [m for m in manual if inst & toks((R['cards'].get(m['product_id']) or {}).get('issuer'))]
+            if len(hits) == 1: pick, why = hits[0], f"it’s your only {institution} card"
+        if pick:
+            card = R['cards'].get(pick['product_id']) or {}
+            c.execute('UPDATE card_accounts SET product_id=?, product_confirmed=1 WHERE id=? AND owner=?', (pick['product_id'], a['id'], o))
+            merge_manual(c, o, a['id'], pick['id'], f"Matched to the {card.get('short') or card.get('name') or 'card'} you added: {why}")
+            merged.append({'account_id': a['id'], 'merged': pick['id'], 'product_id': pick['product_id']})
+    return merged
 
 # ---------- CSV import: dedupe against other batches/sources; undo removes only this batch ----------
 def find_dupe(c, owner, account_id, cents, merch, day, exclude_batch=None, used=()):
@@ -396,6 +473,8 @@ async def store_item(o, public_token, institution, env):
             c.execute('INSERT INTO card_accounts(id, owner, product_id, mask, nickname, holder, source, source_account_id, plaid_item_id, product_confirmed, official_name, sample, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
                       (aid, o, None, a.get('mask'), a.get('name'), 'unknown', 'plaid', a['account_id'], iid, 0, a.get('official_name'), demo, now_ms()))
             new.append(aid)
+        merged = auto_merge_new(c, o, new, institution)
+        if merged: finish(c, o)
     return iid, new
 @routes.post('/v1/plaid/exchange')
 async def exchange(req):
@@ -788,8 +867,18 @@ async def add_document(req):
     with db() as c:
         dup = c.execute('SELECT id FROM documents WHERE owner=? AND content_hash=?', (o, h)).fetchone()
         if dup: return J({'document_id': dup['id'], 'duplicate': True})
+        # Bulk mailbox import: non-purchase emails are never stored; their hash is remembered so a rerun skips them without AI.
+        discard = bool(b.get('discard_non_purchase'))
+        if discard and c.execute('SELECT 1 FROM doc_skips WHERE owner=? AND content_hash=?', (o, h)).fetchone():
+            return J({'document_id': None, 'skipped': True, 'extracted': {'is_purchase_document': False}})
+        if discard and kind != 'image' and not re.search(r'(\$|USD|US\$|€|£)\s?\d|\d\.\d{2}\b', meta.get('text') or ''):
+            c.execute('INSERT OR IGNORE INTO doc_skips VALUES (?,?,?)', (o, h, now_ms()))
+            return J({'document_id': None, 'skipped': True, 'extracted': {'is_purchase_document': False}})
     try: ex = await agent(parts, INTAKE_SCHEMA, INTAKE_SYS)
     except AgentError as e: return J({'error': 'intake_failed', 'message': 'Could not read this document (' + str(e) + ').'}, 502)
+    if discard and not ex.get('is_purchase_document'):
+        with db() as c: c.execute('INSERT OR IGNORE INTO doc_skips VALUES (?,?,?)', (o, h, now_ms()))
+        return J({'document_id': None, 'skipped': True, 'extracted': {'is_purchase_document': False}})
     did = nid('doc'); src = 'receipt' if kind == 'image' else 'email'
     with db() as c:
         c.execute('INSERT INTO documents VALUES (?,?,?,?,?,?,?,?,?,?)', (did, o, src, str(b.get('file_name') or '')[:120], meta['subject'][:200], re.sub(r'<.*?>', '', meta['sender'])[:120], ex.get('purchase_date'), h, json.dumps(ex), now_ms()))

@@ -1,11 +1,11 @@
 {
- "rulesVersion": "v2026-10-25",
- "rulesHash": "cee7d0498b9b06ce342fed42431ea8773f8704fe669bf1bde2f9968d2098157d",
- "engineVersion": "benny-engine 0.1.0",
- "engineHash": "6eeb0f359aba58c779c8ff11b9a8db65c572a728453c41f4a7955316cc618599",
- "cardCount": 21,
- "acceptedRules": 177,
- "rejectedRules": 2,
- "builtAt": 1792935401428,
- "source": "apps/benny/app rules + engine, quotes verified against saved pages (build_snapshot.py)"
+  "acceptedRules": 177,
+  "builtAt": 1792935401428,
+  "cardCount": 21,
+  "engineHash": "6eeb0f359aba58c779c8ff11b9a8db65c572a728453c41f4a7955316cc618599",
+  "engineVersion": "benny-engine 0.1.0",
+  "rejectedRules": 2,
+  "rulesHash": "cee7d0498b9b06ce342fed42431ea8773f8704fe669bf1bde2f9968d2098157d",
+  "rulesVersion": "v2026-10-25",
+  "source": "apps/benny/app rules + engine, quotes verified against saved pages (build_snapshot.py)"
 }

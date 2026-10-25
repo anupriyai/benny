@@ -1,7 +1,7 @@
 # Benny+
 
 Benny and Perks Claimer combined: pick your cards, bring in purchases (bank, CSV or PDF statement, receipts and order emails),
-and see what your cards owe you: unused credits, missed rewards, purchase protections and claim packets.
+and see estimated earned rewards, credits, hypothetical card comparisons, purchase protections and claim packets.
 Built at Cal Hacks (Oct 24–25, 2026) on Mana.
 
 **Principle: agents propose, evidence decides.** AI reads and matches; deterministic checks decide what is true.
@@ -16,6 +16,7 @@ Every number traces back to stored evidence (`confirmed | likely | inferred | un
 | `api/build_snapshot.py` | Builds the pinned rules snapshot: a rule is kept only if its quote appears word for word in a saved source page. |
 | `api/sources/` | Saved source pages used by the snapshot check. |
 | `bundle/` | The pinned snapshot the app ships with (`rules.snapshot.json`, `engine.js`, `manifest.json` with SHA-256 hashes the client verifies). |
+| `gmail/helper.jsx` | Browser-based, per-user Gmail receipt import helper. |
 | `shop/install_shop_browser.py` | Per-user shopping browser installer (runs in each user's own Mana sandbox). |
 | `docs/` | Build plan, agent notes (running log), email-evidence, perks and policy-research plans, brand notes. |
 
@@ -33,3 +34,9 @@ Shared with the original Benny: `../engine/engine.js` (all money and coverage de
 ## Running
 The server runs inside a Mana sandbox (it uses Mana's `firebase_helper`, `mana_router` and `symbolic_proxy`).
 Saved keys used: `PLAID_CLIENT_ID`, `PLAID_SECRET_SANDBOX`, `PLAID_SECRET_PRODUCTION`. Runtime state (`state/`: database, keys) is never committed.
+
+## Recent updates
+
+Unconnected, manually picked cards default to **trying**. Connected cards and cards with purchase evidence count as held; users can correct the role on the card page. Earned-benefit totals use held cards only; trying cards show separate what-if estimates. All reward calculations remain estimates, not issuer-posted balances.
+
+Gmail import runs through the user’s own connection in the browser, without requiring their own sandbox. See `gmail/README.md`.

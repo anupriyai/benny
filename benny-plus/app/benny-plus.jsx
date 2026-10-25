@@ -2604,7 +2604,7 @@ function ShopAdvice({ E, rules, st, cards, ctx, pageInfo, onEdit, onRecheck, onS
 /* Visitors' browser: an isolated session on the app owner's Mana, shown as live screenshots; clicks, typing and
    scrolling are sent to the bridge, which applies them only to that visitor's own page. */
 const BP_KEYMAP = { Enter: 'Enter', Backspace: 'Backspace', Tab: 'Tab', Escape: 'Escape', ArrowUp: 'ArrowUp', ArrowDown: 'ArrowDown', ArrowLeft: 'ArrowLeft', ArrowRight: 'ArrowRight', Delete: 'Delete', Home: 'Home', End: 'End', PageUp: 'PageUp', PageDown: 'PageDown' };
-function BpRemoteView({ api, apiBlob, tab, onTab }) {
+function BpRemoteView({ api, apiBlob, tab, onTab, hosted }) {
   const P = usePal();
   const [src, setSrc] = React.useState(null); const [addr, setAddr] = React.useState(tab.url || ''); const [focused, setFocused] = React.useState(false); const [err, setErr] = React.useState('');
   const boxRef = React.useRef(null); const imgRef = React.useRef(null); const fast = React.useRef(0); const buf = React.useRef(''); const bufT = React.useRef(null); const wheel = React.useRef(0); const wheelT = React.useRef(null); const busy = React.useRef(false);
@@ -2660,14 +2660,14 @@ function BpRemoteView({ api, apiBlob, tab, onTab }) {
           : <div className="flex h-full items-center justify-center text-[13px]" style={{ color: P.muted }}>Opening the page…</div>}
         {err && <div className="absolute inset-x-3 top-3 rounded-xl px-3 py-2 text-[12px]" style={{ background: P.surface, color: P.danger, border: `1px solid ${P.line}` }}>{err}</div>}
       </div>
-      <div className="px-3 py-1.5 text-[11.5px] leading-4" style={{ color: P.muted, borderTop: `1px solid ${P.line}` }}>Your own browser in your own Mana space: only you can see or use it. Sign in and check out as usual. Click the page, then type.</div>
+      <div className="px-3 py-1.5 text-[11.5px] leading-4" style={{ color: P.muted, borderTop: `1px solid ${P.line}` }}>{hosted ? 'A private session hosted by Benny+, just for you: separate cookies and sign-ins, closed after 15 idle minutes.' : 'Your own browser in your own Mana space: only you can see or use it.'} Sign in and check out as usual. Click the page, then type.</div>
     </div>
   );
 }
 
 /* Pay with a card: details live encrypted in the user's own sandbox (benny-shop /cards); the browser only ever sees last 4. */
 function bpLuhn(n) { let s = 0; for (let i = 0; i < n.length; i++) { let d = +n[n.length - 1 - i]; if (i % 2) { d *= 2; if (d > 9) d -= 9; } s += d; } return n.length >= 12 && s % 10 === 0; }
-function BpPayPanel({ api, acct, cards, saved, onSaved, tabOpen }) {
+function BpPayPanel({ api, acct, cards, saved, onSaved, tabOpen, hosted }) {
   const P = usePal(); const card = acct && cards[acct.product_id];
   const [editing, setEditing] = React.useState(false); const [num, setNum] = React.useState(''); const [exp, setExp] = React.useState(''); const [name, setName] = React.useState(''); const [zip, setZip] = React.useState('');
   const [busy, setBusy] = React.useState(''); const [msg, setMsg] = React.useState(null);
@@ -2698,7 +2698,7 @@ function BpPayPanel({ api, acct, cards, saved, onSaved, tabOpen }) {
         <div className="mt-1.5 flex flex-wrap gap-1.5">{chip('number', 'Card number')}{chip('exp', 'Expiry')}{saved.hasName && chip('name', 'Name')}{saved.hasZip && chip('zip', 'ZIP')}</div>
         <div className="mt-3 flex gap-3 text-[12px]"><button type="button" onClick={() => setEditing(true)} style={{ color: P.accent }}>Replace</button><button type="button" disabled={!!busy} onClick={remove} style={{ color: P.muted }}>Remove</button></div>
       </>) : editing || !saved ? (
-        !editing ? (<div className="mt-3"><Muted className="text-[12.5px] leading-5"><span className="inline-flex items-center gap-1">Optional autofill<InfoTip align="left">You can pay with this card on the store’s own checkout. If you want autofill, save its details once: they’re encrypted in your own Mana space, never sent to Benny+ or the app owner, and Benny+ never places orders.</InfoTip></span></Muted><div className="mt-3"><Btn small onClick={() => setEditing(true)}>Set up autofill (optional)</Btn></div></div>) : (
+        !editing ? (<div className="mt-3"><Muted className="text-[12.5px] leading-5"><span className="inline-flex items-center gap-1">Optional autofill<InfoTip align="left">You can pay with this card on the store’s own checkout. If you want autofill, save its details once: {hosted ? 'they’re encrypted for you alone on the Benny+ host that runs your shared browser and never shown back to any browser' : 'they’re encrypted in your own Mana space, never sent to Benny+ or the app owner'}, and Benny+ never places orders.</InfoTip></span></Muted><div className="mt-3"><Btn small onClick={() => setEditing(true)}>Set up autofill (optional)</Btn></div></div>) : (
         <form className="mt-4 space-y-2" autoComplete="off" onSubmit={e => { e.preventDefault(); if (valid) save(); }}>
           <input type="password" inputMode="numeric" autoComplete="off" value={num} onChange={e => setNum(e.target.value)} placeholder="Card number" aria-label="Card number" className="h-9 w-full rounded-xl px-3 text-[13px]" style={inp} />
           <div className="flex gap-2"><input value={exp} onChange={e => setExp(e.target.value)} placeholder="MM/YY" aria-label="Expiry" className="h-9 w-24 rounded-xl px-3 text-[13px]" style={inp} /><input value={zip} onChange={e => setZip(e.target.value)} placeholder="Billing ZIP (optional)" aria-label="Billing ZIP" className="h-9 min-w-0 flex-1 rounded-xl px-3 text-[13px]" style={inp} /></div>
@@ -2720,8 +2720,14 @@ function Shop({ st, cards, rules, E, call, refresh, onOpenCard }) {
   React.useEffect(() => userId ? FS.onValue(FS.ref(FS.db, `${userId}/file-system/${BP_SHOP_NODE}/service`), s => setSvc(s.val()), () => setSvc(null)) : undefined, []);
   const [broken, setBroken] = React.useState({});
   React.useEffect(() => userId ? FS.onValue(FS.ref(FS.db, `${userId}/file-system/${BP_SHOP_NODE}/broken`), s => setBroken(s.val() || {}), () => setBroken({})) : undefined, []);
-  const svcOk = !!(svc && svc.url && (!svc.expiresAt || svc.expiresAt > Date.now() + 60000));
-  const ing = { url: svcOk ? svc.url : null, error: svc === null || (svc && !svcOk) ? new Error('setup') : null };
+  // Accounts that can't run their own Mana sandbox use the hosted shared browser (a private session per user): service {hosted: true}.
+  const [hostedCfg, setHostedCfg] = React.useState(undefined);
+  React.useEffect(() => FS.onValue(FS.ref(FS.db, relPathAddress('shop-hosted')), s => setHostedCfg(s.val() || null), () => setHostedCfg(null)), []);
+  const hostedMode = !!(svc && svc.hosted);
+  const svcUrl = hostedMode ? (hostedCfg && hostedCfg.url) : (svc && svc.url); const svcExp = hostedMode ? (hostedCfg && hostedCfg.expiresAt) : (svc && svc.expiresAt);
+  const svcOk = !!(svcUrl && (!svcExp || svcExp > Date.now() + 60000));
+  const ing = { url: svcOk ? svcUrl : null, error: svc === null || (svc && !svcOk && !(hostedMode && hostedCfg === undefined)) ? new Error('setup') : null };
+  const [hostOffer, setHostOffer] = React.useState(false);
   const [savedCards, setSavedCards] = React.useState({});
   const gem = useManaRouter('gemini');
   const partners = React.useMemo(() => bpPartnerOffers(rules, st), [rules, st]);
@@ -2825,6 +2831,13 @@ function Shop({ st, cards, rules, E, call, refresh, onOpenCard }) {
     catch (e) { setErr(bpFriendly(e)); setPhase('error'); } setOpening(false);
   };
   React.useEffect(() => { if (conn !== 'ok' || tab || autoRef.current) return; autoRef.current = true; openHome(); }, [conn, tab]);
+  const useHosted = async () => {
+    if (!hostedCfg || !hostedCfg.url) throw new Error('the shared browser isn’t available right now');
+    const now = Date.now();
+    await FS.update(FS.ref(FS.db, `${userId}/file-system/${BP_SHOP_NODE}`), { 'metadata/type': 'link', 'metadata/hidden': true, 'metadata/displayName': 'Benny+ shopping browser', 'metadata/updatedAt': now,
+      service: { hosted: true, version: BP_KIT_VERSION, at: now, metadata: { type: 'entry', createdAt: now, updatedAt: now } } });
+    setHostOffer(false); setInstallMsg(''); setEpoch(e => e + 1); setConn('connecting');
+  };
   const install = async quiet => {
     setInstalling(true); setInstallMsg(quiet ? 'Updating your shopping browser…' : 'Setting up your own shopping browser in your Mana space…');
     try { const kit = (await FS.get(FS.ref(FS.db, relPathAddress('shop-kit', 'installer')))).val(); if (!kit) throw new Error('installer missing');
@@ -2833,12 +2846,13 @@ function Shop({ st, cards, rules, E, call, refresh, onOpenCard }) {
         install: { source: kit, metadata: { type: 'python', displayName: 'Install shopping browser', createdAt: now, updatedAt: now } } });
       const tok = await FS.auth.currentUser.getIdToken();
       const r = await fetch(API_BASE_URL + '/run', { method: 'POST', headers: { Authorization: 'Bearer ' + tok, 'Content-Type': 'application/json' }, body: JSON.stringify({ user: { uid: userId }, path: `file-system/${BP_SHOP_NODE}/install`, run_id: 'run_' + now.toString(16) }) });
+      if (!r.ok && !quiet && hostedCfg && hostedCfg.url) { await useHosted(); setInstalling(false); return; }   // no sandbox for this account (402/403): use the hosted browser
       const res = r.ok ? await r.json() : null; if (!res || res.error || !/^DONE /m.test(res.stdout || '')) throw new Error((res && (res.error_message || res.stderr)) || ('setup failed (' + r.status + ')'));
       setInstallMsg(''); if (!quiet) { setEpoch(e => e + 1); setConn('connecting'); }
-    } catch (e) { setInstallMsg((quiet ? 'Update didn’t finish: ' : 'Setup didn’t finish: ') + String(e.message || e).slice(0, 160)); }
+    } catch (e) { setInstallMsg((quiet ? 'Update didn’t finish: ' : 'Setup didn’t finish: ') + String(e.message || e).slice(0, 160)); if (!quiet && hostedCfg && hostedCfg.url) setHostOffer(true); }
     setInstalling(false);
   };
-  React.useEffect(() => { if (conn !== 'ok' || !svc || (svc.version || 1) >= BP_KIT_VERSION || upgRef.current) return; upgRef.current = true; install(true); }, [conn, svc]);
+  React.useEffect(() => { if (conn !== 'ok' || !svc || hostedMode || (svc.version || 1) >= BP_KIT_VERSION || upgRef.current) return; upgRef.current = true; install(true); }, [conn, svc]);
   const saveOrder = async () => {
     const pg = lastPage.current; if (!pg || !call) return; setSaving(true); setSavedMsg(null);
     try { const r = await call('POST', '/v1/documents', { kind: 'text', content: `Page: ${pg.title}\nURL: ${pg.url}\n\n${pg.text}`, file_name: bpHost(pg.url) + ' order page' });
@@ -2882,11 +2896,11 @@ function Shop({ st, cards, rules, E, call, refresh, onOpenCard }) {
       <div className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">{live.map(tile)}</div>
       {partners.general.length > 0 && <Muted className="mt-3 text-[12px] leading-5">Also in your wallet, not tied to one site: {partners.general.map(o => `${fmt0(o.amount)} ${BP_PERIOD[o.period] || ''} ${o.credit.short || o.credit.label} (${o.card.short || o.card.name})`).join(' · ')}.</Muted>}
       {hiddenNames.length > 0 && <Muted className="mt-2 text-[12px] leading-5">Hidden because they didn’t load here: {hiddenNames.join(', ')}. Benny+ tries again after a day.</Muted>}
-      <Muted className="mt-6 text-[11.5px] leading-5">This browser runs in your own Mana space, only for you, and remembers your sign-ins. Benny+ reads page text to find the store and total (Google Gemini through Mana, not saved). With your OK it fills a saved card into the payment form; you add the security code and place the order. Some sites limit automated browsers; United’s flight search doesn’t load here.</Muted>
+      <Muted className="mt-6 text-[11.5px] leading-5">{hostedMode ? 'Your Mana account can’t run its own browser yet, so this is a private session hosted by Benny+: its own cookies and sign-ins, closed after 15 idle minutes.' : 'This browser runs in your own Mana space, only for you, and remembers your sign-ins.'} Benny+ reads page text to find the store and total (Google Gemini through Mana, not saved). With your OK it fills a saved card into the payment form; you add the security code and place the order. Some sites limit automated browsers; United’s flight search doesn’t load here.</Muted>
     </div></div>
   );
   let pane;
-  if (conn === 'setup' || conn === 'offline' || conn === 'denied') pane = <div className="flex h-full items-center justify-center p-8"><div className="max-w-[420px] text-center"><div className="text-[18px] font-semibold" style={{ fontFamily: SERIF }}>{conn === 'offline' ? 'Your shopping browser isn’t answering' : conn === 'denied' ? 'This browser belongs to another account' : 'Set up your shopping browser'}</div><Muted className="mt-1.5 text-[13px] leading-5">{conn === 'offline' ? 'Repair restarts it in your Mana space. It takes about ten seconds.' : 'It runs in your own Mana space, only for you, so you can sign in to stores and check out with your own cards. Setup takes about ten seconds.'}</Muted><div className="mt-4"><Btn kind="primary" disabled={installing} onClick={() => install(false)}>{installing ? 'Setting up…' : conn === 'offline' || conn === 'denied' ? 'Repair' : 'Set up shopping browser'}</Btn></div>{installMsg && <div className="mt-3 text-[12.5px]" style={{ color: installing ? P.muted : P.danger }}>{installMsg}</div>}</div></div>;
+  if (conn === 'setup' || conn === 'offline' || conn === 'denied') pane = <div className="flex h-full items-center justify-center p-8"><div className="max-w-[420px] text-center"><div className="text-[18px] font-semibold" style={{ fontFamily: SERIF }}>{conn === 'offline' ? 'Your shopping browser isn’t answering' : conn === 'denied' ? 'This browser belongs to another account' : 'Set up your shopping browser'}</div><Muted className="mt-1.5 text-[13px] leading-5">{conn === 'offline' ? 'Repair restarts it in your Mana space. It takes about ten seconds.' : 'It runs in your own Mana space, only for you, so you can sign in to stores and check out with your own cards. If your account can’t run one yet, Benny+ gives you a private shared session instead. Setup takes about ten seconds.'}</Muted><div className="mt-4"><Btn kind="primary" disabled={installing} onClick={() => install(false)}>{installing ? 'Setting up…' : conn === 'offline' || conn === 'denied' ? 'Repair' : 'Set up shopping browser'}</Btn></div>{installMsg && <div className="mt-3 text-[12.5px]" style={{ color: installing ? P.muted : P.danger }}>{installMsg}</div>}</div></div>;
   else if (conn === 'connecting') pane = <div className="flex h-full items-center justify-center text-[13px]" style={{ color: P.muted }}>Connecting to your shopping browser…</div>;
   else pane = (
     <div className="flex h-full min-h-0 flex-col">
@@ -2903,8 +2917,8 @@ function Shop({ st, cards, rules, E, call, refresh, onOpenCard }) {
         </div>
       </div>
       {notice && !showSites && <div className="flex items-center gap-2 px-3 py-1.5 text-[12px]" style={{ background: P.infoSoft, color: P.ink }}><span className="min-w-0 flex-1">{notice}</span><button type="button" aria-label="Dismiss" onClick={() => setNotice('')} className="shrink-0 px-1 text-[14px]" style={{ color: P.muted }}>×</button></div>}
-      {installMsg && <div className="px-3 py-1 text-[12px]" style={{ color: installing ? P.muted : P.danger }}>{installMsg}</div>}
-      <div className="relative min-h-0 flex-1" onPointerDown={e => e.stopPropagation()}>{!tab || showSites ? storeGrid : isOwner ? <ManaBrowser key={tab.targetId} targetId={tab.targetId} /> : <BpRemoteView api={api} apiBlob={apiBlob} tab={tab} onTab={info => setTab(t => ({ ...(t || {}), ...info }))} />}</div>
+      {installMsg && <div className="px-3 py-1 text-[12px]" style={{ color: installing ? P.muted : P.danger }}>{installMsg}{hostOffer && !installing && <> <button type="button" className="ml-1 underline" style={{ color: P.accent }} onClick={() => useHosted().catch(e => setInstallMsg(String(e.message || e)))}>Use Benny+’s shared browser</button></>}</div>}
+      <div className="relative min-h-0 flex-1" onPointerDown={e => e.stopPropagation()}>{!tab || showSites ? storeGrid : isOwner && !hostedMode ? <ManaBrowser key={tab.targetId} targetId={tab.targetId} /> : <BpRemoteView hosted={hostedMode} api={api} apiBlob={apiBlob} tab={tab} onTab={info => setTab(t => ({ ...(t || {}), ...info }))} />}</div>
     </div>
   );
 
@@ -2934,7 +2948,7 @@ function Shop({ st, cards, rules, E, call, refresh, onOpenCard }) {
     <div className="space-y-5">
       {st.accounts.length > 0 && <WalletStack accounts={st.accounts} cards={cards} front={frontId} rolesByCard={roles} onPick={(id, isFront) => { if (isFront) onOpenCard(id); else setFront(id); }} />}
       <div className={idle ? 'rounded-3xl px-4 py-3' : 'rounded-3xl p-5'} style={{ background: P.surface, border: `1px solid ${P.line}` }}>{advice}</div>
-      {conn === 'ok' && <BpPayPanel api={api} acct={frontAcct} cards={cards} saved={savedCards[frontId]} onSaved={loadCards} tabOpen={!!tab} />}
+      {conn === 'ok' && <BpPayPanel hosted={hostedMode} api={api} acct={frontAcct} cards={cards} saved={savedCards[frontId]} onSaved={loadCards} tabOpen={!!tab} />}
       {tab && <label className="flex cursor-pointer items-center gap-2 px-1 text-[12.5px]" style={{ color: P.muted }}><input type="checkbox" checked={auto} onChange={e => setAuto(e.target.checked)} style={{ accentColor: P.accent }} />Check carts and checkouts automatically</label>}
     </div>
   );

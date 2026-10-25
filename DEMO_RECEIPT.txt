@@ -1,0 +1,11 @@
+SAMPLE RECEIPT — DEMONSTRATION ONLY, NOT A REAL PURCHASE
+Merchant: Demo Neighborhood Restaurant
+Purchase date: 2026-10-25
+Currency: USD
+Order: BENNY-DEMO-DINING-01
+2 dinner entrees: $72.00
+Dessert: $18.00
+Subtotal: $90.00
+Tax: $10.00
+Total paid: $100.00
+Payment method: Credit card (card identity not provided)

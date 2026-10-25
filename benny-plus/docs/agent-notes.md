@@ -20,3 +20,11 @@ SHOP v4 (Oct 25 03:10, Eden's spec): toolbar is pills only. Permanent Google pil
 - Welcome typography and pasture positioning refinements.
 
 Verification before export: JSX compilation, calculator fixtures, live Home/Savings/Wallet/card-page checks, 15/15 privacy checks and 13/13 acceptance checks.
+
+## Updates, October 25, 2026 (later)
+
+- Open-source layout: `ARCHITECTURE.md` (pipeline → agents → checkers → decision layer) and `decisions/feed.js`, extracted verbatim from the app by `scripts/extract_decisions.py`, with 29 tests that also fail on drift.
+- A receipt printing a different last four than the user's only card is no longer assumed to belong to that card.
+- Hosted shop fallback (`shop/hosted_server.py`) for accounts without their own Mana sandbox: an isolated browser context per user (no shared cookies, idle close, capped sessions), egress through a proxy that refuses loopback/private/internal addresses (redirects and WebSockets included), and per-user encrypted card files. The app falls back to it automatically when per-user setup is unavailable.
+
+Verification before this export: decision tests 29/29, engine tests 38/38; app, API, bundle, Gmail and shop sources match the live versions.

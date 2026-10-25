@@ -44,3 +44,5 @@ quote-verified rules snapshot lives in [`benny-plus/`](benny-plus/README.md). Th
 
 ## Benny+
 The combined app, its backend (agents, checkers), rules pipeline and rewards decision layer are all open in this repo: see [`benny-plus/ARCHITECTURE.md`](benny-plus/ARCHITECTURE.md).
+
+Hackathon demo materials: [HACK.md](HACK.md) (handoff), [PITCH.md](PITCH.md) (recording script and Q&A), [DEMO_RECEIPT.txt](DEMO_RECEIPT.txt) (clearly labeled sample receipt).

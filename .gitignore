@@ -1,0 +1,8 @@
+pipeline/out/pages/
+pipeline/out/extract/
+pipeline/out/rules.json
+pipeline/out/report.json
+__pycache__/
+.env
+node_modules/
+.DS_Store

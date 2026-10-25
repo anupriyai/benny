@@ -1,0 +1,4749 @@
+{
+ "version": "0.2.0-2026-10-24",
+ "generatedAt": "2026-10-24",
+ "note": "3 hand-checked cards plus 17 pipeline cards. Every rule has a source quote found in the fetched page; null means not confirmed.",
+ "cards": {
+  "chase-sapphire-preferred": {
+   "cardId": "chase-sapphire-preferred",
+   "name": "Chase Sapphire Preferred",
+   "short": "Sapphire",
+   "issuer": "Chase",
+   "network": "Visa",
+   "annualFee": 95,
+   "annualFeeSource": {
+    "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/preferred",
+    "quote": null,
+    "kind": "issuer",
+    "note": "Annual fee not re-checked in this pass."
+   },
+   "verified": true,
+   "verifiedNote": "Protections hand-checked against the Chase Guide to Benefits effective 06/14/26. Earn rates from a review site, pending issuer check.",
+   "art": {
+    "from": "#14284B",
+    "to": "#3A5C8F",
+    "ink": "#F4F6FA",
+    "sub": "rgba(244,246,250,.7)",
+    "style": "metal"
+   },
+   "currency": {
+    "unit": "points",
+    "unitLabel": "points",
+    "valueCents": {
+     "cash": 1.0,
+     "travel": 1.25
+    },
+    "source": {
+     "url": "https://www.chase.com/personal/credit-cards/education/rewards-benefits/how-to-redeem-chase-ultimate-rewards",
+     "quote": null,
+     "kind": "issuer",
+     "note": "1¢ per point when redeemed for cash back. Not re-quoted in this pass."
+    },
+    "travelSource": {
+     "url": null,
+     "quote": null,
+     "kind": "estimate",
+     "note": "Benny estimate for transfers and Chase Travel. Needs a cited source before demo."
+    }
+   },
+   "earn": [
+    {
+     "id": "chase-travel",
+     "label": "Chase Travel",
+     "categories": [
+      "chase_travel"
+     ],
+     "rate": 5,
+     "source": {
+      "url": "https://www.cardratings.com/travel/chase-sapphire-preferred-and-reserve-benefits.html",
+      "quote": "5x on travel purchased through Chase Travel℠, 3x on dining, 3x on vacation homes, 3x on gas & EV charging, 3x on top streaming services and 3x online groceries (excluding Walmart, Target, and wholesale clubs), 2x on all other travel purchases, and 1x on all other purchases",
+      "kind": "review",
+      "note": "Review site (CardRatings, updated Oct 13 2026). Check against chase.com before demo; issuer page wins.",
+      "asOf": "2026-10-13"
+     }
+    },
+    {
+     "id": "dining",
+     "label": "dining",
+     "categories": [
+      "dining"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.cardratings.com/travel/chase-sapphire-preferred-and-reserve-benefits.html",
+      "quote": "5x on travel purchased through Chase Travel℠, 3x on dining, 3x on vacation homes, 3x on gas & EV charging, 3x on top streaming services and 3x online groceries (excluding Walmart, Target, and wholesale clubs), 2x on all other travel purchases, and 1x on all other purchases",
+      "kind": "review",
+      "note": "Review site (CardRatings, updated Oct 13 2026). Check against chase.com before demo; issuer page wins.",
+      "asOf": "2026-10-13"
+     }
+    },
+    {
+     "id": "gas-ev",
+     "label": "gas & EV charging",
+     "categories": [
+      "gas",
+      "gas_costco",
+      "ev_charging"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.cardratings.com/travel/chase-sapphire-preferred-and-reserve-benefits.html",
+      "quote": "5x on travel purchased through Chase Travel℠, 3x on dining, 3x on vacation homes, 3x on gas & EV charging, 3x on top streaming services and 3x online groceries (excluding Walmart, Target, and wholesale clubs), 2x on all other travel purchases, and 1x on all other purchases",
+      "kind": "review",
+      "note": "Review site (CardRatings, updated Oct 13 2026). Check against chase.com before demo; issuer page wins.",
+      "asOf": "2026-10-13"
+     }
+    },
+    {
+     "id": "streaming",
+     "label": "streaming",
+     "categories": [
+      "streaming"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.cardratings.com/travel/chase-sapphire-preferred-and-reserve-benefits.html",
+      "quote": "5x on travel purchased through Chase Travel℠, 3x on dining, 3x on vacation homes, 3x on gas & EV charging, 3x on top streaming services and 3x online groceries (excluding Walmart, Target, and wholesale clubs), 2x on all other travel purchases, and 1x on all other purchases",
+      "kind": "review",
+      "note": "Review site (CardRatings, updated Oct 13 2026). Check against chase.com before demo; issuer page wins.",
+      "asOf": "2026-10-13"
+     }
+    },
+    {
+     "id": "online-grocery",
+     "label": "online grocery",
+     "categories": [
+      "online_grocery"
+     ],
+     "excludeMerchants": [
+      "target",
+      "target-online",
+      "walmart",
+      "walmart-online",
+      "costco",
+      "costco-online",
+      "sams-club",
+      "bjs"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.cardratings.com/travel/chase-sapphire-preferred-and-reserve-benefits.html",
+      "quote": "5x on travel purchased through Chase Travel℠, 3x on dining, 3x on vacation homes, 3x on gas & EV charging, 3x on top streaming services and 3x online groceries (excluding Walmart, Target, and wholesale clubs), 2x on all other travel purchases, and 1x on all other purchases",
+      "kind": "review",
+      "note": "Review site (CardRatings, updated Oct 13 2026). Check against chase.com before demo; issuer page wins.",
+      "asOf": "2026-10-13"
+     }
+    },
+    {
+     "id": "travel",
+     "label": "other travel",
+     "categories": [
+      "travel",
+      "rideshare"
+     ],
+     "rate": 2,
+     "source": {
+      "url": "https://www.cardratings.com/travel/chase-sapphire-preferred-and-reserve-benefits.html",
+      "quote": "5x on travel purchased through Chase Travel℠, 3x on dining, 3x on vacation homes, 3x on gas & EV charging, 3x on top streaming services and 3x online groceries (excluding Walmart, Target, and wholesale clubs), 2x on all other travel purchases, and 1x on all other purchases",
+      "kind": "review",
+      "note": "Review site (CardRatings, updated Oct 13 2026). Check against chase.com before demo; issuer page wins.",
+      "asOf": "2026-10-13"
+     }
+    },
+    {
+     "id": "base",
+     "label": "everything else",
+     "categories": [
+      "*"
+     ],
+     "rate": 1,
+     "source": {
+      "url": "https://www.cardratings.com/travel/chase-sapphire-preferred-and-reserve-benefits.html",
+      "quote": "5x on travel purchased through Chase Travel℠, 3x on dining, 3x on vacation homes, 3x on gas & EV charging, 3x on top streaming services and 3x online groceries (excluding Walmart, Target, and wholesale clubs), 2x on all other travel purchases, and 1x on all other purchases",
+      "kind": "review",
+      "note": "Review site (CardRatings, updated Oct 13 2026). Check against chase.com before demo; issuer page wins.",
+      "asOf": "2026-10-13"
+     }
+    }
+   ],
+   "credits": [
+    {
+     "id": "hotel-credit",
+     "label": "Chase Travel hotel credit",
+     "short": "hotel credit",
+     "amountUsd": 100,
+     "period": "annual",
+     "requiresActivation": false,
+     "match": {
+      "merchants": [
+       "chase-travel"
+      ]
+     },
+     "periodNote": "Benny tracks it by calendar year; Chase uses your account anniversary year.",
+     "source": {
+      "url": "https://www.cardratings.com/travel/chase-sapphire-preferred-and-reserve-benefits.html",
+      "quote": "Up to $100 hotel credit. This credit is valid each year for stays booked through Chase Travel.",
+      "kind": "review",
+      "note": "Review site; the $100 figure differs from older $50 terms. Check chase.com.",
+      "asOf": "2026-10-13"
+     }
+    }
+   ],
+   "protections": [
+    {
+     "type": "extended_warranty",
+     "label": "Extended warranty",
+     "addsMonths": 12,
+     "maxOriginalWarrantyMonths": 36,
+     "maxTotalMonths": 48,
+     "perItemCapUsd": 10000,
+     "claim": {
+      "notifyDays": 90,
+      "docsDays": 120
+     },
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "warranty",
+      "repair_estimate"
+     ],
+     "claimsUrl": "https://www.chasecardbenefits.com",
+     "source": {
+      "url": "https://static.chasecdn.com/content/services/structured-document/document.en.pdf/card/benefits-center/product-benefits-guide-pdf/BGC11599.pdf",
+      "quote": "This benefit extends the original manufacturer’s U.S. repair warranty coverage by one (1) additional year. … If the original manufacturer’s U.S. repair warranty … exceeds three (3) years there would not be coverage under this benefit. In no event will coverage … exceed four (4) years from the purchase date.",
+      "kind": "issuer",
+      "asOf": "2026-06-14"
+     },
+     "claimSource": {
+      "url": "https://static.chasecdn.com/content/services/structured-document/document.en.pdf/card/benefits-center/product-benefits-guide-pdf/BGC11599.pdf",
+      "quote": "Visit chasecardbenefits.com or call 1-800-350-1362 within ninety (90) days of product failure … The requested documents must be submitted within one hundred twenty (120) days of the product failure",
+      "kind": "issuer",
+      "asOf": "2026-06-14"
+     }
+    },
+    {
+     "type": "purchase_protection",
+     "label": "Purchase protection",
+     "windowDays": 120,
+     "perItemCapUsd": 500,
+     "secondary": true,
+     "claim": {
+      "notifyDays": 90,
+      "docsDays": 120
+     },
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "repair_estimate"
+     ],
+     "claimsUrl": "https://www.chasecardbenefits.com",
+     "source": {
+      "url": "https://static.chasecdn.com/content/services/structured-document/document.en.pdf/card/benefits-center/product-benefits-guide-pdf/BGC11599.pdf",
+      "quote": "This benefit protects an item You purchase against theft, damage, or Involuntary and Accidental Parting within one hundred twenty (120) days … Coverage is limited to the lesser of … $500 per item and a maximum of $50,000 per Account",
+      "kind": "issuer",
+      "asOf": "2026-06-14"
+     },
+     "lostExclusion": {
+      "url": "https://static.chasecdn.com/content/services/structured-document/document.en.pdf/card/benefits-center/product-benefits-guide-pdf/BGC11599.pdf",
+      "quote": "Items that are lost, or that “mysteriously disappear,” meaning they vanished in an unexplained manner, with no evidence of wrongdoing by one person",
+      "kind": "issuer",
+      "asOf": "2026-06-14"
+     }
+    },
+    {
+     "type": "trip_delay",
+     "label": "Trip delay reimbursement",
+     "minDelayHours": 12,
+     "perTravelerCapUsd": 500,
+     "claim": {
+      "notifyDays": 60,
+      "docsDays": 100
+     },
+     "requiredDocs": [
+      "itinerary",
+      "statement",
+      "carrier_statement",
+      "expense_receipts"
+     ],
+     "claimsUrl": "https://www.chasecardbenefits.com",
+     "source": {
+      "url": "https://static.chasecdn.com/content/services/structured-document/document.en.pdf/card/benefits-center/product-benefits-guide-pdf/BGC11599.pdf",
+      "quote": "This benefit applies if the Covered Traveler’s Common Carrier is delayed for more than twelve (12) hours or requires an overnight stay. The maximum benefit is $500 per Covered Traveler per Trip. … the delay must occur due to equipment failure, inclement weather, strike, or hijacking/skyjacking.",
+      "kind": "issuer",
+      "asOf": "2026-06-14"
+     }
+    }
+   ],
+   "claims": {
+    "url": "https://www.chasecardbenefits.com",
+    "phone": "1-800-350-1362"
+   },
+   "handChecked": true
+  },
+  "united-explorer": {
+   "cardId": "united-explorer",
+   "name": "United Explorer",
+   "short": "Explorer",
+   "issuer": "Chase",
+   "network": "Visa",
+   "annualFee": 150,
+   "annualFeeSource": {
+    "url": "https://onemileatatime.com/news/united-chase-card-changes/",
+    "quote": "$0 introductory annual fee for the first year, then $150",
+    "kind": "review"
+   },
+   "verified": true,
+   "verifiedNote": "Earn rates from chase.com. Protections from the Chase guide effective 10/01/24 (look for a newer one). Credits from review sites; the Instacart wording conflicts (see note).",
+   "art": {
+    "from": "#0A1F44",
+    "to": "#1E5BB8",
+    "ink": "#F2F6FF",
+    "sub": "rgba(242,246,255,.72)",
+    "style": "globe"
+   },
+   "currency": {
+    "unit": "miles",
+    "unitLabel": "miles",
+    "valueCents": {
+     "travel": 1.2
+    },
+    "source": {
+     "url": "https://www.chase.com/personal/credit-cards/united/united-explorer-card",
+     "quote": null,
+     "kind": "issuer",
+     "note": "Miles have no fixed cash redemption."
+    },
+    "travelSource": {
+     "url": null,
+     "quote": null,
+     "kind": "estimate",
+     "note": "Benny estimate of 1.2¢ per mile for award flights. Needs a cited source before demo."
+    }
+   },
+   "earn": [
+    {
+     "id": "united",
+     "label": "United purchases",
+     "categories": [
+      "united"
+     ],
+     "rate": 3,
+     "note": "9x total on United flights including 6x from MileagePlus; Benny counts only the card’s 3x.",
+     "source": {
+      "url": "https://www.chase.com/personal/credit-cards/united/united-explorer-card",
+      "quote": "3 miles per $1 spent on all other eligible United® purchases",
+      "kind": "issuer"
+     }
+    },
+    {
+     "id": "dining",
+     "label": "dining",
+     "categories": [
+      "dining"
+     ],
+     "rate": 2,
+     "source": {
+      "url": "https://www.chase.com/personal/credit-cards/united/united-explorer-card",
+      "quote": "2 miles per $1 spent on dining",
+      "kind": "issuer"
+     }
+    },
+    {
+     "id": "hotel",
+     "label": "hotels booked direct",
+     "categories": [
+      "hotel_direct"
+     ],
+     "rate": 2,
+     "source": {
+      "url": "https://www.chase.com/personal/credit-cards/united/united-explorer-card",
+      "quote": "2 miles per $1 spent on hotel stays when booked directly with the hotel",
+      "kind": "issuer"
+     }
+    },
+    {
+     "id": "base",
+     "label": "everything else",
+     "categories": [
+      "*"
+     ],
+     "rate": 1,
+     "source": {
+      "url": "https://www.chase.com/personal/credit-cards/united/united-explorer-card",
+      "quote": "1 mile per $1 spent on all other purchases",
+      "kind": "issuer"
+     }
+    }
+   ],
+   "credits": [
+    {
+     "id": "instacart",
+     "label": "Instacart credit",
+     "short": "Instacart credit",
+     "amountUsd": 10,
+     "period": "monthly",
+     "requiresActivation": false,
+     "match": {
+      "merchants": [
+       "instacart"
+      ]
+     },
+     "source": {
+      "url": "https://cardmembers.united.com/Explorer",
+      "quote": "$120 Instacart account credit*",
+      "kind": "issuer",
+      "note": "Conflict: a review site calls it a “$10 monthly statement credit … through December 31, 2027”. Issuer page wins: it is an Instacart account credit."
+     },
+     "conflict": {
+      "url": "https://katiestraveltricks.com/credit_card/united-explorer-card/",
+      "quote": "$10 monthly statement credit for purchases made directly through Instacart (up to $120/year). Available through December 31, 2027.",
+      "kind": "review"
+     }
+    },
+    {
+     "id": "rideshare",
+     "label": "Rideshare credit",
+     "short": "rideshare credit",
+     "amountUsd": 5,
+     "period": "monthly",
+     "requiresActivation": true,
+     "activationUrl": "https://www.chase.com/personal/credit-cards/united/united-explorer-card",
+     "activationLabel": "Opt in for this year",
+     "match": {
+      "merchants": [
+       "uber",
+       "lyft"
+      ]
+     },
+     "source": {
+      "url": "https://onemileatatime.com/news/united-chase-card-changes/",
+      "quote": "Up to $60 in rideshare credits per year, in the form of a $5 monthly credit, with yearly opt-in required",
+      "kind": "review"
+     }
+    },
+    {
+     "id": "united-hotels",
+     "label": "United Hotels credit",
+     "short": "United Hotels credit",
+     "amountUsd": 50,
+     "period": "semiannual",
+     "requiresActivation": false,
+     "match": {
+      "merchants": [
+       "united-hotels"
+      ]
+     },
+     "source": {
+      "url": "https://onemileatatime.com/news/united-chase-card-changes/",
+      "quote": "Up to $100 in statement credits on United Hotels purchases, in the form of a $50 credit every six months",
+      "kind": "review"
+     }
+    }
+   ],
+   "perks": [
+    {
+     "id": "instacart-plus",
+     "label": "Instacart+ membership, 3 months free",
+     "requiresActivation": true,
+     "activationUrl": "https://www.instacart.com/",
+     "activationLabel": "Activate in Instacart",
+     "source": {
+      "url": "https://katiestraveltricks.com/credit_card/united-explorer-card/",
+      "quote": "Complimentary 3-month Instacart+ membership, then 25% off annual rate. Available through December 31, 2027.",
+      "kind": "review"
+     }
+    },
+    {
+     "id": "global-entry",
+     "label": "Global Entry / TSA PreCheck fee credit, up to $120",
+     "requiresActivation": true,
+     "activationUrl": "https://ttp.cbp.dhs.gov/",
+     "activationLabel": "Pay the fee with Explorer",
+     "source": {
+      "url": "https://cardmembers.united.com/Explorer",
+      "quote": "Receive a statement credit of up to $120 every 4 years as reimbursement for the application fee for Global Entry, TSA PreCheck or NEXUS when charged to your card.",
+      "kind": "issuer"
+     }
+    }
+   ],
+   "protections": [
+    {
+     "type": "extended_warranty",
+     "label": "Extended warranty",
+     "addsMonths": 12,
+     "maxOriginalWarrantyMonths": 36,
+     "maxTotalMonths": 48,
+     "perItemCapUsd": 10000,
+     "claim": {
+      "notifyDays": 90,
+      "docsDays": 120
+     },
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "warranty",
+      "repair_estimate"
+     ],
+     "claimsUrl": "https://www.chasecardbenefits.com",
+     "source": {
+      "url": "https://static.chasecdn.com/content/services/structured-document/document.en.pdf/card/benefits-center/product-benefits-guide-pdf/BGC11386_v2.pdf",
+      "quote": "This benefit extends the original manufacturer’s U.S. repair warranty coverage by one (1) additional year. … exceeds three (3) years there would not be coverage under this benefit.",
+      "kind": "issuer",
+      "note": "Guide effective 10/01/24.",
+      "asOf": "2024-10-01"
+     }
+    },
+    {
+     "type": "purchase_protection",
+     "label": "Purchase protection",
+     "windowDays": 120,
+     "perItemCapUsd": 10000,
+     "secondary": true,
+     "claim": {
+      "notifyDays": 90,
+      "docsDays": 120
+     },
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "repair_estimate"
+     ],
+     "claimsUrl": "https://www.chasecardbenefits.com",
+     "source": {
+      "url": "https://static.chasecdn.com/content/services/structured-document/document.en.pdf/card/benefits-center/product-benefits-guide-pdf/BGC11386_v2.pdf",
+      "quote": "This benefit protects an item You purchase against theft, damage, or Involuntary and Accidental Parting within one hundred twenty (120) days … $10,000 per item and a maximum of $50,000 per calendar year",
+      "kind": "issuer",
+      "note": "Guide effective 10/01/24.",
+      "asOf": "2024-10-01"
+     },
+     "lostExclusion": {
+      "url": "https://static.chasecdn.com/content/services/structured-document/document.en.pdf/card/benefits-center/product-benefits-guide-pdf/BGC11386_v2.pdf",
+      "quote": "Items that are lost, or that “mysteriously disappear,” meaning they vanished in an unexplained manner",
+      "kind": "issuer",
+      "asOf": "2024-10-01"
+     }
+    },
+    {
+     "type": "trip_delay",
+     "label": "Trip delay reimbursement",
+     "minDelayHours": 12,
+     "perTravelerCapUsd": 500,
+     "claim": {
+      "notifyDays": 60,
+      "docsDays": 100
+     },
+     "requiredDocs": [
+      "itinerary",
+      "statement",
+      "carrier_statement",
+      "expense_receipts"
+     ],
+     "claimsUrl": "https://www.chasecardbenefits.com",
+     "source": {
+      "url": "https://static.chasecdn.com/content/services/structured-document/document.en.pdf/card/benefits-center/product-benefits-guide-pdf/BGC11386_v2.pdf",
+      "quote": "This benefit applies if the Covered Traveler’s Common Carrier is delayed for more than twelve (12) hours or requires an overnight stay. The maximum benefit is $500 per Covered Traveler per Trip.",
+      "kind": "issuer",
+      "note": "Guide effective 10/01/24.",
+      "asOf": "2024-10-01"
+     }
+    }
+   ],
+   "claims": {
+    "url": "https://www.chasecardbenefits.com",
+    "phone": "1-800-350-2919"
+   },
+   "handChecked": true
+  },
+  "costco-anywhere-visa": {
+   "cardId": "costco-anywhere-visa",
+   "name": "Costco Anywhere Visa",
+   "short": "Costco Visa",
+   "issuer": "Citi",
+   "network": "Visa",
+   "annualFee": 0,
+   "annualFeeSource": {
+    "url": "https://www.citi.com/credit-cards/costco-anywhere-visa-card",
+    "quote": "$0 annual fee with active Costco membership",
+    "kind": "issuer"
+   },
+   "verified": true,
+   "verifiedNote": "Earn rates and certificate rules from citi.com. Purchase-protection per-item cap conflicts between sources and is left null.",
+   "art": {
+    "from": "#E9ECEF",
+    "to": "#B9C0C8",
+    "ink": "#1D2433",
+    "sub": "rgba(29,36,51,.6)",
+    "style": "costco"
+   },
+   "currency": {
+    "unit": "cashback",
+    "unitLabel": "cash back",
+    "note": true,
+    "noteShort": "paid as a Costco certificate",
+    "source": {
+     "url": "https://www.citi.com/credit-cards/costco-anywhere-visa-card",
+     "quote": "Cash back earned … will be provided as an annual credit card reward certificate once your February billing statement closes, and is redeemable for cash or merchandise at U.S. Costco Warehouses",
+     "kind": "issuer"
+    }
+   },
+   "earn": [
+    {
+     "id": "costco-gas",
+     "label": "gas at Costco",
+     "categories": [
+      "gas_costco"
+     ],
+     "rate": 5,
+     "cap": {
+      "usd": 7000,
+      "period": "annual",
+      "note": "5% and 4% share $7,000 a year, then 1%"
+     },
+     "source": {
+      "url": "https://www.citi.com/credit-cards/costco-anywhere-visa-card",
+      "quote": "5% On gas at Costco … 5% and 4% earn is on a combined $7,000 spend per year, 1% thereafter",
+      "kind": "issuer"
+     }
+    },
+    {
+     "id": "gas",
+     "label": "other gas & EV charging",
+     "categories": [
+      "gas",
+      "ev_charging"
+     ],
+     "rate": 4,
+     "cap": {
+      "usd": 7000,
+      "period": "annual",
+      "note": "shared with Costco gas"
+     },
+     "source": {
+      "url": "https://www.citi.com/credit-cards/costco-anywhere-visa-card",
+      "quote": "4% On other eligible gas and EV charging",
+      "kind": "issuer"
+     }
+    },
+    {
+     "id": "dining-travel",
+     "label": "restaurants & travel",
+     "categories": [
+      "dining",
+      "travel",
+      "costco_travel"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.citi.com/credit-cards/costco-anywhere-visa-card",
+      "quote": "3% On restaurants and eligible travel, including Costco Travel",
+      "kind": "issuer"
+     }
+    },
+    {
+     "id": "costco",
+     "label": "Costco & Costco.com",
+     "merchants": [
+      "costco",
+      "costco-online"
+     ],
+     "categories": [],
+     "rate": 2,
+     "source": {
+      "url": "https://www.citi.com/credit-cards/costco-anywhere-visa-card",
+      "quote": "2% On all other Costco and Costco.com purchases",
+      "kind": "issuer"
+     }
+    },
+    {
+     "id": "base",
+     "label": "everything else",
+     "categories": [
+      "*"
+     ],
+     "rate": 1,
+     "source": {
+      "url": "https://www.citi.com/credit-cards/costco-anywhere-visa-card",
+      "quote": "1% On all other purchases",
+      "kind": "issuer"
+     }
+    }
+   ],
+   "certificate": {
+    "label": "Costco reward certificate",
+    "where": "Redeem in person at a U.S. Costco warehouse; not at Costco.com.",
+    "source": {
+     "url": "https://www.citi.com/CRD/PDF/faqs.pdf",
+     "quote": "Your credit card reward certificate from your Costco Anywhere Visa Card expires on December 31st of the year of issuance.",
+     "kind": "issuer"
+    }
+   },
+   "credits": [],
+   "protections": [
+    {
+     "type": "purchase_protection",
+     "label": "Damage & theft purchase protection",
+     "windowDays": 120,
+     "perItemCapUsd": null,
+     "claim": {
+      "notifyDays": null,
+      "docsDays": 180
+     },
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "claim_form"
+     ],
+     "claimsUrl": "https://www.cardbenefits.citi.com",
+     "source": {
+      "url": "https://www.citi.com/credit-cards/costco-anywhere-visa-card",
+      "quote": "Damage & Theft Purchase Protection may cover you for repairs or reimbursement if purchases made with your Citi card are damaged or stolen within 120 days (90 days for New York residents) of purchase or delivery of the item.",
+      "kind": "issuer"
+     },
+     "capConflict": "Citi’s Costco Business guide says $10,000 per item; WalletHub says $1,000 per item for the personal card. Left null until the personal guide is checked.",
+     "claimSource": {
+      "url": "https://wallethub.com/answers/cc/costco-visa-purchase-protection-1000410-2140754320/",
+      "quote": "Submit a completed claim form within 180 days of the incident.",
+      "kind": "review"
+     }
+    }
+   ],
+   "noCoverage": {
+    "extended_warranty": {
+     "url": "https://wallethub.com/answers/cc/costco-visa-purchase-protection-1000410-2140754320/",
+     "quote": "Costco Credit Card does not offer extended warranty protection, because its extended warranty benefit was discontinued in January 2023.",
+     "kind": "review",
+     "note": "Citi’s card page lists no extended warranty, which is consistent."
+    }
+   },
+   "claims": {
+    "url": "https://www.cardbenefits.citi.com",
+    "phone": "1-866-918-4670"
+   },
+   "handChecked": true
+  },
+  "chase-sapphire-reserve": {
+   "cardId": "chase-sapphire-reserve",
+   "name": "Chase Sapphire Reserve",
+   "short": "Reserve",
+   "issuer": "Chase",
+   "network": "Visa",
+   "art": {
+    "from": "#0B1A33",
+    "to": "#2A3A5C",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)",
+    "style": "metal"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     },
+     {
+      "url": "https://www.cardratings.com/travel/chase-sapphire-preferred-and-reserve-benefits.html",
+      "kind": "review",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 2 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "chase-travel",
+     "label": "Chase Travel",
+     "categories": [
+      "chase_travel"
+     ],
+     "rate": 8,
+     "source": {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "quote": "You'll earn 8 points for each $1 spent on purchases made using your card through Chase Travel.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "excludesText": "Travel purchases made using your card through FROSCH by Chase Travel, Valerie Wilson Travel by Chase Travel, or Frosch International Travel LLC will not qualify to earn 8 points for each $1 spent."
+    },
+    {
+     "id": "direct-airline-and-hotel-bookings",
+     "label": "Direct Airline and Hotel Bookings",
+     "categories": [
+      "airline",
+      "hotel_direct"
+     ],
+     "rate": 4,
+     "source": {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "quote": "You'll earn 4 points for each $1 spent on purchases made in the following rewards category: flights and hotels booked direct.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "dining",
+     "label": "Dining",
+     "categories": [
+      "dining"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "quote": "You'll earn 3 points for each $1 spent on purchases made in the following rewards category: dining at restaurants including takeout and eligible delivery services.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "lyft-rides",
+     "label": "Lyft Rides",
+     "categories": [
+      "rideshare"
+     ],
+     "rate": 5,
+     "source": {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "quote": "You’ll earn 5X points on qualifying Lyft products and services purchased through the Lyft mobile application through 09/30/2027.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "conditional": true,
+     "condition": "Through 09/30/2027",
+     "excludesText": "Purchase of gift cards, car rentals, vehicle service centers, miscellaneous fees and other Lyft products and services are excluded from this promotion."
+    },
+    {
+     "id": "all-other-purchases",
+     "label": "All Other Purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 1,
+     "source": {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "quote": "You'll earn 1 point for each $1 spent on all other purchases.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "credits": [
+    {
+     "id": "annual-travel-credit",
+     "label": "Annual Travel Credit",
+     "short": "Annual Travel Credit",
+     "amountUsd": 300,
+     "period": "annual",
+     "periodNote": null,
+     "requiresActivation": false,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [],
+     "source": {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "quote": "A statement credit will be automatically applied to your account for purchases made in the travel category, up to an annual maximum accumulation of $300.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "the-edit-credit",
+     "label": "The Edit Credit",
+     "short": "The Edit Credit",
+     "amountUsd": 500,
+     "period": "annual",
+     "periodNote": null,
+     "requiresActivation": false,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [
+      "The Edit"
+     ],
+     "source": {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "quote": "Starting 1/1/2026 a statement credit of up to $250 will be automatically applied to your account for qualifying purchases with The Edit by Chase Travel, for a total maximum accumulation of $500 in statement credits each calendar year.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "global-entry-tsa-precheck-or-nexus-fee-c",
+     "label": "Global Entry, TSA PreCheck, or NEXUS Fee Credit",
+     "short": "Global Entry, TSA PreCheck, or NEXUS Fee",
+     "amountUsd": 120,
+     "period": "annual",
+     "periodNote": "Issuer period: every 4 years.",
+     "requiresActivation": false,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [
+      "Global Entry",
+      "TSA PreCheck",
+      "NEXUS"
+     ],
+     "source": {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "quote": "You will receive one statement credit every four years (up to $120) after the first program (either Global Entry or TSA PreCheck® or NEXUS) application fee is charged to your Chase Sapphire Reserve card, by you or an authorized user.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "exclusive-tables-dining-credit",
+     "label": "Exclusive Tables Dining Credit",
+     "short": "Exclusive Tables Dining Credit",
+     "amountUsd": 150,
+     "period": "semiannual",
+     "periodNote": null,
+     "requiresActivation": false,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [
+      "Sapphire Reserve Exclusive Tables",
+      "OpenTable"
+     ],
+     "source": {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "quote": "A statement credit will be automatically applied to your account for dining purchases at select restaurants up to a maximum accumulation of $150 in statement credits from January 1 through June 30 and up to $150 from July 1 through December 31, for a total maximum accumulation of $300 in statement credits each calendar year.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "perks": [
+    {
+     "id": "complimentary-dashpass",
+     "label": "Complimentary DashPass",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "quote": "You and your authorized user(s) can activate complimentary DashPass with an eligible Chase Sapphire Reserve Credit Card by December 31, 2029 to receive complimentary DashPass on DoorDash and Caviar from activation until December 31, 2029 or for 12 months, whichever is longer.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "protections": [
+    {
+     "type": "rental_car",
+     "label": "Rental car coverage",
+     "source": {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "quote": "Decline the rental company's collision insurance and charge the entire rental cost to your card. Coverage is primary and provides reimbursement up to $75,000 for theft and collision damage for most rental vehicles in the U.S. and abroad.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ]
+    },
+    {
+     "type": "trip_cancellation",
+     "label": "Trip cancellation/interruption",
+     "source": {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "quote": "If your trip is canceled or cut short by sickness, severe weather or other covered situations, you can be reimbursed up to $10,000 per covered traveler and $20,000 per trip for your pre-paid, non-refundable travel expenses, including passenger fares, tours, and hotels.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ],
+     "perTravelerCapUsd": 10000
+    },
+    {
+     "type": "trip_delay",
+     "label": "Trip delay reimbursement",
+     "source": {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "quote": "If your common carrier travel is delayed more than 6 hours or requires an overnight stay, you are covered for unreimbursed expenses, such as meals and lodging, up to $500 per covered traveler.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "itinerary",
+      "statement",
+      "carrier_statement",
+      "expense_receipts"
+     ],
+     "minDelayHours": 6,
+     "perTravelerCapUsd": 500
+    },
+    {
+     "type": "baggage_delay",
+     "label": "Baggage delay",
+     "source": {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "quote": "Reimburses you up to $100 a day for up to 5 days for essential purchases like toiletries and clothing when baggage is delayed over 6 hours.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ],
+     "minDelayHours": 6
+    },
+    {
+     "type": "purchase_protection",
+     "label": "Purchase protection",
+     "source": {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "quote": "Covers your eligible new purchases for 120 days from the date of purchase against damage or theft up to $10,000 per item.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "repair_estimate"
+     ],
+     "windowDays": 120,
+     "perItemCapUsd": 10000
+    },
+    {
+     "type": "return_protection",
+     "label": "Return protection",
+     "source": {
+      "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+      "quote": "You can be reimbursed for eligible items that the store won't accept within 90 days of purchase, up to $500 per item, $1,000 per 12-month period.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ],
+     "windowDays": 90,
+     "perItemCapUsd": 500
+    }
+   ],
+   "annualFee": 795,
+   "annualFeeSource": {
+    "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+    "quote": "$795 annual fee",
+    "kind": "issuer",
+    "asOf": "2026-10-24"
+   },
+   "currency": {
+    "unit": "points",
+    "unitLabel": "points",
+    "valueCents": {
+     "cash": 1
+    },
+    "source": {
+     "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve",
+     "quote": "Points earned with your card are worth $0.01 each when redeemed through Chase Travel, as outlined in your Ultimate Rewards Agreement. That means 100 points are worth $1",
+     "kind": "issuer",
+     "asOf": "2026-10-24"
+    }
+   }
+  },
+  "chase-freedom-unlimited": {
+   "cardId": "chase-freedom-unlimited",
+   "name": "Chase Freedom Unlimited",
+   "short": "Freedom Unlimited",
+   "issuer": "Chase",
+   "network": "Visa",
+   "art": {
+    "from": "#1E4E9B",
+    "to": "#5B8FD6",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 1 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "all-other-purchases",
+     "label": "All other purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 1.5,
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited",
+      "quote": "Earn 1.5% on all other purchases.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "dining",
+     "label": "Dining",
+     "categories": [
+      "dining"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited",
+      "quote": "Earn 3% on dining at restaurants, including takeout and eligible delivery services.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "drugstores",
+     "label": "Drugstores",
+     "categories": [
+      "drugstore"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited",
+      "quote": "Earn 3% on drugstore purchases.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "chase-travel",
+     "label": "Chase Travel",
+     "categories": [
+      "chase_travel"
+     ],
+     "rate": 5,
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited",
+      "quote": "Earn 5% on travel purchased through Chase Travel SM .",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "lyft",
+     "label": "Lyft",
+     "categories": [
+      "rideshare"
+     ],
+     "rate": 2,
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited",
+      "quote": "You’ll earn 2% cash back total on qualifying Lyft products and services purchased through the Lyft mobile application through 09/30/2027.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "conditional": true,
+     "condition": "Purchased through the Lyft mobile application through 09/30/2027"
+    }
+   ],
+   "credits": [
+    {
+     "id": "doordash-non-restaurant-discount",
+     "label": "DoorDash Non-Restaurant Discount",
+     "short": "DoorDash Non-Restaurant Discount",
+     "amountUsd": 10,
+     "period": "quarterly",
+     "periodNote": null,
+     "requiresActivation": true,
+     "match": {
+      "merchants": [
+       "doordash"
+      ]
+     },
+     "merchantNames": [
+      "DoorDash"
+     ],
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited",
+      "quote": "Once you have activated your Chase Freedom, Chase Freedom Unlimited, Chase Freedom Student, Chase Freedom Flex, or Chase Freedom Rise DashPass membership, you will receive a $10 off discount each calendar quarter at checkout on one qualifying non-restaurant order on DoorDash",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "perks": [
+    {
+     "id": "complimentary-dashpass",
+     "label": "Complimentary DashPass",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited",
+      "quote": "When the membership is activated for the first time between 02/01/2025 and 12/31/2029, your Chase Freedom Unlimited account will receive 6 months of complimentary DashPass for use on both the DoorDash and Caviar applications during the same membership period based on the first activation date.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "protections": [
+    {
+     "type": "purchase_protection",
+     "label": "Purchase protection",
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited",
+      "quote": "Covers your eligible new purchases for 120 days from the date of purchase against damage or theft up to $500 per item.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "repair_estimate"
+     ],
+     "windowDays": 120,
+     "perItemCapUsd": 500
+    },
+    {
+     "type": "extended_warranty",
+     "label": "Extended warranty",
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited",
+      "quote": "Extends the time period of the manufacturer's U.S. warranty by an additional year, on eligible warranties of three years or less, up to four years from the date of purchase.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "warranty",
+      "repair_estimate"
+     ],
+     "incomplete": [
+      "addsMonths",
+      "maxOriginalWarrantyMonths"
+     ]
+    },
+    {
+     "type": "trip_cancellation",
+     "label": "Trip cancellation/interruption",
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited",
+      "quote": "You can be reimbursed up to $1,500 per covered traveler and $6,000 per trip for your pre-paid, non-refundable passenger fares, if your trip is canceled or cut short by sickness, severe weather or other covered situations.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ],
+     "perTravelerCapUsd": 1500
+    },
+    {
+     "type": "rental_car",
+     "label": "Rental car coverage",
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited",
+      "quote": "Decline the rental company's collision insurance and charge the entire rental cost to your card. Coverage provides reimbursement for theft and collision damage for most rental vehicles. In the U.S., coverage is secondary to your personal insurance.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ]
+    }
+   ],
+   "annualFee": 0,
+   "annualFeeSource": {
+    "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited",
+    "quote": "ANNUAL FEE\n$0",
+    "kind": "issuer",
+    "asOf": "2026-10-24"
+   },
+   "currency": {
+    "unit": "cashback",
+    "unitLabel": "cash back",
+    "valueCents": {}
+   }
+  },
+  "chase-freedom-flex": {
+   "cardId": "chase-freedom-flex",
+   "name": "Chase Freedom Flex",
+   "short": "Freedom Flex",
+   "issuer": "Chase",
+   "network": "Mastercard",
+   "art": {
+    "from": "#1A5DAB",
+    "to": "#77A7E0",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/flex",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 1 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "chase-travel",
+     "label": "Chase Travel",
+     "categories": [
+      "chase_travel"
+     ],
+     "rate": 5,
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/flex",
+      "quote": "Earn 5% on travel purchased through Chase Travel℠.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "rotating-quarterly-categories",
+     "label": "Rotating Quarterly Categories",
+     "categories": [
+      "*"
+     ],
+     "rate": 5,
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/flex",
+      "quote": "Earn 5% cash back on up to $1,500 in rotating categories each quarter you activate.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "conditional": true,
+     "condition": "each quarter you activate",
+     "cap": {
+      "note": "$1,500"
+     }
+    },
+    {
+     "id": "dining-and-drugstores",
+     "label": "Dining and Drugstores",
+     "categories": [
+      "dining",
+      "drugstore"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/flex",
+      "quote": "You’ll earn 3% Cash Back rewards total for each $1 spent on purchases in the following rewards categories: drugstores and dining at restaurants including takeout and eligible delivery services (2% additional Cash Back rewards on top of the 1% Cash Back rewards earned on each purchase).",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "lyft-purchases",
+     "label": "Lyft Purchases",
+     "categories": [
+      "rideshare"
+     ],
+     "rate": 2,
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/flex",
+      "quote": "You’ll earn 2% cash back total on qualifying Lyft products and services purchased through the Lyft mobile application through 09/30/2027.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "conditional": true,
+     "condition": "through 09/30/2027"
+    },
+    {
+     "id": "all-other-purchases",
+     "label": "All Other Purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 1,
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/flex",
+      "quote": "You’ll earn 1% Cash Back rewards for each $1 spent.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "credits": [],
+   "perks": [
+    {
+     "id": "doordash-dashpass",
+     "label": "DoorDash DashPass",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/flex",
+      "quote": "When the membership is activated for the first time between 02/01/2025 and 12/31/2029, your Chase Freedom Flex account will receive 6 months of complimentary DashPass for use on both the DoorDash and Caviar applications during the same membership period based on the first activation date.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "protections": [
+    {
+     "type": "purchase_protection",
+     "label": "Purchase protection",
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/flex",
+      "quote": "Covers your eligible new purchases for 120 days from the date of purchase against damage or theft up to $500 per item.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "repair_estimate"
+     ],
+     "windowDays": 120,
+     "perItemCapUsd": 500
+    },
+    {
+     "type": "extended_warranty",
+     "label": "Extended warranty",
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/flex",
+      "quote": "Extends the time period of the manufacturer's U.S. warranty by an additional year, on eligible warranties of three years or less, up to four years from the date of purchase.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "warranty",
+      "repair_estimate"
+     ],
+     "incomplete": [
+      "addsMonths",
+      "maxOriginalWarrantyMonths"
+     ]
+    },
+    {
+     "type": "trip_cancellation",
+     "label": "Trip cancellation/interruption",
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/flex",
+      "quote": "You can be reimbursed up to $1,500 per covered traveler and $6,000 per trip for your pre-paid, non-refundable passenger fares, if your trip is canceled or cut short by sickness, severe weather or other covered situations.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ],
+     "perTravelerCapUsd": 1500
+    },
+    {
+     "type": "rental_car",
+     "label": "Rental car coverage",
+     "source": {
+      "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/flex",
+      "quote": "Decline the rental company's collision insurance and charge the entire rental cost to your card. Coverage provides reimbursement for theft and collision damage for most rental vehicles. In the U.S., coverage is secondary to your personal insurance.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ]
+    }
+   ],
+   "currency": {
+    "unit": "cashback",
+    "unitLabel": "cash back",
+    "valueCents": {}
+   }
+  },
+  "amex-gold": {
+   "cardId": "amex-gold",
+   "name": "American Express Gold Card",
+   "short": "Amex Gold",
+   "issuer": "American Express",
+   "network": "American Express",
+   "art": {
+    "from": "#A9822F",
+    "to": "#E3C77A",
+    "ink": "#2A2110",
+    "sub": "rgba(42,33,16,.65)",
+    "style": "metal"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 1 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "restaurants",
+     "label": "Restaurants",
+     "categories": [
+      "dining"
+     ],
+     "rate": 4,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "quote": "4X Membership Rewards® points per dollar spent on purchases at restaurants worldwide, on up to $50,000 in purchases per calendar year, then 1X points for the rest of the year.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "cap": {
+      "note": "$50,000 per calendar year"
+     }
+    },
+    {
+     "id": "u-s-supermarkets",
+     "label": "U.S. Supermarkets",
+     "categories": [
+      "grocery"
+     ],
+     "rate": 4,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "quote": "4X Membership Rewards® points per dollar spent at US supermarkets, on up to $25,000 in purchases per calendar year, then 1X points for the rest of the year.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "cap": {
+      "note": "$25,000 per calendar year"
+     }
+    },
+    {
+     "id": "prepaid-hotels",
+     "label": "Prepaid Hotels",
+     "categories": [
+      "issuer_travel"
+     ],
+     "rate": 5,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "quote": "5X Membership Rewards® points per dollar spent on prepaid hotels booked through AmexTravel.com or the Amex Travel App™.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "flights",
+     "label": "Flights",
+     "categories": [
+      "airline",
+      "issuer_travel"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "quote": "3X Membership Rewards® points per dollar spent on flights booked through AmexTravel.com or the Amex Travel App™ or purchased directly from airlines.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "prepaid-car-rentals-and-cruises",
+     "label": "Prepaid Car Rentals and Cruises",
+     "categories": [
+      "issuer_travel"
+     ],
+     "rate": 2,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "quote": "2X Membership Rewards® points per dollar spent on prepaid car rentals booked through AmexTravel.com or the Amex Travel App™ and cruises booked and paid through AmexTravel.com",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "all-other-purchases",
+     "label": "All Other Purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 1,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "quote": "1X Membership Rewards® point per dollar spent on all other eligible purchases.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "credits": [
+    {
+     "id": "dining-credit",
+     "label": "Dining Credit",
+     "short": "Dining Credit",
+     "amountUsd": 10,
+     "period": "monthly",
+     "periodNote": null,
+     "requiresActivation": true,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [
+      "Grubhub",
+      "Seamless",
+      "Buffalo Wild Wings",
+      "Five Guys",
+      "The Cheesecake Factory",
+      "Wonder"
+     ],
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "quote": "Earn up to a total of $10 in statement credits monthly when you pay with the Gold Card at Grubhub (including Seamless), Buffalo Wild Wings, Five Guys, The Cheesecake Factory, and Wonder. This can be an annual savings of up to $120. Enrollment required.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "uber-cash",
+     "label": "Uber Cash",
+     "short": "Uber Cash",
+     "amountUsd": 10,
+     "period": "monthly",
+     "periodNote": null,
+     "requiresActivation": false,
+     "match": {
+      "merchants": [
+       "uber"
+      ]
+     },
+     "merchantNames": [
+      "Uber"
+     ],
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "quote": "Get $10 in Uber Cash each month when you add your Gold Card to your Uber account. You can use your Uber Cash on orders and rides with Uber in the U.S. when you select an Amex Card for your transaction.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "resy-credit",
+     "label": "Resy Credit",
+     "short": "Resy Credit",
+     "amountUsd": 50,
+     "period": "semiannual",
+     "periodNote": null,
+     "requiresActivation": true,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [
+      "Resy"
+     ],
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "quote": "That’s up to $50 in statement credits from January through June and up to $50 in statement credits from July through December. Enrollment required.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "dunkin-credit",
+     "label": "Dunkin' Credit",
+     "short": "Dunkin' Credit",
+     "amountUsd": 7,
+     "period": "monthly",
+     "periodNote": null,
+     "requiresActivation": true,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [
+      "Dunkin'"
+     ],
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "quote": "Earn up to $7 in monthly statement credits after you pay with the American Express® Gold Card at U.S. Dunkin' locations. Enrollment required.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "perks": [
+    {
+     "id": "hertz-five-star-status",
+     "label": "Hertz Five Star Status",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "quote": "As an American Express® Gold Card Member, you are eligible for a complimentary upgrade to Hertz Five Star® Status and can earn 2X Membership Rewards® points on prepaid car rentals through AmexTravel.com or the Amex Travel App™. Enrollment Required for Hertz Five Star® Status.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "american-express-venue-collection-conces",
+     "label": "American Express Venue Collection Concessions Credit",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "quote": "Plus enroll your Card and get 10% back on qualifying concessions purchases up to $250 per calendar year. Limit one enrolled Card per Card Member.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "protections": [
+    {
+     "type": "trip_delay",
+     "label": "Trip delay reimbursement",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "quote": "If a round-trip is paid for entirely with your Eligible Card and a covered reason delays your trip more than 12 hours, Trip Delay Insurance can help reimburse certain additional expenses purchased on the same Eligible Card, up to $300 per trip, maximum 2 claims per Eligible Card per 12 consecutive month period.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "itinerary",
+      "statement",
+      "carrier_statement",
+      "expense_receipts"
+     ],
+     "minDelayHours": 12,
+     "incomplete": [
+      "perTravelerCapUsd"
+     ]
+    },
+    {
+     "type": "rental_car",
+     "label": "Rental car coverage",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "quote": "When you use your Eligible Card to reserve and pay for the Entire Rental and decline the collision damage waiver (CDW) at the Rental Company counter, you can be covered for Damage to or Theft of a Rental Vehicle in a Covered Territory.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ]
+    },
+    {
+     "type": "purchase_protection",
+     "label": "Purchase protection",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "quote": "Purchase Protection ◆ can help protect Covered Purchases for up to 90 days from the Covered Purchase date made on your Eligible Card when they're accidentally damaged, stolen, or lost.* *Up to $10,000 per Covered Purchase, up to $50,000 per calendar year.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "repair_estimate"
+     ],
+     "windowDays": 90,
+     "perItemCapUsd": 10000
+    },
+    {
+     "type": "extended_warranty",
+     "label": "Extended warranty",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/",
+      "quote": "Coverage is up to the actual amount charged to your Eligible Card for the item up to a maximum of $10,000; not to exceed $50,000 per Card Member account per calendar year.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "warranty",
+      "repair_estimate"
+     ],
+     "perItemCapUsd": 10000,
+     "incomplete": [
+      "addsMonths",
+      "maxOriginalWarrantyMonths"
+     ]
+    }
+   ],
+   "currency": {
+    "unit": "points",
+    "unitLabel": "points",
+    "valueCents": {},
+    "source": {
+     "url": null,
+     "quote": null,
+     "kind": "estimate",
+     "note": "No cash value stated in the sources; Benny counts 0 in cash mode."
+    }
+   }
+  },
+  "amex-platinum": {
+   "cardId": "amex-platinum",
+   "name": "The Platinum Card from American Express",
+   "short": "Amex Platinum",
+   "issuer": "American Express",
+   "network": "American Express",
+   "art": {
+    "from": "#B9BDC3",
+    "to": "#EEF0F2",
+    "ink": "#24262A",
+    "sub": "rgba(36,38,42,.6)",
+    "style": "metal"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 1 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "flights-booked-directly-with-airlines-or",
+     "label": "Flights booked directly with airlines or through American Express Travel",
+     "categories": [
+      "airline",
+      "issuer_travel"
+     ],
+     "rate": 5,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "5X Points on Flights Booked directly with airlines or through American Express Travel® , on up to $500,000 on these purchases per calendar year.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "cap": {
+      "note": "$500,000 on these purchases per calendar year"
+     }
+    },
+    {
+     "id": "prepaid-hotels-booked-on-american-expres",
+     "label": "Prepaid hotels booked on American Express Travel",
+     "categories": [
+      "issuer_travel"
+     ],
+     "rate": 5,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "5x points on prepaid hotels booked through American Express Travel®‡",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "other-purchases",
+     "label": "Other purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 1,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "1x points on other purchases. Terms and limitations apply.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "credits": [
+    {
+     "id": "hotel-credit",
+     "label": "Hotel Credit",
+     "short": "Hotel Credit",
+     "amountUsd": 300,
+     "period": "semiannual",
+     "periodNote": null,
+     "requiresActivation": false,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [
+      "Fine Hotels + Resorts",
+      "The Hotel Collection",
+      "American Express Travel"
+     ],
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "Get up to $300 in statement credits semi-annually on prepaid Fine Hotels + Resorts® program or The Hotel Collection bookings * through American Express Travel using your Platinum Card® .",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "uber-one-credit",
+     "label": "Uber One Credit",
+     "short": "Uber One Credit",
+     "amountUsd": 120,
+     "period": "annual",
+     "periodNote": null,
+     "requiresActivation": false,
+     "match": {
+      "merchants": [
+       "uber"
+      ]
+     },
+     "merchantNames": [
+      "Uber One"
+     ],
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "As a Platinum Card® Member, you can get up to $120 in statement credits each calendar year after you purchase an auto-renewing Uber One membership with the Card. Terms apply.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "airline-fee-credit",
+     "label": "Airline Fee Credit",
+     "short": "Airline Fee Credit",
+     "amountUsd": 200,
+     "period": "annual",
+     "periodNote": null,
+     "requiresActivation": true,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [],
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "Select one qualifying airline and then receive up to $200 in statement credits per calendar year when incidental fees, such as checked bags, in-flight refreshments, flight-change fees, overweight / oversize baggage fees, airport lounge day-passes, pet-kennel fees, and phone reservation fees",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "clear-credit",
+     "label": "CLEAR+ Credit",
+     "short": "CLEAR+ Credit",
+     "amountUsd": 219,
+     "period": "annual",
+     "periodNote": null,
+     "requiresActivation": false,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [
+      "CLEAR+"
+     ],
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "CLEAR+ gets you to your gate faster by using your face to verify you are you. You can receive up to $219 in statement credits per calendar year after you sign up and pay for a CLEAR+ Membership (subject to auto-renewal) with your eligible American Express Card.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "resy-credit",
+     "label": "Resy Credit",
+     "short": "Resy Credit",
+     "amountUsd": 100,
+     "period": "quarterly",
+     "periodNote": null,
+     "requiresActivation": true,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [
+      "Resy"
+     ],
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "With the $400 Resy Credit, you can get up to $100 in statement credits each quarter after you use the Platinum Card® to make eligible purchases with Resy, including dining purchases at over 10,000 qualifying U.S. Resy restaurants. Enrollment required.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "digital-entertainment-credit",
+     "label": "Digital Entertainment Credit",
+     "short": "Digital Entertainment Credit",
+     "amountUsd": 25,
+     "period": "monthly",
+     "periodNote": null,
+     "requiresActivation": true,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [
+      "Disney cinema",
+      "Disney bundle",
+      "ESPN",
+      "Hulu",
+      "The New York Times",
+      "Paramount",
+      "Peacock",
+      "The Wall Street Journal",
+      "YouTube Premium",
+      "YouTube TV"
+     ],
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "Get up to $25 in statement credits each month after you pay for eligible purchases with the Platinum Card® at participating partners. Enrollment required.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "lululemon-credit",
+     "label": "lululemon Credit",
+     "short": "lululemon Credit",
+     "amountUsd": 75,
+     "period": "quarterly",
+     "periodNote": null,
+     "requiresActivation": true,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [
+      "lululemon"
+     ],
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "You can receive up to $75 in statement credits each quarter when you use the Card for eligible purchases at U.S. lululemon retail stores (excluding outlets) and lululemon.com. Enrollment required.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "walmart-credit",
+     "label": "Walmart+ Credit",
+     "short": "Walmart+ Credit",
+     "amountUsd": 12.95,
+     "period": "monthly",
+     "periodNote": null,
+     "requiresActivation": false,
+     "match": {
+      "merchants": [
+       "walmart"
+      ]
+     },
+     "merchantNames": [
+      "Walmart+"
+     ],
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "Get up to a $12.95* statement credit back each month after you pay for a monthly Walmart+ membership (subject to auto-renewal) with your Platinum Card® .",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "oura-ring-credit",
+     "label": "Oura Ring Credit",
+     "short": "Oura Ring Credit",
+     "amountUsd": 200,
+     "period": "annual",
+     "periodNote": null,
+     "requiresActivation": true,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [
+      "Oura Ring"
+     ],
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "You can receive up to $200 in statement credits when you use the Platinum Card® to purchase an Oura Ring at ouraring.com each calendar year. Enrollment required.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "global-entry-credit",
+     "label": "Global Entry Credit",
+     "short": "Global Entry Credit",
+     "amountUsd": 120,
+     "period": "annual",
+     "periodNote": "Issuer period: every 4 years.",
+     "requiresActivation": false,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [
+      "Global Entry"
+     ],
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "Receive either a statement credit every 4 years after you apply for Global Entry ($120) or a statement credit after you apply for a five-year membership for TSA PreCheck® (up to $85 through a TSA PreCheck official enrollment provider) and pay the application fee with your Platinum Card® .",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "perks": [
+    {
+     "id": "priority-pass-select-lounge-access",
+     "label": "Priority Pass Select Lounge Access",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "Priority Pass membership (enrollment required)",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "hilton-honors-gold-status",
+     "label": "Hilton Honors Gold Status",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "As a Platinum Card® Member, you are eligible to enroll in complimentary Hilton Honors Gold status.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "leaders-club-sterling-status",
+     "label": "Leaders Club Sterling Status",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "With the Platinum Card® , you can receive complimentary Leaders Club Sterling Status from The Leading Hotels of the World® . Enjoy exclusive benefits such as a 5% Leaders Club points bonus on qualifying stays, and 5 pre-arrival upgrades annually (subject to availability). Enrollment required.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "car-rental-privileges",
+     "label": "Car Rental Privileges",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "Card Members must enroll through their American Express online account using their eligible Card.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "protections": [
+    {
+     "type": "rental_car",
+     "label": "Rental car coverage",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "When you use your Eligible Card to reserve and pay for the Entire Rental and decline the collision damage waiver (CDW) at the Rental Company counter, you can be covered for Damage to or Theft of a Rental Vehicle in a Covered Territory.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ]
+    },
+    {
+     "type": "trip_delay",
+     "label": "Trip delay reimbursement",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "If a round-trip is paid for entirely with your Eligible Card and a covered reason delays your trip more than 6 hours, Trip Delay Insurance ‡ can help reimburse certain additional expenses purchased with your same Eligible Card, up to $500 per trip, maximum 2 claims per Eligible Card per 12 consecutive month period.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "itinerary",
+      "statement",
+      "carrier_statement",
+      "expense_receipts"
+     ],
+     "minDelayHours": 6,
+     "incomplete": [
+      "perTravelerCapUsd"
+     ]
+    },
+    {
+     "type": "trip_cancellation",
+     "label": "Trip cancellation/interruption",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "If you purchase a round trip entirely with your Eligible Card and a covered reason cancels or interrupts your trip, Trip Cancellation and Interruption Insurance ‡ can help reimburse your non-refundable expenses purchased with the same Eligible Card, up to $10,000 per trip and up to $20,000 per Eligible Card per 12 consecutive month period.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ]
+    },
+    {
+     "type": "return_protection",
+     "label": "Return protection",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "up to 90 days from the date of purchase.* ‡ *American Express may refund the full purchase price excluding shipping and handling, up to $300 per item",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ],
+     "windowDays": 90,
+     "perItemCapUsd": 300
+    },
+    {
+     "type": "cell_phone",
+     "label": "Cell phone protection",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "You can be reimbursed, the lesser of, your costs to repair or replace your damaged or Stolen cell phone for a maximum of up to $800 per claim with a limit of 2 approved claims per 12-month period when your cell phone line is listed on a wireless bill",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ],
+     "perItemCapUsd": 800
+    },
+    {
+     "type": "purchase_protection",
+     "label": "Purchase protection",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "protect them for up to 90 days from the Covered Purchase date. Please read important exclusions and restrictions.* *Up to $10,000 per Covered Purchase",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "repair_estimate"
+     ],
+     "windowDays": 90,
+     "perItemCapUsd": 10000
+    },
+    {
+     "type": "extended_warranty",
+     "label": "Extended warranty",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+      "quote": "Extended Warranty ◆ can provide up to one extra year added to the Original Manufacturer’s Warranty. Applies to warranties of 5 years or less. Coverage is up to the actual amount charged to your Eligible Card for the item up to a maximum of $10,000",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "warranty",
+      "repair_estimate"
+     ],
+     "perItemCapUsd": 10000,
+     "incomplete": [
+      "addsMonths",
+      "maxOriginalWarrantyMonths"
+     ]
+    }
+   ],
+   "annualFee": 895,
+   "annualFeeSource": {
+    "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
+    "quote": "The annual fee for the Platinum Card\n®\nis $895\n¤†\nfor a Basic Card.",
+    "kind": "issuer",
+    "asOf": "2026-10-24"
+   },
+   "currency": {
+    "unit": "points",
+    "unitLabel": "points",
+    "valueCents": {},
+    "source": {
+     "url": null,
+     "quote": null,
+     "kind": "estimate",
+     "note": "No cash value stated in the sources; Benny counts 0 in cash mode."
+    }
+   }
+  },
+  "amex-blue-cash-preferred": {
+   "cardId": "amex-blue-cash-preferred",
+   "name": "Blue Cash Preferred from American Express",
+   "short": "Blue Cash Preferred",
+   "issuer": "American Express",
+   "network": "American Express",
+   "art": {
+    "from": "#1B3E7A",
+    "to": "#3A6CC1",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 1 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "u-s-supermarkets",
+     "label": "U.S. Supermarkets",
+     "categories": [
+      "grocery"
+     ],
+     "rate": 6,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
+      "quote": "Card Members can earn 6% cash back on eligible purchases at U.S. supermarkets, on up to $6,000 per year in purchases (then 1%).",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "cap": {
+      "note": "$6,000 per year"
+     }
+    },
+    {
+     "id": "select-u-s-streaming-subscriptions",
+     "label": "Select U.S. Streaming Subscriptions",
+     "categories": [
+      "streaming"
+     ],
+     "rate": 6,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
+      "quote": "Card Members can earn 6% cash back on select U.S. streaming subscriptions to stream your favorite shows, movies, and more.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "transit",
+     "label": "Transit",
+     "categories": [
+      "transit",
+      "rideshare"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
+      "quote": "Card Members can earn 3% cash back on transit (e.g., taxis/rideshare, parking, tolls, trains, buses and more).",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "u-s-gas-stations",
+     "label": "U.S. Gas Stations",
+     "categories": [
+      "gas"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
+      "quote": "Card Members can earn 3% cash back on eligible purchases at U.S. gas stations.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "other-purchases",
+     "label": "Other Purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 1,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
+      "quote": "Card Members can earn 1% cash back on other eligible purchases.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "credits": [
+    {
+     "id": "disney-streaming-credit",
+     "label": "Disney Streaming Credit",
+     "short": "Disney Streaming Credit",
+     "amountUsd": 10,
+     "period": "monthly",
+     "periodNote": null,
+     "requiresActivation": true,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [
+      "DisneyPlus.com",
+      "Hulu.com",
+      "Stream.ESPN.com"
+     ],
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
+      "quote": "Disney Streaming Credit: With the $120 Disney Streaming Credit, you can earn up to $10 back per month as a statement credit when you use your enrolled American Express Blue Cash Preferred",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "perks": [
+    {
+     "id": "amex-offers",
+     "label": "Amex Offers",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
+      "quote": "Card Members can explore the Amex Offers available to add to their eligible Card and earn extra rewards on qualifying purchases made at select brands.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "send-split",
+     "label": "Send & Split",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
+      "quote": "Powered by Venmo and PayPal. Enrollment Required. Terms apply.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "protections": [
+    {
+     "type": "purchase_protection",
+     "label": "Purchase protection",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
+      "quote": "can help protect their Covered Purchases for up to 90 days from the Covered Purchase date if it is stolen or accidentally damaged. The coverage is limited up to $1,000 per Covered Purchase, up to $50,000 per Card Member account per calendar year. Please read important exclusions and restrictions.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "repair_estimate"
+     ],
+     "windowDays": 90,
+     "perItemCapUsd": 1000
+    },
+    {
+     "type": "return_protection",
+     "label": "Return protection",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
+      "quote": "With Return Protection, you may return eligible purchases to American Express if the seller won't take them back up to 90 days from the date of purchase.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ],
+     "windowDays": 90
+    },
+    {
+     "type": "extended_warranty",
+     "label": "Extended warranty",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
+      "quote": "can provide up to one extra year added to the Original Manufacturer's Warranty. Applies to warranties of 5 years or less. Coverage is up to the actual amount charged to your Eligible Card for the item up to a maximum of $10,000; not to exceed $50,000 per Card Member account per calendar year.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "warranty",
+      "repair_estimate"
+     ],
+     "perItemCapUsd": 10000,
+     "incomplete": [
+      "addsMonths",
+      "maxOriginalWarrantyMonths"
+     ]
+    },
+    {
+     "type": "rental_car",
+     "label": "Rental car coverage",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
+      "quote": "When you use your Eligible Card to reserve and pay for the Entire Rental and decline the collision damage waiver (CDW) at the Rental Company counter, you can be covered for Damage to or Theft of a Rental Vehicle in a Covered Territory.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ]
+    }
+   ],
+   "annualFee": 95,
+   "annualFeeSource": {
+    "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/",
+    "quote": "$0 intro annual fee for the first year, then $95",
+    "kind": "issuer",
+    "asOf": "2026-10-24"
+   },
+   "currency": {
+    "unit": "cashback",
+    "unitLabel": "cash back",
+    "valueCents": {}
+   }
+  },
+  "amex-blue-cash-everyday": {
+   "cardId": "amex-blue-cash-everyday",
+   "name": "Blue Cash Everyday from American Express",
+   "short": "Blue Cash Everyday",
+   "issuer": "American Express",
+   "network": "American Express",
+   "art": {
+    "from": "#2F6FB3",
+    "to": "#7FB0E3",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-everyday/",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 1 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "u-s-supermarkets",
+     "label": "U.S. Supermarkets",
+     "categories": [
+      "grocery"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-everyday/",
+      "quote": "Card Members can earn 3% cash back on eligible purchases at U.S. supermarkets, on up to $6,000 per year in purchases (then 1%).",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "cap": {
+      "note": "$6,000 per year"
+     }
+    },
+    {
+     "id": "u-s-online-retail-purchases",
+     "label": "U.S. Online Retail Purchases",
+     "categories": [
+      "online"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-everyday/",
+      "quote": "Card Members can earn 3% cash back on eligible U.S. online retail purchases, on up to $6,000 per year in purchases (then 1%).",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "cap": {
+      "note": "$6,000 per year"
+     }
+    },
+    {
+     "id": "u-s-gas-stations",
+     "label": "U.S. Gas Stations",
+     "categories": [
+      "gas"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-everyday/",
+      "quote": "Card Members can earn 3% cash back on eligible purchases at U.S. gas stations on up to $6,000 per year in purchases (then 1%).",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "cap": {
+      "note": "$6,000 per year"
+     }
+    },
+    {
+     "id": "other-purchases",
+     "label": "Other Purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 1,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-everyday/",
+      "quote": "Card Members can earn 1% cash back on other eligible purchases.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "credits": [
+    {
+     "id": "disney-streaming-credit",
+     "label": "Disney Streaming Credit",
+     "short": "Disney Streaming Credit",
+     "amountUsd": 7,
+     "period": "monthly",
+     "periodNote": null,
+     "requiresActivation": true,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [
+      "DisneyPlus.com",
+      "Hulu.com",
+      "Stream.ESPN.com"
+     ],
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-everyday/",
+      "quote": "With the $84 Disney Streaming Credit, get up to a $7 monthly statement credit after using your enrolled Blue Cash Everyday",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "perks": [
+    {
+     "id": "disney-streaming-credit",
+     "label": "Disney Streaming Credit",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-everyday/",
+      "quote": "With the $84 Disney Streaming Credit, get up to a $7 monthly statement credit after using your enrolled Blue Cash Everyday",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "protections": [
+    {
+     "type": "rental_car",
+     "label": "Rental car coverage",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-everyday/",
+      "quote": "When you use your Eligible Card to reserve and pay for the Entire Rental and decline the collision damage waiver (CDW) at the Rental Company counter, you can be covered for Damage to or Theft of a Rental Vehicle in a Covered Territory.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ]
+    },
+    {
+     "type": "purchase_protection",
+     "label": "Purchase protection",
+     "source": {
+      "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-everyday/",
+      "quote": "can help protect their Covered Purchases for up to 90 days from the Covered Purchase date if it is stolen or accidentally damaged. The coverage is limited up to $1,000 per Covered Purchase, up to $50,000 per Card Member account per calendar year.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "repair_estimate"
+     ],
+     "windowDays": 90,
+     "perItemCapUsd": 1000
+    }
+   ],
+   "currency": {
+    "unit": "cashback",
+    "unitLabel": "cash back",
+    "valueCents": {}
+   }
+  },
+  "capital-one-venture-x": {
+   "cardId": "capital-one-venture-x",
+   "name": "Capital One Venture X",
+   "short": "Venture X",
+   "issuer": "Capital One",
+   "network": "Visa",
+   "art": {
+    "from": "#15171C",
+    "to": "#3A3F4B",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)",
+    "style": "metal"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://www.capitalone.com/credit-cards/venture-x/",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 1 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "hotels-rental-cars-booked-through-capita",
+     "label": "Hotels & rental cars booked through Capital One Travel",
+     "categories": [
+      "hotel",
+      "car_rental",
+      "issuer_travel"
+     ],
+     "rate": 10,
+     "source": {
+      "url": "https://www.capitalone.com/credit-cards/venture-x/",
+      "quote": "10X Miles on hotels & rental cars booked through Capital One Travel",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "flights-and-vacation-rentals-booked-thro",
+     "label": "Flights and vacation rentals booked through Capital One Travel",
+     "categories": [
+      "airline",
+      "issuer_travel"
+     ],
+     "rate": 5,
+     "source": {
+      "url": "https://www.capitalone.com/credit-cards/venture-x/",
+      "quote": "5X Miles on flights and vacation rentals booked through Capital One Travel",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "all-other-purchases",
+     "label": "All other purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 2,
+     "source": {
+      "url": "https://www.capitalone.com/credit-cards/venture-x/",
+      "quote": "2X Miles on all other purchases, every day",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "credits": [],
+   "perks": [
+    {
+     "id": "priority-pass-lounge-access",
+     "label": "Priority Pass Lounge Access",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://www.capitalone.com/credit-cards/venture-x/",
+      "quote": "In order to access Priority Pass lounges, eligible cardholders will need to enroll.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "hertz-gold-plus-rewards-status-upgrade",
+     "label": "Hertz Gold Plus Rewards Status Upgrade",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://www.capitalone.com/credit-cards/venture-x/",
+      "quote": "Eligible cardholders must enroll in the Hertz® Gold+™ Rewards status upgrade through the unique Benefits Tab link found within the Capital One website or mobile app after logging in.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "the-cultivist-membership",
+     "label": "The Cultivist Membership",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://www.capitalone.com/credit-cards/venture-x/",
+      "quote": "The Cultivist membership offer and experiences are subject to Terms and Conditions. Enrollment required.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "protections": [
+    {
+     "type": "cell_phone",
+     "label": "Cell phone protection",
+     "source": {
+      "url": "https://www.capitalone.com/credit-cards/venture-x/",
+      "quote": "Protect your cell phone every time you pay your bill with your Venture X card. If it’s stolen or damaged, you’ll get reimbursed up to $800. Certain terms, conditions and exclusions apply.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ],
+     "perItemCapUsd": 800
+    }
+   ],
+   "annualFee": 395,
+   "annualFeeSource": {
+    "url": "https://www.capitalone.com/credit-cards/venture-x/",
+    "quote": "Annual Fee\n$395",
+    "kind": "issuer",
+    "asOf": "2026-10-24"
+   },
+   "currency": {
+    "unit": "miles",
+    "unitLabel": "miles",
+    "valueCents": {},
+    "source": {
+     "url": null,
+     "quote": null,
+     "kind": "estimate",
+     "note": "No cash value stated in the sources; Benny counts 0 in cash mode."
+    }
+   }
+  },
+  "capital-one-savor": {
+   "cardId": "capital-one-savor",
+   "name": "Capital One Savor",
+   "short": "Savor",
+   "issuer": "Capital One",
+   "network": "Mastercard",
+   "art": {
+    "from": "#3B2A2A",
+    "to": "#7A5446",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://www.capitalone.com/credit-cards/savor/",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 1 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "capital-one-travel",
+     "label": "Capital One Travel",
+     "categories": [
+      "issuer_travel"
+     ],
+     "rate": 5,
+     "source": {
+      "url": "https://www.capitalone.com/credit-cards/savor/",
+      "quote": "Earn unlimited 5% cash back on hotels, vacation rentals and rental cars booked through Capital One Travel.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "dining-grocery-entertainment-and-streami",
+     "label": "Dining, grocery, entertainment, and streaming",
+     "categories": [
+      "dining",
+      "grocery",
+      "entertainment",
+      "streaming"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.capitalone.com/credit-cards/savor/",
+      "quote": "Earn unlimited 3% cash back at grocery stores (excluding superstores like Walmart® and Target®), on dining, entertainment and popular streaming services.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "excludesText": "superstores like Walmart® and Target®"
+    },
+    {
+     "id": "all-other-purchases",
+     "label": "All other purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 1,
+     "source": {
+      "url": "https://www.capitalone.com/credit-cards/savor/",
+      "quote": "Earn unlimited 1% cash back on all other purchases and rewards don’t expire for the life of the account.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "credits": [],
+   "perks": [],
+   "protections": [],
+   "annualFee": 0,
+   "annualFeeSource": {
+    "url": "https://www.capitalone.com/credit-cards/savor/",
+    "quote": "$0 annual fee",
+    "kind": "issuer",
+    "asOf": "2026-10-24"
+   },
+   "currency": {
+    "unit": "cashback",
+    "unitLabel": "cash back",
+    "valueCents": {}
+   }
+  },
+  "citi-double-cash": {
+   "cardId": "citi-double-cash",
+   "name": "Citi Double Cash",
+   "short": "Double Cash",
+   "issuer": "Citi",
+   "network": "Mastercard",
+   "art": {
+    "from": "#245F82",
+    "to": "#7FB6CF",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://www.citi.com/credit-cards/citi-double-cash-credit-card",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 1 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "citi-travel",
+     "label": "Citi Travel",
+     "categories": [
+      "issuer_travel"
+     ],
+     "rate": 5,
+     "source": {
+      "url": "https://www.citi.com/credit-cards/citi-double-cash-credit-card",
+      "quote": "Plus: Earn an additional of 3 points for every $1 spent on hotels, car rentals, and attractions booked with Citi Travel. When combined with the 1 ThankYou point per $1 on your purchases and the 1 ThankYou point per $1 on your payments, this totals to 5 ThankYou points per $1 spent.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "all-purchases",
+     "label": "All purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 2,
+     "source": {
+      "url": "https://www.citi.com/credit-cards/citi-double-cash-credit-card",
+      "quote": "Cardmembers earn 2% cash back by earning 1% cash back on purchases, plus an additional 1% cash back as they pay for those purchases.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "credits": [],
+   "perks": [
+    {
+     "id": "mastercard-id-theft-protection",
+     "label": "Mastercard ID Theft Protection",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://www.citi.com/credit-cards/citi-double-cash-credit-card",
+      "quote": "It takes just a few minutes to enroll for free, and as soon as you do, your monitoring begins.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "citi-merchant-offers",
+     "label": "Citi Merchant Offers",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://www.citi.com/credit-cards/citi-double-cash-credit-card",
+      "quote": "To get started, explore the Merchant Offers available to you, enroll in your favorites and complete the qualifying purchases stated in the offer details to earn your statement credit.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "protections": [
+    {
+     "type": "extended_warranty",
+     "label": "Extended warranty",
+     "source": {
+      "url": "https://www.citi.com/credit-cards/citi-double-cash-credit-card",
+      "quote": "Benefits are subject to terms, conditions and limitations, including limitations on the amount of coverage. Please refer to your Guide to Protection Benefits to learn more. Coverage is provided by New Hampshire Insurance Company, an AIG company. Policy provides secondary coverage only.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "warranty",
+      "repair_estimate"
+     ],
+     "incomplete": [
+      "addsMonths",
+      "maxOriginalWarrantyMonths"
+     ]
+    }
+   ],
+   "currency": {
+    "unit": "cashback",
+    "unitLabel": "cash back",
+    "valueCents": {}
+   }
+  },
+  "citi-custom-cash": {
+   "cardId": "citi-custom-cash",
+   "name": "Citi Custom Cash",
+   "short": "Custom Cash",
+   "issuer": "Citi",
+   "network": "Mastercard",
+   "art": {
+    "from": "#0F6E6E",
+    "to": "#3BA7A0",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://www.citi.com/credit-cards/citi-custom-cash-credit-card",
+      "kind": "issuer",
+      "ok": false,
+      "fetcher": null
+     },
+     {
+      "url": "https://www.cardsandpoints.com/citi-custom-cash/",
+      "kind": "review",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 1 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "top-eligible-spend-category",
+     "label": "Top eligible spend category",
+     "categories": [
+      "dining",
+      "gas",
+      "grocery",
+      "travel",
+      "transit",
+      "streaming",
+      "drugstore",
+      "home_improvement",
+      "entertainment"
+     ],
+     "rate": 5,
+     "source": {
+      "url": "https://www.cardsandpoints.com/citi-custom-cash/",
+      "quote": "5% cash back on your top eligible spend category each billing cycle on up to $500 spent.",
+      "kind": "review",
+      "asOf": "2026-10-24",
+      "note": "Review site, not the issuer. Extracted by the rules pipeline; not checked by hand."
+     },
+     "conditional": true,
+     "condition": "top eligible spend category each billing cycle",
+     "cap": {
+      "note": "$500"
+     }
+    },
+    {
+     "id": "citi-travel-bookings",
+     "label": "Citi Travel bookings",
+     "categories": [
+      "issuer_travel"
+     ],
+     "rate": 5,
+     "source": {
+      "url": "https://www.cardsandpoints.com/citi-custom-cash/",
+      "quote": "5% on hotels, car rentals, and attractions booked with Citi Travel®.",
+      "kind": "review",
+      "asOf": "2026-10-24",
+      "note": "Review site, not the issuer. Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "all-other-purchases",
+     "label": "All other purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 1,
+     "source": {
+      "url": "https://www.cardsandpoints.com/citi-custom-cash/",
+      "quote": "1% cash back on all other purchases.",
+      "kind": "review",
+      "asOf": "2026-10-24",
+      "note": "Review site, not the issuer. Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "credits": [],
+   "perks": [],
+   "protections": [],
+   "annualFee": 0,
+   "annualFeeSource": {
+    "url": "https://www.cardsandpoints.com/citi-custom-cash/",
+    "quote": "Annual fee: $0",
+    "kind": "review",
+    "asOf": "2026-10-24"
+   },
+   "currency": {
+    "unit": "cashback",
+    "unitLabel": "cash back",
+    "valueCents": {}
+   }
+  },
+  "citi-strata-premier": {
+   "cardId": "citi-strata-premier",
+   "name": "Citi Strata Premier",
+   "short": "Strata Premier",
+   "issuer": "Citi",
+   "network": "Mastercard",
+   "art": {
+    "from": "#1A2C55",
+    "to": "#2F4C8F",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://www.citi.com/credit-cards/citi-strata-premier-credit-card",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 1 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "10x-points-on-hotels-car-rentals-and-att",
+     "label": "10x points on Hotels, Car Rentals and Attractions booked on cititravel.com",
+     "categories": [
+      "issuer_travel"
+     ],
+     "rate": 10,
+     "source": {
+      "url": "https://www.citi.com/credit-cards/citi-strata-premier-credit-card",
+      "quote": "10 points per dollar spent on Hotels, Car Rentals and Attractions booked on cititravel.com",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "3x-points-on-air-travel-and-other-hotel-",
+     "label": "3x points on Air Travel and Other Hotel Purchases",
+     "categories": [
+      "airline",
+      "hotel"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.citi.com/credit-cards/citi-strata-premier-credit-card",
+      "quote": "3 points per dollar spent on Air Travel and Other Hotel Purchases",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "3x-points-at-restaurants",
+     "label": "3x points at Restaurants",
+     "categories": [
+      "dining"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.citi.com/credit-cards/citi-strata-premier-credit-card",
+      "quote": "3 points per dollar spent at Restaurants",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "3x-points-at-supermarkets",
+     "label": "3x points at Supermarkets",
+     "categories": [
+      "grocery"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.citi.com/credit-cards/citi-strata-premier-credit-card",
+      "quote": "3 points per dollar spent at Supermarkets",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "3x-points-on-gas-ev-charging-stations",
+     "label": "3x points on Gas & EV Charging Stations",
+     "categories": [
+      "gas",
+      "ev_charging"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.citi.com/credit-cards/citi-strata-premier-credit-card",
+      "quote": "3 points per dollar spent on Gas & EV Charging Stations",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "1x-point-on-all-other-purchases",
+     "label": "1x point on All Other Purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 1,
+     "source": {
+      "url": "https://www.citi.com/credit-cards/citi-strata-premier-credit-card",
+      "quote": "1 point per dollar spent on All Other Purchases",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "credits": [
+    {
+     "id": "100-annual-hotel-benefit",
+     "label": "$100 Annual Hotel Benefit",
+     "short": "$100 Annual Hotel Benefit",
+     "amountUsd": 100,
+     "period": "annual",
+     "periodNote": null,
+     "requiresActivation": false,
+     "match": {
+      "merchants": []
+     },
+     "merchantNames": [
+      "cititravel.com"
+     ],
+     "source": {
+      "url": "https://www.citi.com/credit-cards/citi-strata-premier-credit-card",
+      "quote": "Once per calendar year, enjoy $100 off a single hotel stay of $500 or more (excluding taxes and fees) when booked through cititravel.com or 1-833-737-1288. Benefit applied instantly at time of booking.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "perks": [
+    {
+     "id": "mastercard-id-theft-protection",
+     "label": "Mastercard ID Theft Protection",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://www.citi.com/credit-cards/citi-strata-premier-credit-card",
+      "quote": "The ID Theft Protection program offered by Mastercard® helps eliminate the worry of identity theft by monitoring the information you choose to protect and alerting you if suspicious activity is found. It takes just a few minutes to enroll for free, and as soon as you do, your monitoring begins.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "protections": [],
+   "annualFee": 95,
+   "annualFeeSource": {
+    "url": "https://www.citi.com/credit-cards/citi-strata-premier-credit-card",
+    "quote": "Annual fee -\n$95\n.",
+    "kind": "issuer",
+    "asOf": "2026-10-24"
+   },
+   "currency": {
+    "unit": "points",
+    "unitLabel": "points",
+    "valueCents": {},
+    "source": {
+     "url": null,
+     "quote": null,
+     "kind": "estimate",
+     "note": "No cash value stated in the sources; Benny counts 0 in cash mode."
+    }
+   }
+  },
+  "wells-fargo-active-cash": {
+   "cardId": "wells-fargo-active-cash",
+   "name": "Wells Fargo Active Cash",
+   "short": "Active Cash",
+   "issuer": "Wells Fargo",
+   "network": "Visa",
+   "art": {
+    "from": "#A3181A",
+    "to": "#DC4A4A",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://creditcards.wellsfargo.com/active-cash-credit-card/",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 1 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "all-purchases",
+     "label": "All purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 2,
+     "source": {
+      "url": "https://creditcards.wellsfargo.com/active-cash-credit-card/",
+      "quote": "Plus, enjoy unlimited 2% cash rewards on purchases.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "credits": [],
+   "perks": [
+    {
+     "id": "my-wells-fargo-deals",
+     "label": "My Wells Fargo Deals",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://creditcards.wellsfargo.com/active-cash-credit-card/",
+      "quote": "You must activate a deal and use your eligible card to make purchases directly with the merchant providing the deal by the expiration date.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "credit-close-up",
+     "label": "Credit Close-Up",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://creditcards.wellsfargo.com/active-cash-credit-card/",
+      "quote": "Enroll to receive monthly FICO® Score updates and personalized credit insights.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "protections": [
+    {
+     "type": "cell_phone",
+     "label": "Cell phone protection",
+     "source": {
+      "url": "https://creditcards.wellsfargo.com/active-cash-credit-card/",
+      "quote": "Each approved claim has a benefit limit of $600.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ],
+     "perItemCapUsd": 600
+    },
+    {
+     "type": "rental_car",
+     "label": "Rental car coverage",
+     "source": {
+      "url": "https://creditcards.wellsfargo.com/active-cash-credit-card/",
+      "quote": "Pay for rental cars using an eligible card and get reimbursed for covered damage or theft",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ]
+    }
+   ],
+   "annualFee": 0,
+   "annualFeeSource": {
+    "url": "https://creditcards.wellsfargo.com/active-cash-credit-card/",
+    "quote": "$0 annual fee",
+    "kind": "issuer",
+    "asOf": "2026-10-24"
+   },
+   "currency": {
+    "unit": "cashback",
+    "unitLabel": "cash back",
+    "valueCents": {}
+   }
+  },
+  "wells-fargo-autograph": {
+   "cardId": "wells-fargo-autograph",
+   "name": "Wells Fargo Autograph",
+   "short": "Autograph",
+   "issuer": "Wells Fargo",
+   "network": "Visa",
+   "art": {
+    "from": "#232323",
+    "to": "#575757",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://creditcards.wellsfargo.com/autograph-visa-credit-card/",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 1 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "3x-points-on-dining-travel-gas-transit-s",
+     "label": "3X points on dining, travel, gas, transit, streaming, and phone plans",
+     "categories": [
+      "dining",
+      "travel",
+      "gas",
+      "transit",
+      "streaming",
+      "phone"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://creditcards.wellsfargo.com/autograph-visa-credit-card/",
+      "quote": "Earn Unlimited 3X points on 2 : Restaurants Travel Gas Stations Transit Popular Streaming Services Phone Plans",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "1x-points-on-other-purchases",
+     "label": "1X points on other purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 1,
+     "source": {
+      "url": "https://creditcards.wellsfargo.com/autograph-visa-credit-card/",
+      "quote": "Plus, earn 1X rewards points on other purchases.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "credits": [],
+   "perks": [
+    {
+     "id": "my-wells-fargo-deals",
+     "label": "My Wells Fargo Deals",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://creditcards.wellsfargo.com/autograph-visa-credit-card/",
+      "quote": "You must activate a deal and use your eligible card to make purchases directly with the merchant providing the deal by the expiration date.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "protections": [
+    {
+     "type": "cell_phone",
+     "label": "Cell phone protection",
+     "source": {
+      "url": "https://creditcards.wellsfargo.com/autograph-visa-credit-card/",
+      "quote": "Up to $600 of cell phone protection against damage or theft. Subject to a $25 deductible.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ],
+     "perItemCapUsd": 600
+    },
+    {
+     "type": "rental_car",
+     "label": "Rental car coverage",
+     "source": {
+      "url": "https://creditcards.wellsfargo.com/autograph-visa-credit-card/",
+      "quote": "Pay for rental cars using an eligible card and get reimbursed for covered damage or theft.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ]
+    }
+   ],
+   "annualFee": 0,
+   "annualFeeSource": {
+    "url": "https://creditcards.wellsfargo.com/autograph-visa-credit-card/",
+    "quote": "$0 annual fee",
+    "kind": "issuer",
+    "asOf": "2026-10-24"
+   },
+   "currency": {
+    "unit": "points",
+    "unitLabel": "points",
+    "valueCents": {
+     "cash": 1.0
+    },
+    "source": {
+     "url": "https://creditcards.wellsfargo.com/autograph-visa-credit-card/",
+     "quote": "51,960 points x $0.01 per point",
+     "kind": "issuer",
+     "asOf": "2026-10-24"
+    }
+   }
+  },
+  "discover-it-cash-back": {
+   "cardId": "discover-it-cash-back",
+   "name": "Discover it Cash Back",
+   "short": "Discover it",
+   "issuer": "Discover",
+   "network": "Discover",
+   "art": {
+    "from": "#E9782A",
+    "to": "#F4B26E",
+    "ink": "#2B1A0C",
+    "sub": "rgba(43,26,12,.65)"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://www.discover.com/credit-cards/cash-back/it-card.html",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 1 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "all-other-purchases",
+     "label": "All other purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 1,
+     "source": {
+      "url": "https://www.discover.com/credit-cards/cash-back/it-card.html",
+      "quote": "Plus, earn 1% cash back on all other purchases.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "credits": [],
+   "perks": [],
+   "protections": [],
+   "currency": {
+    "unit": "cashback",
+    "unitLabel": "cash back",
+    "valueCents": {}
+   }
+  },
+  "bofa-customized-cash": {
+   "cardId": "bofa-customized-cash",
+   "name": "Bank of America Customized Cash Rewards",
+   "short": "Customized Cash",
+   "issuer": "Bank of America",
+   "network": "Visa",
+   "art": {
+    "from": "#B30E2B",
+    "to": "#E0485F",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://www.bankofamerica.com/credit-cards/products/cash-back-credit-card/",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     },
+     {
+      "url": "https://www.cardsandpoints.com/customized-cash/",
+      "kind": "review",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 2 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "choice-category",
+     "label": "Choice category",
+     "categories": [
+      "gas",
+      "ev_charging",
+      "online",
+      "phone",
+      "streaming",
+      "dining",
+      "travel",
+      "drugstore",
+      "home_improvement"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.cardsandpoints.com/customized-cash/",
+      "quote": "3% in the category of your choice. 2% at grocery stores and wholesale clubs. 1% on all other purchases. You’ll earn 3% and 2% rewards on the first $2,500 in combined purchases each calendar quarter in the 3% and 2% bonus categories.",
+      "kind": "review",
+      "asOf": "2026-10-24",
+      "note": "Review site, not the issuer. Extracted by the rules pipeline; not checked by hand."
+     },
+     "conditional": true,
+     "condition": "Category of your choice",
+     "cap": {
+      "note": "$2,500 in combined purchases each calendar quarter in the 3% and 2% bonus categories"
+     }
+    },
+    {
+     "id": "grocery-stores-and-wholesale-clubs",
+     "label": "Grocery stores and wholesale clubs",
+     "categories": [
+      "grocery",
+      "wholesale"
+     ],
+     "rate": 2,
+     "source": {
+      "url": "https://www.cardsandpoints.com/customized-cash/",
+      "quote": "2% at grocery stores and wholesale clubs. 1% on all other purchases. You’ll earn 3% and 2% rewards on the first $2,500 in combined purchases each calendar quarter in the 3% and 2% bonus categories.",
+      "kind": "review",
+      "asOf": "2026-10-24",
+      "note": "Review site, not the issuer. Extracted by the rules pipeline; not checked by hand."
+     },
+     "cap": {
+      "note": "$2,500 in combined purchases each calendar quarter in the 3% and 2% bonus categories"
+     }
+    },
+    {
+     "id": "all-other-purchases",
+     "label": "All other purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 1,
+     "source": {
+      "url": "https://www.cardsandpoints.com/customized-cash/",
+      "quote": "1% on all other purchases.",
+      "kind": "review",
+      "asOf": "2026-10-24",
+      "note": "Review site, not the issuer. Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "credits": [],
+   "perks": [],
+   "protections": [
+    {
+     "type": "extended_warranty",
+     "label": "Extended warranty",
+     "source": {
+      "url": "https://www.cardsandpoints.com/customized-cash/",
+      "quote": "Covers items with a manufacturer’s warranty of three years or less. Provides the lesser of one additional year of double the original manufacturer’s warranty coverage. Limit of $10,000 per claim and $50,000 per cardholder.",
+      "kind": "review",
+      "asOf": "2026-10-24",
+      "note": "Review site, not the issuer. Extracted by the rules pipeline; not checked by hand."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "warranty",
+      "repair_estimate"
+     ],
+     "perItemCapUsd": 10000,
+     "incomplete": [
+      "addsMonths",
+      "maxOriginalWarrantyMonths"
+     ]
+    }
+   ],
+   "annualFee": 0,
+   "annualFeeSource": {
+    "url": "https://www.cardsandpoints.com/customized-cash/",
+    "quote": "Annual fee:\n$0",
+    "kind": "review",
+    "asOf": "2026-10-24"
+   },
+   "currency": {
+    "unit": "cashback",
+    "unitLabel": "cash back",
+    "valueCents": {}
+   }
+  },
+  "apple-card": {
+   "cardId": "apple-card",
+   "name": "Apple Card",
+   "short": "Apple Card",
+   "issuer": "Goldman Sachs",
+   "network": "Mastercard",
+   "art": {
+    "from": "#E8E8EC",
+    "to": "#FFFFFF",
+    "ink": "#2C2C2E",
+    "sub": "rgba(44,44,46,.55)",
+    "style": "metal"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-24",
+    "sources": [
+     {
+      "url": "https://www.apple.com/apple-card/",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Auto-extracted on 2026-10-24 from 1 source(s). Every quote was found in the fetched page; not checked by hand.",
+   "earn": [
+    {
+     "id": "apple-and-select-merchants-with-apple-pa",
+     "label": "Apple and Select Merchants with Apple Pay",
+     "categories": [
+      "car_rental",
+      "dining",
+      "drugstore",
+      "electronics",
+      "ev_charging",
+      "gas",
+      "home_improvement",
+      "rideshare"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://www.apple.com/apple-card/",
+      "quote": "Apple Card gives you unlimited 3% Daily Cash back on everything you buy at Apple — whether it’s a new Mac, an iPhone case, games from the App Store, or even a service like Apple Music or Apple TV. You’ll also get 3% Daily Cash back when you use your Apple Card with Apple Pay at your favorites like Nike, Uber, Walgreens, and more.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "purchases-with-apple-pay",
+     "label": "Purchases with Apple Pay",
+     "categories": [
+      "*"
+     ],
+     "rate": 2,
+     "source": {
+      "url": "https://www.apple.com/apple-card/",
+      "quote": "And with every purchase you make using your Apple Card with Apple Pay, you get 2% Daily Cash back.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    },
+    {
+     "id": "other-purchases",
+     "label": "Other Purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 1,
+     "source": {
+      "url": "https://www.apple.com/apple-card/",
+      "quote": "When you use the card, you’ll get 1% Daily Cash back on every purchase.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "credits": [],
+   "perks": [
+    {
+     "id": "uber-one-6-month-free-trial",
+     "label": "Uber One 6-Month Free Trial",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://www.apple.com/apple-card/",
+      "quote": "Redeem a six-month free trial of Uber One, fulfilled by Uber, when you use this link to sign up with your Apple Card using Apple Pay.",
+      "kind": "issuer",
+      "asOf": "2026-10-24",
+      "note": "Quote matched the page with minor differences. Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "protections": [],
+   "currency": {
+    "unit": "cashback",
+    "unitLabel": "cash back",
+    "valueCents": {}
+   }
+  }
+ },
+ "mcc": [
+  {
+   "id": "costco",
+   "name": "Costco warehouse",
+   "categories": [
+    "wholesale"
+   ],
+   "mcc": "5300",
+   "confidence": "high",
+   "aliases": [
+    "costco",
+    "costco wholesale",
+    "costco warehouse"
+   ],
+   "codedAs": "wholesale club",
+   "certificateOk": true
+  },
+  {
+   "id": "costco-gas",
+   "name": "Costco Gas",
+   "categories": [
+    "gas_costco",
+    "gas"
+   ],
+   "mcc": "5542",
+   "confidence": "high",
+   "aliases": [
+    "costco gas",
+    "costco gas station",
+    "costco fuel"
+   ],
+   "codedAs": "automated fuel",
+   "note": "Costco gas and the Costco warehouse are different codes."
+  },
+  {
+   "id": "costco-online",
+   "name": "Costco.com",
+   "categories": [
+    "wholesale",
+    "online"
+   ],
+   "mcc": "5300",
+   "confidence": "medium",
+   "aliases": [
+    "costco com",
+    "costco online"
+   ],
+   "codedAs": "wholesale club"
+  },
+  {
+   "id": "costco-travel",
+   "name": "Costco Travel",
+   "categories": [
+    "costco_travel",
+    "travel"
+   ],
+   "mcc": "4722",
+   "confidence": "medium",
+   "aliases": [
+    "costco travel"
+   ],
+   "codedAs": "travel agency"
+  },
+  {
+   "id": "target",
+   "name": "Target",
+   "categories": [
+    "department"
+   ],
+   "mcc": "5310",
+   "confidence": "high",
+   "aliases": [
+    "target",
+    "target store"
+   ],
+   "codedAs": "discount store",
+   "ambiguous": [
+    {
+     "id": "target",
+     "label": "Target"
+    },
+    {
+     "id": "starbucks-in-target",
+     "label": "the Starbucks inside"
+    }
+   ]
+  },
+  {
+   "id": "target-online",
+   "name": "Target.com",
+   "categories": [
+    "department",
+    "online"
+   ],
+   "mcc": "5310",
+   "confidence": "high",
+   "aliases": [
+    "target com",
+    "target online"
+   ],
+   "codedAs": "discount store",
+   "note": "Sapphire’s online-grocery rate excludes Target."
+  },
+  {
+   "id": "starbucks-in-target",
+   "name": "Starbucks inside Target",
+   "categories": [
+    "department"
+   ],
+   "mcc": "5310",
+   "confidence": "medium",
+   "aliases": [
+    "starbucks in target",
+    "target starbucks"
+   ],
+   "codedAs": "Target (discount store)",
+   "alt": {
+    "label": "dining",
+    "categories": [
+     "dining"
+    ],
+    "mcc": "5814"
+   },
+   "note": "A café inside Target often rings up as Target, not dining."
+  },
+  {
+   "id": "starbucks",
+   "name": "Starbucks",
+   "categories": [
+    "dining"
+   ],
+   "mcc": "5814",
+   "confidence": "high",
+   "aliases": [
+    "starbucks"
+   ],
+   "codedAs": "fast food / café"
+  },
+  {
+   "id": "walmart",
+   "name": "Walmart",
+   "categories": [
+    "department"
+   ],
+   "mcc": "5310",
+   "confidence": "medium",
+   "aliases": [
+    "walmart",
+    "walmart supercenter"
+   ],
+   "codedAs": "discount store",
+   "alt": {
+    "label": "grocery",
+    "categories": [
+     "grocery"
+    ],
+    "mcc": "5411"
+   }
+  },
+  {
+   "id": "walmart-online",
+   "name": "Walmart.com",
+   "categories": [
+    "department",
+    "online"
+   ],
+   "mcc": "5310",
+   "confidence": "medium",
+   "aliases": [
+    "walmart com"
+   ],
+   "codedAs": "discount store"
+  },
+  {
+   "id": "sams-club",
+   "name": "Sam’s Club",
+   "categories": [
+    "wholesale"
+   ],
+   "mcc": "5300",
+   "confidence": "high",
+   "aliases": [
+    "sams club",
+    "sam s club"
+   ],
+   "codedAs": "wholesale club"
+  },
+  {
+   "id": "bjs",
+   "name": "BJ’s Wholesale",
+   "categories": [
+    "wholesale"
+   ],
+   "mcc": "5300",
+   "confidence": "high",
+   "aliases": [
+    "bjs",
+    "bj s wholesale"
+   ],
+   "codedAs": "wholesale club"
+  },
+  {
+   "id": "whole-foods",
+   "name": "Whole Foods Market",
+   "categories": [
+    "grocery"
+   ],
+   "mcc": "5411",
+   "confidence": "high",
+   "aliases": [
+    "whole foods"
+   ],
+   "codedAs": "grocery"
+  },
+  {
+   "id": "trader-joes",
+   "name": "Trader Joe’s",
+   "categories": [
+    "grocery"
+   ],
+   "mcc": "5411",
+   "confidence": "high",
+   "aliases": [
+    "trader joes",
+    "trader joe s"
+   ],
+   "codedAs": "grocery"
+  },
+  {
+   "id": "safeway",
+   "name": "Safeway",
+   "categories": [
+    "grocery"
+   ],
+   "mcc": "5411",
+   "confidence": "high",
+   "aliases": [
+    "safeway"
+   ],
+   "codedAs": "grocery"
+  },
+  {
+   "id": "instacart",
+   "name": "Instacart",
+   "categories": [
+    "online_grocery",
+    "grocery"
+   ],
+   "mcc": "5411",
+   "confidence": "medium",
+   "aliases": [
+    "instacart"
+   ],
+   "codedAs": "grocery (online)",
+   "note": "Usually counts as online grocery for Sapphire."
+  },
+  {
+   "id": "amazon-fresh",
+   "name": "Amazon Fresh",
+   "categories": [
+    "online_grocery",
+    "grocery"
+   ],
+   "mcc": "5411",
+   "confidence": "medium",
+   "aliases": [
+    "amazon fresh"
+   ],
+   "codedAs": "grocery (online)"
+  },
+  {
+   "id": "amazon",
+   "name": "Amazon",
+   "categories": [
+    "online"
+   ],
+   "mcc": "5999",
+   "confidence": "medium",
+   "aliases": [
+    "amazon",
+    "amazon com"
+   ],
+   "codedAs": "misc. retail"
+  },
+  {
+   "id": "doordash",
+   "name": "DoorDash",
+   "categories": [
+    "dining"
+   ],
+   "mcc": "5812",
+   "confidence": "medium",
+   "aliases": [
+    "doordash",
+    "door dash"
+   ],
+   "codedAs": "restaurant"
+  },
+  {
+   "id": "uber-eats",
+   "name": "Uber Eats",
+   "categories": [
+    "dining"
+   ],
+   "mcc": "5812",
+   "confidence": "medium",
+   "aliases": [
+    "uber eats",
+    "ubereats"
+   ],
+   "codedAs": "restaurant"
+  },
+  {
+   "id": "uber",
+   "name": "Uber",
+   "categories": [
+    "rideshare"
+   ],
+   "mcc": "4121",
+   "confidence": "high",
+   "aliases": [
+    "uber"
+   ],
+   "codedAs": "taxi / rideshare"
+  },
+  {
+   "id": "lyft",
+   "name": "Lyft",
+   "categories": [
+    "rideshare"
+   ],
+   "mcc": "4121",
+   "confidence": "high",
+   "aliases": [
+    "lyft"
+   ],
+   "codedAs": "taxi / rideshare"
+  },
+  {
+   "id": "united-airlines",
+   "name": "United Airlines",
+   "categories": [
+    "united",
+    "airline",
+    "travel"
+   ],
+   "mcc": "3000",
+   "confidence": "high",
+   "aliases": [
+    "united",
+    "united airlines",
+    "united com"
+   ],
+   "codedAs": "airline (United)"
+  },
+  {
+   "id": "united-hotels",
+   "name": "United Hotels",
+   "categories": [
+    "united",
+    "hotel",
+    "travel"
+   ],
+   "mcc": "4722",
+   "confidence": "medium",
+   "aliases": [
+    "united hotels"
+   ],
+   "codedAs": "travel agency"
+  },
+  {
+   "id": "delta",
+   "name": "Delta Air Lines",
+   "categories": [
+    "airline",
+    "travel"
+   ],
+   "mcc": "3058",
+   "confidence": "high",
+   "aliases": [
+    "delta"
+   ],
+   "codedAs": "airline"
+  },
+  {
+   "id": "southwest",
+   "name": "Southwest Airlines",
+   "categories": [
+    "airline",
+    "travel"
+   ],
+   "mcc": "3066",
+   "confidence": "high",
+   "aliases": [
+    "southwest"
+   ],
+   "codedAs": "airline"
+  },
+  {
+   "id": "jsx",
+   "name": "JSX",
+   "categories": [
+    "airline",
+    "travel"
+   ],
+   "mcc": "4511",
+   "confidence": "medium",
+   "aliases": [
+    "jsx"
+   ],
+   "codedAs": "airline"
+  },
+  {
+   "id": "marriott",
+   "name": "Marriott (booked direct)",
+   "categories": [
+    "hotel_direct",
+    "hotel",
+    "travel"
+   ],
+   "mcc": "3509",
+   "confidence": "high",
+   "aliases": [
+    "marriott"
+   ],
+   "codedAs": "hotel"
+  },
+  {
+   "id": "hilton",
+   "name": "Hilton (booked direct)",
+   "categories": [
+    "hotel_direct",
+    "hotel",
+    "travel"
+   ],
+   "mcc": "3504",
+   "confidence": "high",
+   "aliases": [
+    "hilton"
+   ],
+   "codedAs": "hotel"
+  },
+  {
+   "id": "hyatt",
+   "name": "Hyatt (booked direct)",
+   "categories": [
+    "hotel_direct",
+    "hotel",
+    "travel"
+   ],
+   "mcc": "3640",
+   "confidence": "high",
+   "aliases": [
+    "hyatt"
+   ],
+   "codedAs": "hotel"
+  },
+  {
+   "id": "expedia",
+   "name": "Expedia",
+   "categories": [
+    "travel"
+   ],
+   "mcc": "4722",
+   "confidence": "high",
+   "aliases": [
+    "expedia"
+   ],
+   "codedAs": "travel agency",
+   "note": "Hotels via Expedia don’t count as booked direct."
+  },
+  {
+   "id": "chase-travel",
+   "name": "Chase Travel",
+   "categories": [
+    "chase_travel",
+    "travel"
+   ],
+   "mcc": "4722",
+   "confidence": "high",
+   "aliases": [
+    "chase travel",
+    "chase travel portal"
+   ],
+   "codedAs": "travel agency"
+  },
+  {
+   "id": "avis",
+   "name": "Avis",
+   "categories": [
+    "car_rental",
+    "travel"
+   ],
+   "mcc": "3389",
+   "confidence": "high",
+   "aliases": [
+    "avis"
+   ],
+   "codedAs": "car rental"
+  },
+  {
+   "id": "shell",
+   "name": "Shell",
+   "categories": [
+    "gas"
+   ],
+   "mcc": "5542",
+   "confidence": "high",
+   "aliases": [
+    "shell"
+   ],
+   "codedAs": "fuel"
+  },
+  {
+   "id": "chevron",
+   "name": "Chevron",
+   "categories": [
+    "gas"
+   ],
+   "mcc": "5542",
+   "confidence": "high",
+   "aliases": [
+    "chevron"
+   ],
+   "codedAs": "fuel"
+  },
+  {
+   "id": "arco",
+   "name": "ARCO",
+   "categories": [
+    "gas"
+   ],
+   "mcc": "5542",
+   "confidence": "high",
+   "aliases": [
+    "arco"
+   ],
+   "codedAs": "fuel"
+  },
+  {
+   "id": "chargepoint",
+   "name": "ChargePoint",
+   "categories": [
+    "ev_charging"
+   ],
+   "mcc": "5552",
+   "confidence": "medium",
+   "aliases": [
+    "chargepoint"
+   ],
+   "codedAs": "EV charging"
+  },
+  {
+   "id": "tesla-supercharger",
+   "name": "Tesla Supercharger",
+   "categories": [
+    "ev_charging"
+   ],
+   "mcc": "5552",
+   "confidence": "medium",
+   "aliases": [
+    "tesla supercharger",
+    "supercharger"
+   ],
+   "codedAs": "EV charging"
+  },
+  {
+   "id": "chipotle",
+   "name": "Chipotle",
+   "categories": [
+    "dining"
+   ],
+   "mcc": "5814",
+   "confidence": "high",
+   "aliases": [
+    "chipotle"
+   ],
+   "codedAs": "fast food"
+  },
+  {
+   "id": "mcdonalds",
+   "name": "McDonald’s",
+   "categories": [
+    "dining"
+   ],
+   "mcc": "5814",
+   "confidence": "high",
+   "aliases": [
+    "mcdonalds",
+    "mcdonald s"
+   ],
+   "codedAs": "fast food"
+  },
+  {
+   "id": "sweetgreen",
+   "name": "Sweetgreen",
+   "categories": [
+    "dining"
+   ],
+   "mcc": "5814",
+   "confidence": "high",
+   "aliases": [
+    "sweetgreen"
+   ],
+   "codedAs": "fast food"
+  },
+  {
+   "id": "blue-bottle",
+   "name": "Blue Bottle Coffee",
+   "categories": [
+    "dining"
+   ],
+   "mcc": "5814",
+   "confidence": "high",
+   "aliases": [
+    "blue bottle"
+   ],
+   "codedAs": "café"
+  },
+  {
+   "id": "peets",
+   "name": "Peet’s Coffee",
+   "categories": [
+    "dining"
+   ],
+   "mcc": "5814",
+   "confidence": "high",
+   "aliases": [
+    "peets",
+    "peet s"
+   ],
+   "codedAs": "café"
+  },
+  {
+   "id": "restaurant",
+   "name": "Sit-down restaurant",
+   "categories": [
+    "dining"
+   ],
+   "mcc": "5812",
+   "confidence": "medium",
+   "aliases": [
+    "restaurant",
+    "bistro",
+    "diner"
+   ],
+   "codedAs": "restaurant"
+  },
+  {
+   "id": "netflix",
+   "name": "Netflix",
+   "categories": [
+    "streaming"
+   ],
+   "mcc": "4899",
+   "confidence": "high",
+   "aliases": [
+    "netflix"
+   ],
+   "codedAs": "cable / streaming"
+  },
+  {
+   "id": "spotify",
+   "name": "Spotify",
+   "categories": [
+    "streaming"
+   ],
+   "mcc": "5815",
+   "confidence": "medium",
+   "aliases": [
+    "spotify"
+   ],
+   "codedAs": "digital media"
+  },
+  {
+   "id": "walgreens",
+   "name": "Walgreens",
+   "categories": [
+    "drugstore"
+   ],
+   "mcc": "5912",
+   "confidence": "high",
+   "aliases": [
+    "walgreens"
+   ],
+   "codedAs": "drugstore"
+  },
+  {
+   "id": "cvs",
+   "name": "CVS Pharmacy",
+   "categories": [
+    "drugstore"
+   ],
+   "mcc": "5912",
+   "confidence": "high",
+   "aliases": [
+    "cvs"
+   ],
+   "codedAs": "drugstore"
+  },
+  {
+   "id": "best-buy",
+   "name": "Best Buy",
+   "categories": [
+    "electronics"
+   ],
+   "mcc": "5732",
+   "confidence": "high",
+   "aliases": [
+    "best buy",
+    "bestbuy"
+   ],
+   "codedAs": "electronics"
+  },
+  {
+   "id": "apple-store",
+   "name": "Apple Store",
+   "categories": [
+    "electronics"
+   ],
+   "mcc": "5732",
+   "confidence": "high",
+   "aliases": [
+    "apple",
+    "apple store"
+   ],
+   "codedAs": "electronics"
+  },
+  {
+   "id": "home-depot",
+   "name": "The Home Depot",
+   "categories": [
+    "home_improvement"
+   ],
+   "mcc": "5200",
+   "confidence": "high",
+   "aliases": [
+    "home depot"
+   ],
+   "codedAs": "home supply"
+  },
+  {
+   "id": "ikea",
+   "name": "IKEA",
+   "categories": [
+    "home"
+   ],
+   "mcc": "5712",
+   "confidence": "high",
+   "aliases": [
+    "ikea"
+   ],
+   "codedAs": "furniture"
+  }
+ ]
+}

@@ -1,0 +1,178 @@
+{
+ "wallet": {
+  "chase-sapphire-preferred": {
+   "addedAt": 1792800000000
+  },
+  "united-explorer": {
+   "addedAt": 1792800000001
+  },
+  "costco-anywhere-visa": {
+   "addedAt": 1792800000002
+  }
+ },
+ "purchases": {
+  "demo-blender": {
+   "id": "demo-blender",
+   "merchant": "Target",
+   "merchantId": "target",
+   "date": "2025-03-08",
+   "total": 107.24,
+   "itemPrice": 99.99,
+   "items": [
+    {
+     "name": "Ninja Professional Blender BL610",
+     "price": 99.99
+    }
+   ],
+   "cardId": "chase-sapphire-preferred",
+   "mfrWarrantyMonths": 12,
+   "durable": true,
+   "hasReceipt": true,
+   "returnPolicy": "90 days with receipt",
+   "demo": true,
+   "source": "demo"
+  },
+  "demo-iphone": {
+   "id": "demo-iphone",
+   "merchant": "Apple Store",
+   "merchantId": "apple-store",
+   "date": "2026-09-02",
+   "total": 1086.41,
+   "itemPrice": 999,
+   "items": [
+    {
+     "name": "iPhone 17 Pro 256GB",
+     "price": 999
+    }
+   ],
+   "cardId": "chase-sapphire-preferred",
+   "mfrWarrantyMonths": 12,
+   "durable": true,
+   "hasReceipt": true,
+   "returnPolicy": "14 days",
+   "demo": true,
+   "source": "demo"
+  },
+  "demo-flight": {
+   "id": "demo-flight",
+   "merchant": "United Airlines",
+   "merchantId": "united-airlines",
+   "date": "2026-10-10",
+   "total": 412.6,
+   "items": [
+    {
+     "name": "SFO → EWR round trip, departs Oct 23",
+     "price": 412.6
+    }
+   ],
+   "cardId": "united-explorer",
+   "kind": "fare",
+   "durable": false,
+   "hasReceipt": true,
+   "demo": true,
+   "source": "demo"
+  },
+  "demo-mixer": {
+   "id": "demo-mixer",
+   "merchant": "Costco",
+   "merchantId": "costco",
+   "date": "2026-08-14",
+   "total": 379.99,
+   "itemPrice": 379.99,
+   "items": [
+    {
+     "name": "KitchenAid Artisan stand mixer",
+     "price": 379.99
+    }
+   ],
+   "cardId": "costco-anywhere-visa",
+   "mfrWarrantyMonths": 12,
+   "durable": true,
+   "hasReceipt": true,
+   "demo": true,
+   "source": "demo"
+  },
+  "demo-instacart": {
+   "id": "demo-instacart",
+   "merchant": "Instacart",
+   "merchantId": "instacart",
+   "date": "2026-10-06",
+   "total": 64.2,
+   "items": [
+    {
+     "name": "Groceries",
+     "price": 64.2
+    }
+   ],
+   "cardId": "chase-sapphire-preferred",
+   "durable": false,
+   "demo": true,
+   "source": "demo"
+  },
+  "demo-uber": {
+   "id": "demo-uber",
+   "merchant": "Uber",
+   "merchantId": "uber",
+   "date": "2026-10-12",
+   "total": 18.4,
+   "items": [
+    {
+     "name": "Ride",
+     "price": 18.4
+    }
+   ],
+   "cardId": "united-explorer",
+   "durable": false,
+   "demo": true,
+   "source": "demo"
+  },
+  "demo-sweetgreen": {
+   "id": "demo-sweetgreen",
+   "merchant": "Sweetgreen",
+   "merchantId": "sweetgreen",
+   "date": "2026-10-21",
+   "total": 16.85,
+   "items": [
+    {
+     "name": "Lunch",
+     "price": 16.85
+    }
+   ],
+   "cardId": "costco-anywhere-visa",
+   "durable": false,
+   "demo": true,
+   "source": "demo"
+  },
+  "demo-costcogas": {
+   "id": "demo-costcogas",
+   "merchant": "Costco Gas",
+   "merchantId": "costco-gas",
+   "date": "2026-10-19",
+   "total": 52.1,
+   "items": [
+    {
+     "name": "Fuel",
+     "price": 52.1
+    }
+   ],
+   "cardId": "chase-sapphire-preferred",
+   "durable": false,
+   "demo": true,
+   "source": "demo"
+  }
+ },
+ "certificates": {
+  "costco-2026": {
+   "id": "costco-2026",
+   "cardId": "costco-anywhere-visa",
+   "amountUsd": 84,
+   "issued": "2026-02-15",
+   "expires": "2026-12-31",
+   "demo": true
+  }
+ },
+ "settings": {
+  "valueMode": "cash",
+  "demoDays": 0
+ }
+}

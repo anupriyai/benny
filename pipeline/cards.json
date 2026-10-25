@@ -1,0 +1,345 @@
+{
+ "note": "Cards the pipeline builds. Issuer pages first; review pages as backup and for conflict checks. Hand-checked cards in base rules (handChecked) are never overwritten.",
+ "cards": [
+  {
+   "cardId": "chase-sapphire-reserve",
+   "name": "Chase Sapphire Reserve",
+   "short": "Reserve",
+   "issuer": "Chase",
+   "network": "Visa",
+   "art": {
+    "from": "#0B1A33",
+    "to": "#2A3A5C",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)",
+    "style": "metal"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://creditcards.chase.com/rewards-credit-cards/sapphire/reserve"
+    },
+    {
+     "kind": "review",
+     "url": "https://www.cardratings.com/travel/chase-sapphire-preferred-and-reserve-benefits.html"
+    }
+   ]
+  },
+  {
+   "cardId": "chase-freedom-unlimited",
+   "name": "Chase Freedom Unlimited",
+   "short": "Freedom Unlimited",
+   "issuer": "Chase",
+   "network": "Visa",
+   "art": {
+    "from": "#1E4E9B",
+    "to": "#5B8FD6",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited"
+    }
+   ]
+  },
+  {
+   "cardId": "chase-freedom-flex",
+   "name": "Chase Freedom Flex",
+   "short": "Freedom Flex",
+   "issuer": "Chase",
+   "network": "Mastercard",
+   "art": {
+    "from": "#1A5DAB",
+    "to": "#77A7E0",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://creditcards.chase.com/cash-back-credit-cards/freedom/flex"
+    }
+   ]
+  },
+  {
+   "cardId": "amex-gold",
+   "name": "American Express Gold Card",
+   "short": "Amex Gold",
+   "issuer": "American Express",
+   "network": "American Express",
+   "art": {
+    "from": "#A9822F",
+    "to": "#E3C77A",
+    "ink": "#2A2110",
+    "sub": "rgba(42,33,16,.65)",
+    "style": "metal"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://www.americanexpress.com/us/credit-cards/card/gold-card/"
+    }
+   ]
+  },
+  {
+   "cardId": "amex-platinum",
+   "name": "The Platinum Card from American Express",
+   "short": "Amex Platinum",
+   "issuer": "American Express",
+   "network": "American Express",
+   "art": {
+    "from": "#B9BDC3",
+    "to": "#EEF0F2",
+    "ink": "#24262A",
+    "sub": "rgba(36,38,42,.6)",
+    "style": "metal"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/"
+    }
+   ]
+  },
+  {
+   "cardId": "amex-blue-cash-preferred",
+   "name": "Blue Cash Preferred from American Express",
+   "short": "Blue Cash Preferred",
+   "issuer": "American Express",
+   "network": "American Express",
+   "art": {
+    "from": "#1B3E7A",
+    "to": "#3A6CC1",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-preferred/"
+    }
+   ]
+  },
+  {
+   "cardId": "amex-blue-cash-everyday",
+   "name": "Blue Cash Everyday from American Express",
+   "short": "Blue Cash Everyday",
+   "issuer": "American Express",
+   "network": "American Express",
+   "art": {
+    "from": "#2F6FB3",
+    "to": "#7FB0E3",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://www.americanexpress.com/us/credit-cards/card/blue-cash-everyday/"
+    }
+   ]
+  },
+  {
+   "cardId": "capital-one-venture-x",
+   "name": "Capital One Venture X",
+   "short": "Venture X",
+   "issuer": "Capital One",
+   "network": "Visa",
+   "art": {
+    "from": "#15171C",
+    "to": "#3A3F4B",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)",
+    "style": "metal"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://www.capitalone.com/credit-cards/venture-x/"
+    }
+   ]
+  },
+  {
+   "cardId": "capital-one-savor",
+   "name": "Capital One Savor",
+   "short": "Savor",
+   "issuer": "Capital One",
+   "network": "Mastercard",
+   "art": {
+    "from": "#3B2A2A",
+    "to": "#7A5446",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://www.capitalone.com/credit-cards/savor/"
+    }
+   ]
+  },
+  {
+   "cardId": "citi-double-cash",
+   "name": "Citi Double Cash",
+   "short": "Double Cash",
+   "issuer": "Citi",
+   "network": "Mastercard",
+   "art": {
+    "from": "#245F82",
+    "to": "#7FB6CF",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://www.citi.com/credit-cards/citi-double-cash-credit-card"
+    }
+   ]
+  },
+  {
+   "cardId": "citi-custom-cash",
+   "name": "Citi Custom Cash",
+   "short": "Custom Cash",
+   "issuer": "Citi",
+   "network": "Mastercard",
+   "art": {
+    "from": "#0F6E6E",
+    "to": "#3BA7A0",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://www.citi.com/credit-cards/citi-custom-cash-credit-card"
+    },
+    {
+     "kind": "review",
+     "url": "https://www.cardsandpoints.com/citi-custom-cash/"
+    }
+   ]
+  },
+  {
+   "cardId": "citi-strata-premier",
+   "name": "Citi Strata Premier",
+   "short": "Strata Premier",
+   "issuer": "Citi",
+   "network": "Mastercard",
+   "art": {
+    "from": "#1A2C55",
+    "to": "#2F4C8F",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://www.citi.com/credit-cards/citi-strata-premier-credit-card"
+    }
+   ]
+  },
+  {
+   "cardId": "wells-fargo-active-cash",
+   "name": "Wells Fargo Active Cash",
+   "short": "Active Cash",
+   "issuer": "Wells Fargo",
+   "network": "Visa",
+   "art": {
+    "from": "#A3181A",
+    "to": "#DC4A4A",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://creditcards.wellsfargo.com/active-cash-credit-card/"
+    }
+   ]
+  },
+  {
+   "cardId": "wells-fargo-autograph",
+   "name": "Wells Fargo Autograph",
+   "short": "Autograph",
+   "issuer": "Wells Fargo",
+   "network": "Visa",
+   "art": {
+    "from": "#232323",
+    "to": "#575757",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://creditcards.wellsfargo.com/autograph-visa-credit-card/"
+    }
+   ]
+  },
+  {
+   "cardId": "discover-it-cash-back",
+   "name": "Discover it Cash Back",
+   "short": "Discover it",
+   "issuer": "Discover",
+   "network": "Discover",
+   "art": {
+    "from": "#E9782A",
+    "to": "#F4B26E",
+    "ink": "#2B1A0C",
+    "sub": "rgba(43,26,12,.65)"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://www.discover.com/credit-cards/cash-back/it-card.html"
+    }
+   ]
+  },
+  {
+   "cardId": "bofa-customized-cash",
+   "name": "Bank of America Customized Cash Rewards",
+   "short": "Customized Cash",
+   "issuer": "Bank of America",
+   "network": "Visa",
+   "art": {
+    "from": "#B30E2B",
+    "to": "#E0485F",
+    "ink": "#F5F7FA",
+    "sub": "rgba(245,247,250,.72)"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://www.bankofamerica.com/credit-cards/products/cash-back-credit-card/"
+    },
+    {
+     "kind": "review",
+     "url": "https://www.cardsandpoints.com/customized-cash/"
+    }
+   ]
+  },
+  {
+   "cardId": "apple-card",
+   "name": "Apple Card",
+   "short": "Apple Card",
+   "issuer": "Goldman Sachs",
+   "network": "Mastercard",
+   "art": {
+    "from": "#E8E8EC",
+    "to": "#FFFFFF",
+    "ink": "#2C2C2E",
+    "sub": "rgba(44,44,46,.55)",
+    "style": "metal"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://www.apple.com/apple-card/"
+    }
+   ]
+  }
+ ]
+}

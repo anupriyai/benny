@@ -191,8 +191,9 @@ function computeFeed(E, rules, st, today) {
     const day = rv.ex.purchase_date || d.doc_date; if (!day || today - E.parse(day) > 120 * DAYMS || E.parse(day) > today + DAYMS) continue;
     const dayT = E.parse(day); const mtok = mnorm(rv.ex.merchant).split(' ')[0] || '';
     if (bankPurch.some(t => Math.abs(E.parse(t.posted_on) - dayT) <= 4 * DAYMS && (Math.abs(t.amount_cents / 100 - rv.amount) < 0.011 || (mtok.length >= 3 && mnorm(t.merchant_raw).includes(mtok) && t.amount_cents / 100 >= rv.amount * 0.95 && t.amount_cents / 100 <= rv.amount * 1.3)))) continue;   // already on a bank statement, just not linked
-    let acct = rv.paid.account && roleOf[rv.paid.account.id] === 'held' ? rv.paid.account : null;
-    if (!acct && held.length === 1 && !(rv.paid.account && rv.paid.firm)) acct = held[0];
+    const clash = a => !!(a && rv.paid.last4 && a.mask && a.mask !== rv.paid.last4);   // the receipt prints a different card number: paid with something else
+    let acct = rv.paid.account && roleOf[rv.paid.account.id] === 'held' && !(rv.paid.how === 'only' && clash(rv.paid.account)) ? rv.paid.account : null;
+    if (!acct && held.length === 1 && !(rv.paid.account && rv.paid.firm) && !clash(held[0])) acct = held[0];
     if (!acct) { receiptsUnassigned++; continue; }
     const key = (rv.merchant.categories || ['other'])[0]; const u = valueOn(acct.product_id, rv.merchant, rv.amount);
     const c = cats[key] || (cats[key] = { key, spent: 0, earned: 0, best: 0, missedLow: 0, missedHigh: 0, n: 0, estimate: false });

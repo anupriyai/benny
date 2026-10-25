@@ -11,7 +11,10 @@ Every number traces back to stored evidence (`confirmed | likely | inferred | un
 | Path | What |
 |---|---|
 | `app/benny-plus.jsx` | The whole UI (one Mana `user_div`, React). Dollar-bill palette, light + dark. |
-| `api/server.py` | Private backend (aiohttp + SQLite). Every query is scoped to the caller's verified uid. |
+| `api/server.py` | Backend (aiohttp + SQLite): ingestion, all AI agents and their prompts, deterministic checkers. User records stay per-user: every query is scoped to the caller's verified uid. |
+| `decisions/` | Rewards decision layer (`feed.js`, extracted from the app) with tests on synthetic data. |
+| `ARCHITECTURE.md` | How the pipeline, agents, checkers and decision layer fit together, with function names. |
+| `scripts/extract_decisions.py` | Regenerates `decisions/feed.js` from the app. |
 | `api/tests/` | `test_privacy.py <url>` (15 A/B privacy checks), `test_acceptance.py <url>` (13 plan checks). |
 | `api/build_snapshot.py` | Builds the pinned rules snapshot: a rule is kept only if its quote appears word for word in a saved source page. |
 | `api/sources/` | Saved source pages used by the snapshot check. |
@@ -33,7 +36,7 @@ Shared with the original Benny: `../engine/engine.js` (all money and coverage de
 
 ## Running
 The server runs inside a Mana sandbox (it uses Mana's `firebase_helper`, `mana_router` and `symbolic_proxy`).
-Saved keys used: `PLAID_CLIENT_ID`, `PLAID_SECRET_SANDBOX`, `PLAID_SECRET_PRODUCTION`. Runtime state (`state/`: database, keys) is never committed.
+Saved keys used: `PLAID_CLIENT_ID`, `PLAID_SECRET_SANDBOX`, `PLAID_SECRET_PRODUCTION`. All code is in this repo. Only user records (`state/` database) and credentials (keys, tokens) are never committed. See `ARCHITECTURE.md`.
 
 ## Recent updates
 

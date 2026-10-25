@@ -41,3 +41,6 @@ python pipeline.py --help
 
 The combined app (Benny + Perks Claimer) with a private backend, Plaid, PDF statements, receipt matching and a pinned,
 quote-verified rules snapshot lives in [`benny-plus/`](benny-plus/README.md). The card catalog now has 21 cards (Robinhood Gold Card added Oct 25).
+
+## Benny+
+The combined app, its backend (agents, checkers), rules pipeline and rewards decision layer are all open in this repo: see [`benny-plus/ARCHITECTURE.md`](benny-plus/ARCHITECTURE.md).

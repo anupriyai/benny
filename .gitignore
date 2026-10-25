@@ -6,3 +6,6 @@ __pycache__/
 .env
 node_modules/
 .DS_Store
+state/
+*.bak-*
+ingress_url

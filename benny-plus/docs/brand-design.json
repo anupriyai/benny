@@ -1,0 +1,14 @@
+{
+ "description": "User selected original homepage guilloche, innermost curve only (k=2, scale .66, rotation .42), with its central circle. Replace literal plus in header and welcome eyebrow; keep full decorative homepage artwork unchanged. Single outline, no stacked outer rosettes.",
+ "glimmer": "Oct 25 02:50: rosette glimmer is now sunlit gold: a second overlay copy of the engraving painted only inside a travelling gold band (#C8A03C → #F1CF6E → #FFF4CC), 7s loop, off under prefers-reduced-motion. Buttons: FOIL_CSS (.benny-foil + <Sheen/>) gold-to-white sheen sweep every 6.5s, staggered; applied to every primary Btn, Btn foil prop (welcome secondary buttons) and the header Add my cards / Try demo pills.",
+ "glimmerButtons": "Oct 25 03:05: button foil sheen only on hover or keyboard focus (one 0.9s sweep), never idle.",
+ "hillsMockup": {
+  "description": "Light cream welcome page: Benny wordmark with small green rosette, headline 'Your cards already owe you something.', I/II/III steps, Get started + Explore with sample data; faint guilloche top right with a diagonal gold-white foil streak. Bottom ~40%: engraved, dollar-bill-vignette style line-hatched rolling green hills receding to a lake and distant hills, scattered trees, a wooden fence on the right, six sheep in the same engraving style, one large grazing sheep in the left foreground. Generated mock; its body copy is not the real copy.",
+  "idea": "User: hills and sheep on the home/welcome page (Benny ~ 'beeee', what sheep say).",
+  "imageUrl": "https://storage.googleapis.com/fully-generative.firebasestorage.app/x3Y2CiUksXUYQlyFtQkncTLNLQW2/generated-images/1792921298804_High-fidelity_web_app_UI_mockup_desktop_width_16.png",
+  "status": "approved by user Oct 25 02:50 and implemented as Pasture (pure SVG) on the setup welcome step"
+ },
+ "pasture": "v2 Oct 25 03:05, see readme PASTURE v2. Verified by dark-mode screenshot; light mode not yet screenshotted.",
+ "referenceDescription": "Dark-green homepage crop: three rotated four-lobed banknote curves around a small circular center. User requests only the innermost looped outline as Benny’s logo, instead of multiple curves.",
+ "referenceStoragePath": "x3Y2CiUksXUYQlyFtQkncTLNLQW2/chat-attachments/1792920937100_image.png"
+}

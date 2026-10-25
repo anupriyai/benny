@@ -341,7 +341,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--fetcher", default="auto", choices=["auto", "plain", "brightdata"])
     ap.add_argument("--only", default=""); ap.add_argument("--refetch", action="store_true")
-    ap.add_argument("--model", default="gemini-3.8-flash"); ap.add_argument("--base", default=os.path.join(HERE, "..", "rules", "rules.json"))
+    ap.add_argument("--model", default="gemini-3.8-flash"); ap.add_argument("--base", default=os.path.join(HERE, "..", "rules.json"))
     ap.add_argument("--publish", action="store_true", help="write out/rules.json into the Benny app (Mana)")
     a = ap.parse_args()
     cards = json.load(open(os.path.join(HERE, "cards.json")))["cards"]

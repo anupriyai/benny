@@ -1,0 +1,22 @@
+{
+ "version": "v2026-10-25",
+ "accepted": 177,
+ "rejected": [
+  {
+   "card": "united-explorer",
+   "kind": "perks",
+   "id": "instacart-plus",
+   "url": "https://katiestraveltricks.com/credit_card/united-explorer-card/",
+   "reason": "source page not saved"
+  },
+  {
+   "card": "apple-card",
+   "kind": "perks",
+   "id": "uber-one-6-month-free-trial",
+   "url": "https://www.apple.com/apple-card/",
+   "reason": "quote not found word for word in saved page"
+  }
+ ],
+ "cards": 21,
+ "pages": 32
+}

@@ -340,6 +340,42 @@
      "url": "https://www.apple.com/apple-card/"
     }
    ]
+  },
+  {
+   "cardId": "robinhood-gold-card",
+   "name": "Robinhood Gold Card",
+   "short": "Robinhood Gold",
+   "issuer": "Robinhood",
+   "network": "Visa",
+   "art": {
+    "from": "#7A5A1C",
+    "to": "#D9B65A",
+    "ink": "#1B1406",
+    "sub": "rgba(27,20,6,.68)",
+    "style": "metal"
+   },
+   "sources": [
+    {
+     "kind": "issuer",
+     "url": "https://robinhood.com/creditcard/"
+    },
+    {
+     "kind": "issuer",
+     "url": "https://robinhood.com/us/en/support/articles/robinhood-gold-card-waitlist/"
+    },
+    {
+     "kind": "issuer",
+     "url": "https://robinhood.com/us/en/support/articles/robinhood-gold-card-rewards/"
+    },
+    {
+     "kind": "issuer",
+     "url": "https://robinhood.com/us/en/support/articles/robinhood-gold-card-visa-benefits/"
+    },
+    {
+     "kind": "issuer",
+     "url": "https://cdn.robinhood.com/assets/robinhood/legal/Robinhood_Gold_Card_Rewards_Program_Rules.pdf"
+    }
+   ]
   }
  ]
 }

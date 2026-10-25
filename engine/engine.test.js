@@ -1,4 +1,4 @@
-const assert=require('assert'); const E=require('./engine.js'); const R=require('../rules/rules.json'); const D=require('../rules/demo.json');
+const assert=require('assert'); const E=require('./engine.js'); const R=require('./rules.json'); const D=require('./demo.json');
 const S=JSON.parse(JSON.stringify(D)); S.purchases=Object.values(S.purchases); S.certificates=Object.values(S.certificates);
 const T=E.parse('2026-10-24'); const P=id=>S.purchases.find(p=>p.id===id); let n=0; const ok=(c,m)=>{assert.ok(c,m);n++;};
 // hero: blender failure covered by Sapphire extended warranty

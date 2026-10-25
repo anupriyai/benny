@@ -36,3 +36,8 @@ python pipeline.py --help
 - Auto-extracted cards are labelled and not hand-checked; rates that depend on a choice or rotation are never counted.
 - Some points cards have no sourced cash value yet, so they count $0 in cash mode.
 - Benny is not affiliated with any issuer. Check your Guide to Benefits before filing.
+
+## Benny+
+
+The combined app (Benny + Perks Claimer) with a private backend, Plaid, PDF statements, receipt matching and a pinned,
+quote-verified rules snapshot lives in [`benny-plus/`](benny-plus/README.md). The card catalog now has 21 cards (Robinhood Gold Card added Oct 25).

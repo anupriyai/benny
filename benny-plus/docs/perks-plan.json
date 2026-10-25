@@ -1,0 +1,13 @@
+{
+ "brightData": "Pipeline (/workspace/benny/pipeline/pipeline.py) supports --fetcher brightdata (Web Unlocker, BRIGHTDATA_API_TOKEN saved), but the v2026-10-24 snapshot fetched 19/20 cards with the plain fetcher. Bright Data only retrieves pages; the extractor decides what is captured. Current extractor keeps perks only when they need enrollment (22 perks, all requiresActivation), so non-enrollment perks (lounges, Global Entry/TSA credit, DashPass, status) are missing.",
+ "caveatRules": "Derived deterministically from each rule's verbatim quote + fields: Enroll first; Only after you pay for X (auto-renewing/membership/subscription); Spend $N first; Book through issuer travel site (earn rules only when label is travel); Up to cap, then base rate; Only <condition>; Excludes ...; U.S. only; Only at merchants; Resets monthly/no carryover; Subject to availability; protections: terms not confirmed / secondary / decline rental CDW. Tips: worth it only if you'd pay anyway; conditional rate not counted; annual fee vs annualized credits; points no fixed cash value.",
+ "nextIdeas": [
+  "Widen extractor schema: perk.kind (lounge|status|membership|travel_credit|insurance|other), perk.requires {enrollment, paidMembership, minSpend{amount,windowDays}, bookingChannel, authorizedUserFee}, valueUsd when stated; rerun with --fetcher brightdata for JS/blocked issuer pages + benefit guides (PDF).",
+  "Spend-gated perks: progress bar from purchases (e.g. $X of $Y toward a spend threshold or cap used this year).",
+  "Personal verdicts: 'You paid Uber One with this card: credit applies' vs 'You don't subscribe: ignore this $120'.",
+  "Fee-vs-value per card from the user's actual use (credits recovered + rewards earned - fee).",
+  "Welcome-email intake: read card welcome emails/screenshots like the reference as evidence of which product/variant the user holds."
+ ],
+ "reference": "User screenshot (Oct 25): four tall silver-gradient tiles from a premium card welcome email (issuer not shown): 'Your new credit limit $20,000'; '5% cash back on dining · complimentary DashPass' with $120 Annual DoorDash promo and $250 Annual restaurant credit (fork+knife art); 'Real cash back on travel · plus Global Entry or TSA PreCheck' with 5% flights / 10% hotels (compass art); 'Relax in lounges worldwide · unlimited access to 1,400+ airport lounges' with $300 annual flight credit / $700 annual hotel credit (teacup art, '+5' more). Serif headlines, big serif figures over small labels, split by a hairline.",
+ "status": "Home 'Money your cards give you' (credits/protections/perks, no earns) + Wallet card page 'What it earns' tiles, Oct 25 00:20."
+}

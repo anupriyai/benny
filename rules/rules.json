@@ -3989,6 +3989,234 @@
     "unitLabel": "cash back",
     "valueCents": {}
    }
+  },
+  "robinhood-gold-card": {
+   "cardId": "robinhood-gold-card",
+   "name": "Robinhood Gold Card",
+   "short": "Robinhood Gold",
+   "issuer": "Robinhood",
+   "network": "Visa",
+   "art": {
+    "from": "#6E5217",
+    "to": "#E2C26A",
+    "ink": "#1B1406",
+    "sub": "rgba(27,20,6,.66)",
+    "style": "metal"
+   },
+   "verified": false,
+   "handChecked": false,
+   "pipeline": {
+    "generatedAt": "2026-10-25",
+    "sources": [
+     {
+      "url": "https://robinhood.com/creditcard/",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     },
+     {
+      "url": "https://robinhood.com/us/en/support/articles/robinhood-gold-card-waitlist/",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     },
+     {
+      "url": "https://robinhood.com/us/en/support/articles/robinhood-gold-card-rewards/",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     },
+     {
+      "url": "https://robinhood.com/us/en/support/articles/robinhood-gold-card-visa-benefits/",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     },
+     {
+      "url": "https://cdn.robinhood.com/assets/robinhood/legal/Robinhood_Gold_Card_Rewards_Program_Rules.pdf",
+      "kind": "issuer",
+      "ok": true,
+      "fetcher": "plain"
+     }
+    ]
+   },
+   "verifiedNote": "Added for the Benny+ demo on 2026-10-25 from Robinhood's product page, support articles and Rewards Program Rules (5 issuer sources). Every quote is found word for word in the saved pages; checked by an agent, not by hand.",
+   "earn": [
+    {
+     "id": "all-purchases",
+     "label": "All eligible purchases",
+     "categories": [
+      "*"
+     ],
+     "rate": 3,
+     "source": {
+      "url": "https://robinhood.com/us/en/support/articles/robinhood-gold-card-waitlist/",
+      "quote": "The Gold Card has no annual fee with an annual Gold subscription ($50 and terms apply) and you get 3% cash back on all eligible purchases.",
+      "kind": "issuer",
+      "asOf": "2026-10-25",
+      "note": "Extracted by the rules pipeline, then the travel-portal rate marked conditional and units set to cash back by hand; quotes verified word for word."
+     }
+    },
+    {
+     "id": "robinhood-travel-portal",
+     "label": "Travel booked through the Robinhood travel portal",
+     "categories": [
+      "travel",
+      "airline",
+      "hotel",
+      "hotel_direct",
+      "car_rental"
+     ],
+     "rate": 5,
+     "conditional": true,
+     "condition": "you book through the Robinhood travel portal with your Gold Card",
+     "source": {
+      "url": "https://robinhood.com/us/en/support/articles/robinhood-gold-card-waitlist/",
+      "quote": "You’ll also earn even more on travel, earning 5X points when you book travel through the Robinhood travel portal with your Gold Card.",
+      "kind": "issuer",
+      "asOf": "2026-10-25",
+      "note": "Extracted by the rules pipeline, then the travel-portal rate marked conditional and units set to cash back by hand; quotes verified word for word."
+     }
+    }
+   ],
+   "credits": [],
+   "perks": [
+    {
+     "id": "doordash-dashpass-membership-trial",
+     "label": "DoorDash DashPass Membership Trial",
+     "requiresActivation": true,
+     "source": {
+      "url": "https://cdn.robinhood.com/assets/robinhood/legal/Robinhood_Gold_Card_Rewards_Program_Rules.pdf",
+      "quote": "You are eligible to activate a complimentary six (6)-month DashPass membership if you satisfy the following criteria: (i) have or create a valid DoorDash account; (ii) have not held any DashPass membership within the six (6) months prior to activation",
+      "kind": "issuer",
+      "asOf": "2026-10-25",
+      "note": "Extracted by the rules pipeline; not checked by hand."
+     }
+    }
+   ],
+   "protections": [
+    {
+     "type": "purchase_protection",
+     "label": "Purchase protection",
+     "source": {
+      "url": "https://robinhood.com/us/en/support/articles/robinhood-gold-card-visa-benefits/",
+      "quote": "Purchase protection … $1,000/occurrence (includes Porch Piracy) - $10,000 per cardholder … Safeguard new items against theft or damage for the first 90 days from the date of purchase.",
+      "kind": "issuer",
+      "asOf": "2026-10-25",
+      "note": "Extracted by the rules pipeline, then the travel-portal rate marked conditional and units set to cash back by hand; quotes verified word for word."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "repair_estimate"
+     ],
+     "windowDays": 90,
+     "perItemCapUsd": 1000
+    },
+    {
+     "type": "extended_warranty",
+     "label": "Extended warranty",
+     "source": {
+      "url": "https://robinhood.com/us/en/support/articles/robinhood-gold-card-visa-benefits/",
+      "quote": "Add up to an additional year to qualifying warranties.",
+      "kind": "issuer",
+      "asOf": "2026-10-25",
+      "note": "Extracted by the rules pipeline, then the travel-portal rate marked conditional and units set to cash back by hand; quotes verified word for word."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement",
+      "warranty",
+      "repair_estimate"
+     ],
+     "incomplete": [
+      "addsMonths",
+      "maxOriginalWarrantyMonths"
+     ]
+    },
+    {
+     "type": "return_protection",
+     "label": "Return protection",
+     "source": {
+      "url": "https://robinhood.com/us/en/support/articles/robinhood-gold-card-visa-benefits/",
+      "quote": "Get extra return protection on eligible purchases up to $250.",
+      "kind": "issuer",
+      "asOf": "2026-10-25",
+      "note": "Extracted by the rules pipeline, then the travel-portal rate marked conditional and units set to cash back by hand; quotes verified word for word."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ],
+     "perItemCapUsd": 250
+    },
+    {
+     "type": "rental_car",
+     "label": "Rental car coverage",
+     "source": {
+      "url": "https://robinhood.com/us/en/support/articles/robinhood-gold-card-visa-benefits/",
+      "quote": "Rental car protection … (Secondary Insurance Domestic / Primary Insurance International) … Rent with your Robinhood Credit Card and get built-in auto rental coverage.",
+      "kind": "issuer",
+      "asOf": "2026-10-25",
+      "note": "Extracted by the rules pipeline, then the travel-portal rate marked conditional and units set to cash back by hand; quotes verified word for word."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ],
+     "secondary": true
+    },
+    {
+     "type": "trip_cancellation",
+     "label": "Trip cancellation/interruption",
+     "source": {
+      "url": "https://robinhood.com/us/en/support/articles/robinhood-gold-card-visa-benefits/",
+      "quote": "You're covered up to $2,000 for non-refundable fares if your trip is canceled or interrupted.",
+      "kind": "issuer",
+      "asOf": "2026-10-25",
+      "note": "Extracted by the rules pipeline, then the travel-portal rate marked conditional and units set to cash back by hand; quotes verified word for word."
+     },
+     "claim": {},
+     "requiredDocs": [
+      "receipt",
+      "statement"
+     ],
+     "perTravelerCapUsd": 2000
+    }
+   ],
+   "currency": {
+    "unit": "cashback",
+    "unitLabel": "cash back",
+    "valueCents": {},
+    "note": true,
+    "noteShort": "earned as points, $0.01 each as brokerage cash back",
+    "source": {
+     "url": "https://robinhood.com/us/en/support/articles/robinhood-gold-card-rewards/",
+     "quote": "The redemption rate for this option is $0.01 per point and you can choose to transfer any amount of available points as brokerage cash back.",
+     "kind": "issuer",
+     "asOf": "2026-10-25"
+    }
+   },
+   "annualFee": 0,
+   "annualFeeSource": {
+    "url": "https://robinhood.com/us/en/support/articles/robinhood-gold-card-waitlist/",
+    "quote": "The Gold Card has no annual fee with an annual Gold subscription ($50 and terms apply)",
+    "kind": "issuer",
+    "asOf": "2026-10-25"
+   },
+   "membershipFee": {
+    "usd": 50,
+    "label": "Robinhood Gold subscription (required)",
+    "source": {
+     "url": "https://robinhood.com/us/en/support/articles/robinhood-gold-card-waitlist/",
+     "quote": "The Gold Card has no annual fee with an annual Gold subscription ($50 and terms apply)",
+     "kind": "issuer"
+    }
+   }
   }
  },
  "mcc": [
